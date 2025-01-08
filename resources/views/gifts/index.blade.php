@@ -29,31 +29,45 @@
 
 <!-- Modal de compra -->
 <div class="modal fade" id="purchaseModal" tabindex="-1">
-   <div class="modal-dialog">
-       <div class="modal-content">
-           <div class="modal-header">
-               <h5 class="modal-title">Información de compra</h5>
-               <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-           </div>
-           <div class="modal-body">
-               <form id="purchaseForm">
-                   <div class="mb-3">
-                       <label class="form-label">Nombre y Apellidos (opcional)</label>
-                       <input type="text" class="form-control" name="purchaser_name">
-                   </div>
-                   <div class="mb-3">
-                       <label class="form-label">Email (opcional)</label>
-                       <input type="email" class="form-control" name="purchaser_email">
-                   </div>
-               </form>
-           </div>
-           <div class="modal-footer">
-               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-               <button type="button" class="btn btn-primary" id="confirmPurchase">Confirmar</button>
-           </div>
-       </div>
-   </div>
-</div>
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Información de compra</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <form id="purchaseForm">
+                    <div class="mb-3">
+                        <label class="form-label">Nombre y Apellidos (opcional)</label>
+                        <input type="text" class="form-control" name="purchaser_name">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Email (opcional)</label>
+                        <input type="email" class="form-control" name="purchaser_email">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Tienda donde lo compraste</label>
+                        <select class="form-select" name="store">
+                            <option value="">Selecciona una tienda</option>
+                            <option value="Amazon">Amazon</option>
+                            <option value="El Corte Inglés">El Corte Inglés</option>
+                            <option value="MediaMarkt">MediaMarkt</option>
+                            <option value="Otros">Otros</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Número de pedido (opcional)</label>
+                        <input type="text" class="form-control" name="order_number">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="confirmPurchase">Confirmar</button>
+            </div>
+        </div>
+    </div>
+ </div>
 
 @push('scripts')
 <script>
@@ -78,45 +92,28 @@ document.addEventListener('DOMContentLoaded', function() {
            const response = await fetch(`/gifts/${currentGiftId}/purchase`, {
                method: 'POST',
                headers: {
-                   'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                   'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
                    'Content-Type': 'application/json',
                },
                body: JSON.stringify(Object.fromEntries(formData))
            });
 
            const data = await response.json();
-           alert(`Regalo marcado como comprado. Tu código es: ${data.unique_code}`);
-           location.reload();
-       } catch (error) {
-           alert('Error al procesar la compra');
-       }
-   });
 
-   // Desmarcar como comprado
-   document.querySelectorAll('.unpurchase-btn').forEach(button => {
-       button.addEventListener('click', async () => {
-           const code = prompt('Introduce el código de compra:');
-           if (!code) return;
-
-           try {
-               const response = await fetch(`/gifts/${button.dataset.giftId}/unpurchase`, {
-                   method: 'POST',
-                   headers: {
-                       'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                       'Content-Type': 'application/json',
-                   },
-                   body: JSON.stringify({ unique_code: code })
-               });
-
-               if (response.ok) {
-                   location.reload();
-               } else {
-                   alert('Código inválido');
+           if (response.ok) {
+               modal.hide();
+               alert(`Regalo marcado como comprado. Tu código es: ${data.unique_code}`);
+               if (formData.get('purchaser_email')) {
+                   alert('Te hemos enviado un email con la información');
                }
-           } catch (error) {
-               alert('Error al procesar la solicitud');
+               location.reload();
+           } else {
+               alert('Error al procesar la compra');
            }
-       });
+       } catch (error) {
+           alert('Error de conexión');
+           console.error(error);
+       }
    });
 });
 </script>
