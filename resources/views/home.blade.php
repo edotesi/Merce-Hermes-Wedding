@@ -11,10 +11,9 @@
         </div>
 
         <div class="hero-right">
-            <div class="decorative-arch"></div>
             <div class="location-content">
                 <h2>Barcelona, Spain</h2>
-                <p>14 de Junio, 2025</p>
+                <h3>14 de Junio, 2025</h3>
 
                 <div class="countdown">
                     <div class="countdown-item">
@@ -35,7 +34,7 @@
                     </div>
                 </div>
 
-                <button class="calendar-button" id="addToCalendar">
+                <button class="button" id="addToCalendar">
                     AÑADIR AL CALENDARIO
                 </button>
             </div>

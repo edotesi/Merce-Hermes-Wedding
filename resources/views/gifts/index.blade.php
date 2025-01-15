@@ -2,119 +2,172 @@
 
 @section('content')
 <div class="container py-5">
-   <div class="row g-4">
-       @foreach($gifts as $gift)
-       <div class="col-12 col-md-6 col-lg-4">
-           <div class="card h-100">
-               <img src="{{ $gift->image_url }}" class="card-img-top" alt="{{ $gift->name }}">
-               <div class="card-body">
-                   <h5 class="card-title">{{ $gift->name }}</h5>
-                   <p class="card-text">{{ number_format($gift->price, 2) }}€</p>
+    <!-- Vista Toggle -->
+    <div class="flex justify-end mb-6">
+        <div class="inline-flex rounded-lg border border-[#6a735b]">
+            <button id="gridView" class="px-4 py-2 rounded-l-lg" aria-label="Vista Grid">
+                <i class="fas fa-grid-2"></i>
+            </button>
+            <button id="listView" class="px-4 py-2 rounded-r-lg" aria-label="Vista Lista">
+                <i class="fas fa-list"></i>
+            </button>
+        </div>
+    </div>
 
-                   @if(!$gift->is_purchased)
-                       <button class="btn btn-primary purchase-btn" data-gift-id="{{ $gift->id }}">
-                           Marcar como comprado
-                       </button>
-                   @else
-                       <button class="btn btn-secondary unpurchase-btn" data-gift-id="{{ $gift->id }}">
-                           Ya comprado
-                       </button>
-                   @endif
-               </div>
-           </div>
-       </div>
-       @endforeach
-   </div>
-</div>
+    <!-- Grid/List Container -->
+    <div id="giftsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        @foreach($gifts as $gift)
+            <div class="gift-card bg-white shadow-lg rounded-lg overflow-hidden">
+                <div class="relative">
+                    <img src="{{ $gift->image_url }}" alt="{{ $gift->name }}" class="w-full h-64 object-cover">
+                    @if($gift->status !== 'available')
+                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
+                            <span class="text-white text-lg font-medium uppercase">
+                                {{ $gift->status === 'reserved' ? 'Reservado' : 'Comprado' }}
+                            </span>
+                        </div>
+                    @endif
+                </div>
 
-<!-- Modal de compra -->
-<div class="modal fade" id="purchaseModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Información de compra</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <div class="p-4">
+                    <h3 class="text-lg font-medium mb-2">{{ $gift->name }}</h3>
+                    <p class="text-2xl text-[#6a735b] mb-4">{{ number_format($gift->price, 2) }}€</p>
+
+                    @if($gift->status === 'available')
+                        <button
+                            class="w-full bg-[#6a735b] text-white py-2 px-4 rounded hover:opacity-90 reserve-btn"
+                            data-gift-id="{{ $gift->id }}"
+                        >
+                            Reservar Regalo
+                        </button>
+                    @endif
+
+                    <div class="text-sm text-[#a79f7d] mt-3 text-center">
+                        Solicitados: {{ $gift->stock }} • Disponibles: {{ $gift->stock - $gift->reserved_stock }}
+                    </div>
+                </div>
             </div>
-            <div class="modal-body">
-                <form id="purchaseForm">
-                    <div class="mb-3">
-                        <label class="form-label">Nombre y Apellidos (opcional)</label>
-                        <input type="text" class="form-control" name="purchaser_name">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Email (opcional)</label>
-                        <input type="email" class="form-control" name="purchaser_email">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Tienda donde lo compraste</label>
-                        <select class="form-select" name="store">
-                            <option value="">Selecciona una tienda</option>
-                            <option value="Amazon">Amazon</option>
-                            <option value="El Corte Inglés">El Corte Inglés</option>
-                            <option value="MediaMarkt">MediaMarkt</option>
-                            <option value="Otros">Otros</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Número de pedido (opcional)</label>
-                        <input type="text" class="form-control" name="order_number">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="confirmPurchase">Confirmar</button>
+        @endforeach
+
+        <!-- IBAN Card -->
+        <div class="col-span-full bg-[#6a735b] text-white p-8 rounded-lg mt-6">
+            <div class="text-center">
+                <h3 class="text-2xl font-light mb-4">Información Bancaria</h3>
+                <p class="font-mono text-xl mb-4" id="ibanText">ES91 2100 0418 4502 0005 1332</p>
+                <button
+                    onclick="copyIban()"
+                    class="bg-white text-[#6a735b] px-6 py-2 rounded hover:bg-opacity-90"
+                    id="copyButton"
+                >
+                    Copiar IBAN
+                </button>
             </div>
         </div>
     </div>
- </div>
+
+    <!-- Modal de Reserva -->
+    <div class="modal fade" id="reserveModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Reservar Regalo</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reserveForm">
+                        <div class="mb-3">
+                            <label class="form-label">Nombre y Apellidos *</label>
+                            <input type="text" class="form-control" name="purchaser_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email *</label>
+                            <input type="email" class="form-control" name="purchaser_email" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="confirmReserve">Confirmar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endsection
 
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-   let currentGiftId = null;
-   const modal = new bootstrap.Modal(document.getElementById('purchaseModal'));
+    let currentGiftId = null;
+    const modal = new bootstrap.Modal(document.getElementById('reserveModal'));
 
-   // Botones de compra
-   document.querySelectorAll('.purchase-btn').forEach(button => {
-       button.addEventListener('click', () => {
-           currentGiftId = button.dataset.giftId;
-           modal.show();
-       });
-   });
+    // Grid/List View Toggle
+    const container = document.getElementById('giftsContainer');
+    document.getElementById('gridView').addEventListener('click', function() {
+        container.className = 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6';
+        this.classList.add('bg-[#6a735b]', 'text-white');
+        document.getElementById('listView').classList.remove('bg-[#6a735b]', 'text-white');
+    });
 
-   // Confirmación de compra
-   document.getElementById('confirmPurchase').addEventListener('click', async () => {
-       const form = document.getElementById('purchaseForm');
-       const formData = new FormData(form);
+    document.getElementById('listView').addEventListener('click', function() {
+        container.className = 'flex flex-col gap-6';
+        this.classList.add('bg-[#6a735b]', 'text-white');
+        document.getElementById('gridView').classList.remove('bg-[#6a735b]', 'text-white');
+    });
 
-       try {
-           const response = await fetch(`/gifts/${currentGiftId}/purchase`, {
-               method: 'POST',
-               headers: {
-                   'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                   'Content-Type': 'application/json',
-               },
-               body: JSON.stringify(Object.fromEntries(formData))
-           });
+    // IBAN Copy
+    window.copyIban = function() {
+        const iban = document.getElementById('ibanText').textContent;
+        navigator.clipboard.writeText(iban).then(() => {
+            const button = document.getElementById('copyButton');
+            button.textContent = '¡Copiado!';
+            setTimeout(() => {
+                button.textContent = 'Copiar IBAN';
+            }, 2000);
+        });
+    };
 
-           const data = await response.json();
+    // Reserva
+    document.querySelectorAll('.reserve-btn').forEach(button => {
+        button.addEventListener('click', () => {
+            currentGiftId = button.dataset.giftId;
+            modal.show();
+        });
+    });
 
-           if (response.ok) {
-               modal.hide();
-               alert(`Regalo marcado como comprado. Tu código es: ${data.unique_code}`);
-               if (formData.get('purchaser_email')) {
-                   alert('Te hemos enviado un email con la información');
-               }
-               location.reload();
-           } else {
-               alert('Error al procesar la compra');
-           }
-       } catch (error) {
-           alert('Error de conexión');
-           console.error(error);
-       }
-   });
+    document.getElementById('confirmReserve').addEventListener('click', async () => {
+        const form = document.getElementById('reserveForm');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(`/gifts/${currentGiftId}/reserve`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(Object.fromEntries(formData))
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                modal.hide();
+                alert(`Regalo reservado correctamente. Tu código es: ${data.unique_code}`);
+                location.reload();
+            } else {
+                alert(data.error || 'Error al procesar la reserva');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error de conexión');
+        }
+    });
 });
 </script>
 @endpush

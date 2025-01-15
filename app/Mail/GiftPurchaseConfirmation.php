@@ -12,17 +12,30 @@ class GiftPurchaseConfirmation extends Mailable
     public $giftName;
     public $uniqueCode;
     public $purchaserName;
+    public $productUrl;
     public $store;
     public $orderNumber;
+    public $confirmUrl;
+    public $cancelUrl;
 
-    public function __construct($giftName, $uniqueCode, $purchaserName = null, $store = null, $orderNumber = null)
-    {
-        set_time_limit(120);
+    public function __construct(
+        $giftName,
+        $uniqueCode,
+        $purchaserName,
+        $productUrl = null,
+        $store = null,
+        $orderNumber = null,
+        $confirmUrl = null,
+        $cancelUrl = null
+    ) {
         $this->giftName = $giftName;
         $this->uniqueCode = $uniqueCode;
         $this->purchaserName = $purchaserName;
+        $this->productUrl = $productUrl;
         $this->store = $store;
         $this->orderNumber = $orderNumber;
+        $this->confirmUrl = $confirmUrl;
+        $this->cancelUrl = $cancelUrl;
     }
 
     public function envelope()

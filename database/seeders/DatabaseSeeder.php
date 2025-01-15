@@ -17,7 +17,8 @@ class DatabaseSeeder extends Seeder
             WeddingInfoSeeder::class,
             CeremonySeeder::class,
             ReceptionSeeder::class,
-            GiftSeeder::class
+            GiftSeeder::class,
+            PartySeeder::class
         ]);
     }
 }
