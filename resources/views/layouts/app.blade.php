@@ -22,16 +22,24 @@
         <div class="container">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('home') }}">M&H</a>
+                    @if (Route::has('home'))
+                        <a class="nav-link" href="{{ route('home') }}">M&H</a>
+                    @endif
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('schedule') }}">Programa</a>
+                    @if (Route::has('schedule'))
+                        <a class="nav-link" href="{{ route('schedule') }}">Programa</a>
+                    @endif
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('gifts.index') }}">Regalos</a>
+                    @if (Route::has('gifts.index'))
+                        <a class="nav-link" href="{{ route('gifts.index') }}">Regalos</a>
+                    @endif
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('info') }}">Información</a>
+                    @if (Route::has('info'))
+                        <a class="nav-link" href="{{ route('info') }}">Información</a>
+                    @endif
                 </li>
             </ul>
         </div>
