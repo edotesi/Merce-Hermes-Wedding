@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,10 +13,12 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet">
     <!-- Custom CSS -->
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 </head>
+
 <body>
     <nav class="navbar">
         <button class="mobile-menu-toggle"></button>
@@ -23,22 +26,22 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     @if (Route::has('home'))
-                        <a class="nav-link" href="{{ route('home') }}">M&H</a>
+                        <a class="nav-link" href="{{ routeWithPreview('home') }}">M&H</a>
                     @endif
                 </li>
                 <li class="nav-item">
                     @if (Route::has('schedule'))
-                        <a class="nav-link" href="{{ route('schedule') }}">Programa</a>
+                        <a class="nav-link" href="{{ routeWithPreview('schedule') }}">Programa</a>
                     @endif
                 </li>
                 <li class="nav-item">
                     @if (Route::has('gifts.index'))
-                        <a class="nav-link" href="{{ route('gifts.index') }}">Regalos</a>
+                        <a class="nav-link" href="{{ routeWithPreview('gifts.index') }}">Regalos</a>
                     @endif
                 </li>
                 <li class="nav-item">
                     @if (Route::has('info'))
-                        <a class="nav-link" href="{{ route('info') }}">Información</a>
+                        <a class="nav-link" href="{{ routeWithPreview('info') }}">Información</a>
                     @endif
                 </li>
             </ul>
@@ -58,4 +61,5 @@
         });
     </script>
 </body>
+
 </html>
