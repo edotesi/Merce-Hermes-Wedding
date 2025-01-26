@@ -1,7 +1,12 @@
-function routeWithPreview($name, $parameters = []) {
+<?php
+
+namespace App\Helpers;
+
+function routeWithPreview($name, $parameters = [])
+{
     $route = route($name, $parameters);
-    if (request()->query('preview')) {
-        return $route . '?preview=' . request()->query('preview');
+    if (env('MAINTENANCE_MODE') === 'true') {
+        return $route . '?preview=' . env('MAINTENANCE_TOKEN');
     }
     return $route;
 }
