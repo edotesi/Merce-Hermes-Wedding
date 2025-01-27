@@ -216,8 +216,8 @@ h3,
 }
 
 .hero-center {
+    height: 100vh;
     position: relative;
-    overflow: hidden;
 }
 
 .hero-center-content {
