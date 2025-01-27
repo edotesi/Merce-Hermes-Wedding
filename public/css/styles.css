@@ -215,6 +215,18 @@ h3,
     position: relative;
 }
 
+.hero-center {
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-center-content {
+    position: absolute;
+    bottom: 4rem;
+    left: 4rem;
+    z-index: 1;
+}
+
 .countdown {
     display: flex;
     justify-content: space-between;

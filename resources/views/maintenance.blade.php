@@ -1,12 +1,31 @@
-@extends('layouts.app')
+<!DOCTYPE html>
+<html lang="es">
 
-@section('content')
-    <div class="hero-section">
-        <div class="hero-left">
-            <img src="{{ asset('images/homebackground.jpg') }}" class="hero-image" alt="Mercè & Hermes">
-            <div class="hero-left-content">
-                <h1 class="hero-title">Web en construcción</h1>
-                <p class="hero-subtitle">¡Nos vemos en muy poquito!</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <title>Boda Mercè y Hermes</title>
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
+</head>
+
+<body>
+        <div class="hero-center">
+            <img src="{{ asset('images/background_maintenance.jpg') }}" class="hero-image" alt="Mercè & Hermes">
+            <div class="hero-center-content">
+                <img src="{{ asset('images/logo.png') }}" alt="Mercè & Hermes">
+                <h1>Web en construcción</h1>
+                <p>¡En muy poco podréis disfrutar de la web!</p>
                 <div class="countdown">
                     <div class="countdown-item">
                         <span class="countdown-number" id="days">00</span>
@@ -49,5 +68,15 @@
             setInterval(updateCountdown, 1000);
             updateCountdown();
         </script>
+
+        <!-- Bootstrap Bundle with Popper -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+        @stack('scripts')
+        <script>
+            document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
+                document.querySelector('.navbar-nav').classList.toggle('active');
+            });
+        </script>
     @endpush
-@endsection
+</body>
+</html>

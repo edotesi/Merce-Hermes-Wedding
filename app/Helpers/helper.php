@@ -1,7 +1,5 @@
 <?php
 
-namespace App\Helpers;
-
 function routeWithPreview($name, $parameters = [])
 {
     $route = route($name, $parameters);
