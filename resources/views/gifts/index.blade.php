@@ -70,7 +70,6 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Reservar Regalo</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
                     <form id="reserveForm">
@@ -83,10 +82,12 @@
                             <input type="email" class="form-control" name="purchaser_email" required>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="button" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="button primary" id="confirmReserve">Confirmar</button>
+                    <button type="button" class="button" data-bs-dismiss="modal">
+                        CANCELAR
+                    </button>
+                    <button type="button" class="button primary" id="confirmReserve">
+                        CONFIRMAR
+                    </button>
                 </div>
             </div>
         </div>

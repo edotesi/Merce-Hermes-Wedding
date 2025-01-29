@@ -30,3 +30,9 @@ Homestead.yaml
 Homestead.json
 /.vagrant
 .phpunit.result.cache
+
+public/images/.DS_Store
+
+public/.DS_Store
+
+.DS_Store
