@@ -215,18 +215,6 @@ h3,
     position: relative;
 }
 
-.hero-center {
-    height: 100vh;
-    position: relative;
-}
-
-.hero-center-content {
-    position: absolute;
-    bottom: 4rem;
-    left: 4rem;
-    z-index: 1;
-}
-
 .countdown {
     display: flex;
     justify-content: space-between;
@@ -754,5 +742,108 @@ h3,
 @media (max-width: 576px) {
     #giftsContainer.gift-grid {
         grid-template-columns: 1fr;
+    }
+}
+/* Estilos específicos para la página de mantenimiento */
+.maintenance-page {
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    background-color: var(--olive);
+}
+
+.maintenance-page .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.maintenance-page .hero-center-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 1;
+    width: 90%;
+    max-width: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.maintenance-page .hero-center-content img {
+    max-width: 300px; /* Logo más grande */
+    margin-bottom: 4rem;
+    position: relative;
+    top: -8rem; /* Subimos mucho más el logo */
+    filter: brightness(0) invert(1); /* Esto lo hará blanco puro */
+}
+
+.maintenance-page h1 {
+    color: var(--white);
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: 0.5rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.maintenance-page p {
+    color: var(--white);
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    margin-bottom: 2rem;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Estilos específicos del contador para la página de mantenimiento */
+.maintenance-page .countdown {
+    display: flex;
+    justify-content: center;
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.maintenance-page .countdown-item {
+    text-align: center;
+}
+
+.maintenance-page .countdown-number {
+    color: var(--white);
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
+    font-weight: 300;
+    display: block;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.maintenance-page .countdown-label {
+    color: var(--white);
+    font-size: clamp(0.6rem, 1.5vw, 0.7rem);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    opacity: 0.9;
+}
+
+/* Media queries específicas para la página de mantenimiento */
+@media (max-width: 768px) {
+    .maintenance-page .hero-center-content {
+        width: 85%;
+    }
+
+    .maintenance-page .hero-center-content img {
+        max-width: 200px; /* Ajustamos proporcionalmente para móvil */
+        top: -6rem; /* Ajustamos la posición para móvil */
+    }
+}
+
+@media (max-height: 600px) {
+    .maintenance-page .hero-center-content img {
+        max-width: 150px;
+        top: -4rem;
+        margin-bottom: 2rem;
+    }
+
+    .maintenance-page h1 {
+        font-size: 1.8rem;
     }
 }

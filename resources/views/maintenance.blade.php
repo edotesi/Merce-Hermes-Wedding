@@ -20,10 +20,11 @@
 </head>
 
 <body>
-        <div class="hero-center">
-            <img src="{{ asset('images/background_maintenance.jpg') }}" class="hero-image" alt="Mercè & Hermes">
-            <div class="hero-center-content">
-                <img src="{{ asset('images/logo.png') }}" alt="Mercè & Hermes">
+    <div class="maintenance-page">
+        <img src="{{ asset('images/background_maintenance.jpg') }}" class="hero-image" alt="Mercè & Hermes">
+        <div class="hero-center-content">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo MH">
+            <div>
                 <h1>Web en construcción</h1>
                 <p>¡En muy poco podréis disfrutar de la web!</p>
                 <div class="countdown">
@@ -46,37 +47,36 @@
                 </div>
             </div>
         </div>
+    </div>
 
-    @push('scripts')
-        <script>
-            const weddingDate = new Date('2025-03-31T17:00:00');
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const weddingDate = new Date('2025-03-31T17:00:00');
 
-            function updateCountdown() {
-                const now = new Date();
-                const diff = weddingDate - now;
+        function updateCountdown() {
+            const now = new Date();
+            const diff = weddingDate - now;
 
-                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-                document.getElementById('days').textContent = String(days).padStart(2, '0');
-                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
-            }
-            setInterval(updateCountdown, 1000);
-            updateCountdown();
-        </script>
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+        }
 
-        <!-- Bootstrap Bundle with Popper -->
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-        @stack('scripts')
-        <script>
-            document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
-                document.querySelector('.navbar-nav').classList.toggle('active');
-            });
-        </script>
-    @endpush
+        // Ejecutar inmediatamente y luego cada segundo
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Código del menú móvil
+        document.querySelector('.mobile-menu-toggle')?.addEventListener('click', function() {
+            document.querySelector('.navbar-nav').classList.toggle('active');
+        });
+    </script>
 </body>
+
 </html>
