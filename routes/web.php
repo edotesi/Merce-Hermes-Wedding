@@ -40,4 +40,28 @@ if ($appMode == 'true') {
         Route::get('/{gift}/cancel/{code}', [GiftController::class, 'showCancelForm'])->name('gifts.cancel');
         Route::post('/{gift}/cancel', [GiftController::class, 'cancelReservation'])->name('gifts.cancelReservation');
     });
+    Route::get('/calendar.ics', function () {
+        $event = [
+            'begin' => '2025-06-14T17:00:00',
+            'end' => '2025-06-14T23:00:00',
+            'title' => 'Boda Mercè & Hermes',
+            'description' => 'Celebración de la boda de Mercè y Hermes',
+            'location' => 'Barcelona, Spain'
+        ];
+
+        $icsContent = "BEGIN:VCALENDAR\n";
+        $icsContent .= "VERSION:2.0\n";
+        $icsContent .= "BEGIN:VEVENT\n";
+        $icsContent .= "DTSTART:" . date('Ymd\THis\Z', strtotime($event['begin'])) . "\n";
+        $icsContent .= "DTEND:" . date('Ymd\THis\Z', strtotime($event['end'])) . "\n";
+        $icsContent .= "SUMMARY:" . $event['title'] . "\n";
+        $icsContent .= "DESCRIPTION:" . $event['description'] . "\n";
+        $icsContent .= "LOCATION:" . $event['location'] . "\n";
+        $icsContent .= "END:VEVENT\n";
+        $icsContent .= "END:VCALENDAR";
+
+        return response($icsContent)
+            ->header('Content-Type', 'text/calendar; charset=utf-8')
+            ->header('Content-Disposition', 'attachment; filename="calendar.ics"');
+    })->name('calendar.ics');
 }

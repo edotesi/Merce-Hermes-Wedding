@@ -404,18 +404,18 @@ h3,
 }
 
 /* Modal Styles */
-.modal {
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-}
-
+/* Modal Styles */
 .modal-dialog {
-    margin: 1.75rem auto;
+    display: flex;
+    align-items: center;
+    min-height: calc(100% - 1rem);
+    margin: 0 auto;
     max-width: 400px;
+    width: 90%;
 }
 
 .modal-content {
+    width: 100%;
     background: var(--olive);
     color: var(--hillary);
     border: 1px solid var(--hillary);
@@ -459,9 +459,9 @@ h3,
 }
 
 @media (max-width: 576px) {
-    .modal-content {
-        margin: 0 1rem;
-        padding: 1.5rem;
+    .modal-dialog {
+        margin: 1rem auto;
+        min-height: calc(100% - 2rem);
     }
 }
 
