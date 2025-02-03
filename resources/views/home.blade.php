@@ -3,7 +3,7 @@
 @section('content')
     <div class="hero-section">
         <div class="hero-left">
-            <img src="{{ asset('images/homebackground.jpg') }}" class="hero-image" alt="Mercè & Hermes">
+            <img src="{{ asset('images/home_background.jpg') }}" class="hero-image" alt="Mercè & Hermes">
             <div class="hero-left-content">
                 <h1 class="hero-title">Mercè & Hermes</h1>
                 <p class="hero-subtitle">¡Nos casamos!</p>
@@ -12,8 +12,9 @@
 
         <div class="hero-right">
             <div class="location-content">
-                <h2>Barcelona, Spain</h2>
-                <h3>14 de Junio, 2025</h3>
+                <h2>Castelló d’Empúries</h2>
+                <h3>14 junio 2025</h3>
+                <h3>15:30</h3>
 
                 <div class="countdown">
                     <div class="countdown-item">
@@ -69,7 +70,7 @@
     @push('scripts')
         <script>
             document.addEventListener('DOMContentLoaded', function() {
-                const weddingDate = new Date('2025-06-14T17:00:00');
+                const weddingDate = new Date('2025-06-14T15:30:00');
                 let globalGoogleCalendarUrl;
 
                 // Detectar Apple devices (iOS y macOS)
@@ -87,8 +88,8 @@
                     googleUrl.searchParams.append('action', 'TEMPLATE');
                     googleUrl.searchParams.append('text', 'Boda Mercè & Hermes');
                     googleUrl.searchParams.append('details', 'Celebración de la boda de Mercè y Hermes');
-                    googleUrl.searchParams.append('location', 'Barcelona, Spain');
-                    googleUrl.searchParams.append('dates', '20250614T170000Z/20250614T230000Z');
+                    googleUrl.searchParams.append('location', 'Plaça Mossèn Cinto Verdaguer, 1 Castelló d’Empúries');
+                    googleUrl.searchParams.append('dates', '20250614T133000Z/20250614T230000Z');
 
                     globalGoogleCalendarUrl = googleUrl.toString();
                 }

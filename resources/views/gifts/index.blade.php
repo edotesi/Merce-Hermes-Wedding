@@ -56,7 +56,7 @@
             <!-- IBAN Section -->
             <div class="iban-section">
                 <h3>Información Bancaria</h3>
-                <p id="ibanText">ES91 2100 0418 4502 0005 1332</p>
+                <p id="ibanText">ES36 0186 3001 25 0525942353</p>
                 <button onclick="copyIban()" id="copyButton" class="button">
                     Copiar IBAN
                 </button>

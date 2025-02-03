@@ -6,16 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Ceremony extends Model
 {
-   protected $fillable = [
-       'name',
-       'address',
-       'maps_url',
-       'date',
-       'time'
-   ];
-
-   protected $casts = [
-       'date' => 'date',
-       'time' => 'datetime'
-   ];
+    protected $fillable = [
+        'name',
+        'address',
+        'maps_url',
+        'date',
+        'start_time',
+    ];
 }

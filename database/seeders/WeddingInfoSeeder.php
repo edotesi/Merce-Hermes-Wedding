@@ -13,7 +13,6 @@ class WeddingInfoSeeder extends Seeder
     public function run(): void
     {
         WeddingInfo::create([
-            'iban' => 'ES91 2100 0418 4502 0005 1332',
             'dress_code' => 'Formal - Se ruega no vestir de blanco'
         ]);
     }

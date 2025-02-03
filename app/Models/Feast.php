@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Party extends Model
+class Feast extends Model
 {
     protected $fillable = [
         'name',

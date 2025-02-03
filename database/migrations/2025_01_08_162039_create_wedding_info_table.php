@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('wedding_infos', function (Blueprint $table) {
             $table->id();
-            $table->string('iban', 34);
             $table->text('dress_code');
             $table->timestamps();
         });

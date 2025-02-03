@@ -16,8 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->text('address');
             $table->string('maps_url');
+            $table->time('start_time');
             $table->date('date');
-            $table->time('time');
             $table->timestamps();
         });
     }

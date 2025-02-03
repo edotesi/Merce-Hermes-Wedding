@@ -6,14 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reception extends Model
 {
-   protected $fillable = [
-       'name',
-       'address',
-       'maps_url',
-       'time'
-   ];
-
-   protected $casts = [
-       'time' => 'datetime'
-   ];
+    protected $fillable = [
+        'name',
+        'address',
+        'maps_url',
+        'date',
+        'start_time',
+    ];
 }

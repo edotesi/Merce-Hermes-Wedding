@@ -11,11 +11,10 @@ class PartySeeder extends Seeder
     {
         Party::create([
             'name' => 'Fiesta',
-            'description' => 'Descripción de la fiesta...',
-            'address' => 'Dirección de la fiesta',
-            'maps_url' => 'https://maps.google.com/?q=...',
-            'start_time' => '22:00',
-            'end_time' => '04:00'
+            'address' => 'La Farinera Sant Lluis, N-2, Km 761,2 Pont de Molins',
+            'maps_url' => 'https://maps.app.goo.gl/iy8Jyg741az36Umf9',
+            'date' => '2025-06-14',
+            'start_time' => '23:00',
         ]);
     }
 }

@@ -13,11 +13,11 @@ class CeremonySeeder extends Seeder
     public function run(): void
     {
         Ceremony::create([
-            'name' => 'Iglesia Example',
-            'address' => 'Calle Example, 123, Barcelona',
-            'maps_url' => 'https://maps.google.com/?q=...',
+            'name' => 'Ceremony',
+            'address' => 'Plaça Mossèn Cinto Verdaguer, 1 Castelló d’Empúries',
+            'maps_url' => 'https://maps.app.goo.gl/CqBnFYKpLvKMSMNr8',
             'date' => '2025-06-14',
-            'time' => '17:00'
+            'start_time' => '15:30'
         ]);
     }
 }
