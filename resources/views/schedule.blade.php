@@ -102,6 +102,7 @@
                 let isTransitioning = false;
 
                 function updateEvent(index) {
+                    if(index < 0 || index >= events.length) return;
                     if (isTransitioning) return;
                     isTransitioning = true;
 
