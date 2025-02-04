@@ -254,46 +254,100 @@ h4,
 }
 
 /* Schedule Section */
-.schedule-container {
+.event-wrapper {
     min-height: 100vh;
-    padding-top: 80px;
     display: flex;
-    flex-direction: column-reverse;
+    flex-direction: column;
+    padding: 2rem;
 }
 
-.timeline {
+.event-content {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+    padding: 4rem 0;
+    opacity: 1;
+    transition: opacity 0.5s ease;
+}
+
+.event-image {
+    width: 400px;
+    height: auto;
+    border-radius: 4px;
+}
+
+.event-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1.5rem;
+}
+
+.event-info .subtitle {
+    font-size: 2.5rem;
+    color: var(--hillary);
+    font-weight: 300;
+}
+
+.event-info .location {
+    font-size: 1.2rem;
+    color: var(--hillary);
+    line-height: 1.4;
+}
+
+.event-info .datetime {
+    display: flex;
+    gap: 1rem;
+    color: var(--hillary);
+    font-size: 1rem;
+}
+
+.event-info .button {
+    align-self: flex-start;
+    margin-top: 1rem;
+}
+
+/* Timeline */
+.event-display {
     position: relative;
     width: 100%;
-    padding: 2rem 0;
-    margin-bottom: 4rem;
+    height: 100px;
+    margin-top: 4rem;
+    display: flex;
+    align-items: center;
+    overflow: visible;
+}
+
+/* Línea horizontal */
+.timeline {
+    width: 100vw;
+    position: relative;
+    left: calc(-50vw + 50%);
+    margin-right: -50vw;
 }
 
 .timeline-events {
+    max-width: 1200px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    max-width: 1000px;
-    margin: 0 auto;
+    padding: 0 2rem;
     position: relative;
 }
 
 .timeline-events::before {
     content: "";
     position: absolute;
-    top: 11px;
-    left: -9999px;
-    right: -9999px;
+    top: 50%;
+    transform: translateY(-50%);
     height: 1px;
     background-color: var(--hillary);
-    z-index: 1;
-}
-
-.event-marker {
-    position: relative;
-    text-align: center;
-    cursor: pointer;
-    z-index: 2;
-    padding: 0 20px;
+    width: 200vw;
+    left: -100vw;
 }
 
 .diamond {
@@ -302,40 +356,79 @@ h4,
     background: var(--olive);
     border: 1.5px solid var(--hillary);
     transform: rotate(45deg);
-    margin: 0 auto 2rem;
     transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 0 0 3px var(--olive);
 }
 
 .event-marker.active .diamond {
     background: var(--hillary);
+    box-shadow: 0 0 0 3px var(--olive);
 }
 
-.event-content {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    color: var(--hillary);
-    max-width: auto;
-    margin: 0 auto;
-    padding: 2rem;
-}
-
-.event-image {
-    width: 100%;
-    height: auto;
-    max-width: 400px;
-}
-
-.event-info {
+.event-marker {
+    position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex: 1;
-    width: 100%;
-    padding-left: 2rem;
-    box-sizing: border-box; /* Asegura que el padding no afecte las dimensiones */
-    height: 100%; /* Asegura que tome toda la altura disponible */
+    align-items: center;
+    text-align: center;
+    gap: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    padding: 1.5rem 0;
+}
+
+.event-marker.active {
+    opacity: 1;
+}
+
+.event-label {
+    position: absolute;
+    bottom: -1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    width: max-content;
+}
+
+.event-label h3 {
+    margin: 0;
+    color: var(--hillary);
+    font-size: 1.1rem;
+}
+
+.event-time {
+    color: var(--hillary);
+    font-size: 0.9rem;
+}
+
+@media (max-width: 991px) {
+    .event-content {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+    }
+
+    .event-image {
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .event-label h3 {
+        font-size: 0.9rem;
+    }
+
+    .event-time {
+        font-size: 0.8rem;
+    }
+
+    .event-info .subtitle {
+        font-size: 2rem;
+    }
 }
 
 /* Gift Section */
