@@ -13,11 +13,11 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule): void
     {
         $schedule->command('gifts:clear-expired')
+            ->name('Clear expired gift reservations')  // Añade un nombre descriptivo
             ->everyMinute()
             ->withoutOverlapping()
             ->appendOutputTo(storage_path('logs/scheduler.log'));
     }
-
     /**
      * Register the commands for the application.
      */

@@ -14,12 +14,22 @@ class ClearExpiredReservations extends Command
 
     public function handle()
     {
+        Log::info('Iniciando ClearExpiredReservations', [
+            'timestamp' => now(),
+            'memory' => memory_get_usage(true)
+        ]);
+
         try {
             DB::transaction(function () {
                 $expiredGifts = Gift::query()
                     ->where('status', 'reserved')
                     ->where('reservation_expires_at', '<', now())
                     ->get();
+
+                Log::info('Consulta realizada', [
+                    'found_gifts' => $expiredGifts->count(),
+                    'current_time' => now()
+                ]);
 
                 foreach ($expiredGifts as $gift) {
                     Log::info('Limpiando reserva expirada', [
@@ -43,11 +53,12 @@ class ClearExpiredReservations extends Command
                 }
             });
         } catch (\Exception $e) {
-            Log::error('Error clearing expired reservations', [
+            Log::error('Error en ClearExpiredReservations', [
                 'error' => $e->getMessage(),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
                 'trace' => $e->getTraceAsString()
             ]);
-            $this->error('Error clearing expired reservations: ' . $e->getMessage());
         }
     }
 }
