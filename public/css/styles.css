@@ -1099,7 +1099,7 @@ h4,
 /* Accommodation Styles */
 .accommodation-wrapper {
     min-height: 100vh;
-    padding: 2rem;
+
 }
 
 .accommodation-content {
@@ -1201,7 +1201,6 @@ h4,
 }
 
 .accommodation-right {
-    padding-left: 2rem;
     display: flex;
     align-items: center;
 }
@@ -1273,6 +1272,7 @@ h4,
     }
 
     .accommodation-right {
+        width: 100%;
         display: flex;
         flex-shrink: 0; /* Evita que el botón se encoja */
     }
@@ -1317,9 +1317,10 @@ h4,
         gap: 1.5rem;
     }
 
-    .accommodation-left {
+    .accommodation-right {
         width: 100%;
-        padding-right: 0 !important;
+        display: flex;
+        flex-shrink: 0; /* Evita que el botón se encoja */
     }
 
     .reserve-button {
@@ -1352,7 +1353,6 @@ h4,
 
     .accommodation-left {
         width: 100%;
-        padding-right: 0 !important;
     }
 
     .main-title {
