@@ -3,9 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\GiftController;
-use App\Http\Controllers\InfoController;
+use App\Http\Controllers\DressCodeController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\MaintenanceController;
+use App\Http\Controllers\AccommodationController;
 
 // Variables desde el .env
 $appMode = env('MAINTENANCE_MODE', 'false'); // Modo de la aplicación
@@ -24,8 +25,9 @@ if ($appMode == 'true') {
 } else {
     // Modo activo
     Route::get('/', [HomeController::class, 'index'])->name('home');
-    Route::get('/info', [InfoController::class, 'index'])->name('info');
     Route::get('/schedule', [ScheduleController::class, 'index'])->name('schedule');
+    Route::get('/dress-code', [DressCodeController::class, 'index'])->name('dress-code');
+    Route::get('/alojamientos', [AccommodationController::class, 'index'])->name('accommodations');
 
     Route::prefix('gifts')->group(function () {
         // Vista principal

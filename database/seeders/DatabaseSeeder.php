@@ -15,13 +15,13 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
         $this->call([
-            WeddingInfoSeeder::class,
             CeremonySeeder::class,
             ReceptionSeeder::class,
             GiftSeeder::class,
             PartySeeder::class,
             AppetizerSeeder::class,
             FeastSeeder::class,
+            AccommodationsTableSeeder::class
         ]);
     }
 }

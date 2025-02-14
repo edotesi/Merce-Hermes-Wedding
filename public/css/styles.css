@@ -1035,3 +1035,334 @@ h4,
         font-size: 1.8rem;
     }
 }
+
+/* Dress Code Styles - Updated */
+.dress-code-info {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    margin: 2rem 0;
+}
+
+.dress-code-item {
+    display: flex;
+    gap: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 2rem;
+    align-items: center;
+}
+
+.dress-code-image {
+    flex-shrink: 0;
+}
+
+.dress-code-image img {
+    width: 100px;
+    height: auto;
+}
+
+.dress-code-text {
+    flex-grow: 1;
+}
+
+.dress-code-text h3 {
+    color: var(--gold-bright);
+    margin-bottom: 1rem;
+}
+
+.dress-code-text p {
+    color: var(--hillary);
+    line-height: 1.6;
+    margin: 0;
+}
+
+.footer-note {
+    color: var(--hillary);
+    font-style: italic;
+    margin-top: 2rem;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .dress-code-item {
+        flex-direction: column;
+        padding: 1.5rem;
+        text-align: center;
+    }
+
+    .dress-code-image img {
+        width: 80px;
+    }
+}
+
+/* Accommodation Styles */
+.accommodation-wrapper {
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.accommodation-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 4rem 0;
+}
+
+.main-title {
+    font-size: 3.5rem;
+    color: var(--gold-bright);
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.intro-text {
+    color: var(--hillary);
+    line-height: 1.6;
+    margin-bottom: 4rem;
+    font-size: 1.1rem;
+    text-align: start;
+    max-width: 800px;
+    margin: 0 auto 4rem;
+}
+
+.accommodation-zone {
+    margin-bottom: 4rem;
+}
+
+.zone-title {
+    color: var(--gold-bright);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+    position: relative;
+}
+
+.zone-title::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 2px;
+    background-color: var(--hillary);
+}
+
+.accommodation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.accommodation-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    transition: background-color 0.3s ease;
+}
+
+.accommodation-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.accommodation-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+}
+
+.hotel-name {
+    color: var(--hillary);
+    font-size: 1.2rem;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.stars {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-left: 8px;
+}
+
+.star {
+    width: 12px;
+    height: 12px;
+    background: var(--gold-bright);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    display: inline-block;
+}
+
+.distance {
+    color: var(--hillary);
+    opacity: 0.7;
+    font-size: 0.9rem;
+}
+
+.accommodation-right {
+    padding-left: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.reserve-button {
+    background: transparent;
+    border: 1px solid var(--hillary);
+    color: var(--hillary);
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.reserve-button:hover {
+    background: var(--hillary);
+    color: var(--olive);
+}
+
+.discount-info {
+    color: var(--hillary);
+    font-style: italic;
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    opacity: 0.9;
+    line-height: 1.5;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .accommodation-content {
+        padding: 2rem 0;
+    }
+
+    .accommodation-item {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start; /* Alinea los elementos al inicio */
+        gap: 2rem;
+        padding: 1.5rem;
+    }
+
+    .accommodation-left {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        flex: 1;
+    }
+
+    .hotel-info-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start; /* Alinea el título y el botón al inicio */
+    }
+
+    .hotel-name {
+        color: var(--hillary);
+        font-size: 1.2rem;
+        margin: 0;
+        display: flex;
+        align-items: baseline; /* Alinea el texto y las estrellas por la línea base */
+        gap: 0.5rem;
+    }
+
+    .accommodation-right {
+        display: flex;
+        flex-shrink: 0; /* Evita que el botón se encoja */
+    }
+
+    .reserve-button {
+        background: transparent;
+        border: 1px solid var(--hillary);
+        color: var(--hillary);
+        height: fit-content; /* Ajusta la altura al contenido */
+        display: flex;
+        align-items: center;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-size: 0.9rem;
+        padding: 0.5rem 1.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+    }
+
+    .stars {
+        margin: 0.5rem 0 0 0;
+    }
+
+    .main-title {
+        font-size: 2.5rem;
+    }
+
+    .zone-title {
+        font-size: 1.8rem;
+    }
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .accommodation-content {
+        padding: 2rem 0;
+    }
+
+    .accommodation-item {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+
+    .accommodation-right {
+        width: 100%;
+    }
+
+    .reserve-button {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .hotel-name {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .stars {
+        margin: 0.5rem 0 0 0;
+    }
+
+    .main-title {
+        font-size: 2.5rem;
+    }
+
+    .zone-title {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .accommodation-wrapper {
+        padding: 1rem;
+    }
+
+    .main-title {
+        font-size: 2rem;
+    }
+
+    .zone-title {
+        font-size: 1.5rem;
+    }
+
+    .accommodation-item {
+        padding: 1rem;
+    }
+}

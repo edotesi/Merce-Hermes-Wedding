@@ -40,8 +40,13 @@
                     @endif
                 </li>
                 <li class="nav-item">
-                    @if (Route::has('info'))
-                        <a class="nav-link" href="{{ routeWithPreview('info') }}">Información</a>
+                    @if (Route::has('dress-code'))
+                        <a class="nav-link" href="{{ routeWithPreview('dress-code') }}">Dress Code</a>
+                    @endif
+                </li>
+                <li class="nav-item">
+                    @if (Route::has('accommodations'))
+                        <a class="nav-link" href="{{ routeWithPreview('accommodations') }}">Alojamientos</a>
                     @endif
                 </li>
             </ul>
