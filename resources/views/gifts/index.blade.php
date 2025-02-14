@@ -3,14 +3,6 @@
 @section('content')
     <div class="main-content">
         <div class="container py-5">
-            <!-- Vista Toggle -->
-            <div class="d-flex justify-content-end mb-4">
-                <div class="view-toggle">
-                    <button type="button" id="gridView" class="active">Grid</button>
-                    <button type="button" id="listView">Lista</button>
-                </div>
-            </div>
-
             <!-- Grid/List Container -->
             <div id="giftsContainer" class="gift-grid">
                 @foreach ($gifts as $gift)
@@ -98,23 +90,6 @@
             document.addEventListener('DOMContentLoaded', function() {
                 const modal = new bootstrap.Modal(document.getElementById('reserveModal'));
                 let currentGiftId = null;
-
-                // Grid/List View Toggle
-                const container = document.getElementById('giftsContainer');
-                const gridBtn = document.getElementById('gridView');
-                const listBtn = document.getElementById('listView');
-
-                gridBtn.addEventListener('click', function() {
-                    container.className = 'gift-grid';
-                    gridBtn.classList.add('active');
-                    listBtn.classList.remove('active');
-                });
-
-                listBtn.addEventListener('click', function() {
-                    container.className = 'gift-list';
-                    listBtn.classList.add('active');
-                    gridBtn.classList.remove('active');
-                });
 
                 // IBAN Copy
                 window.copyIban = function() {
