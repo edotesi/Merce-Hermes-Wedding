@@ -3,7 +3,7 @@
 @section('content')
 <div class="event-wrapper">
     <div class="event-content">
-        <div class="event-info">
+        <div class="intro-text">
             <p class="subtitle">
                 Estamos muy emocionados de compartir este día tan especial con vosotros.
             </p>
