@@ -11,8 +11,8 @@
                         <img src="{{ $gift->image_url }}" alt="{{ $gift->name }}" class="w-full h-64 object-cover">
                         <div class="gift-card-content">
                             <div class="product-info">
-                                <h3 class="text-[#a79f7d]">{{ $gift->name }}</h3>
-                                <p class="text-2xl text-[#6a735b] mb-4">{{ number_format($gift->price, 2) }}€</p>
+                                <h3 class="distance">{{ $gift->name }}</h3>
+                                <p class="distance">{{ number_format($gift->price, 2) }}€</p>
                             </div>
 
                             <div class="action-container">
