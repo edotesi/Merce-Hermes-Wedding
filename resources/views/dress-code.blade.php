@@ -4,10 +4,10 @@
 <div class="event-wrapper">
     <div class="event-content">
         <div class="event-info">
-            <p class="location">
+            <p class="subtitle">
                 Estamos muy emocionados de compartir este día tan especial con vosotros.
             </p>
-            <p class="location">
+            <p class="subtitle">
                 Para que todos disfrutemos de la celebración con estilo, hemos preparado un código de vestimenta que refleje
                 el espíritu de nuestra boda:
             </p>
