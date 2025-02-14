@@ -502,6 +502,7 @@ h4,
 }
 
 .gift-card-content {
+    background: rgba(255, 255, 255, 0.05);
     padding: 1.5rem;
 }
 
