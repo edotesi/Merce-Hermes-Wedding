@@ -3,8 +3,6 @@
 @section('content')
     <div class="accommodation-wrapper">
         <div class="accommodation-content">
-            <h1 class="main-title">Alojamientos</h1>
-
             <div class="intro-text">
                 <p class="subtitle">
                     Queremos que todos nuestros invitados puedan disfrutar de nuestra celebración con total comodidad

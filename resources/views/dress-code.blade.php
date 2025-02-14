@@ -4,7 +4,6 @@
 <div class="event-wrapper">
     <div class="event-content">
         <div class="event-info">
-            <h2 class="subtitle">Etiqueta</h2>
             <p class="location">
                 Estamos muy emocionados de compartir este día tan especial con vosotros.
             </p>
