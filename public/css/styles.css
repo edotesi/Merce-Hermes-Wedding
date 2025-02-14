@@ -1117,13 +1117,8 @@ h4,
 }
 
 .intro-text {
-    color: var(--hillary);
-    line-height: 1.6;
+    margin-top: 4rem;
     margin-bottom: 4rem;
-    font-size: 1.1rem;
-    text-align: start;
-    max-width: 800px;
-    margin: 0 auto 4rem;
 }
 
 .accommodation-zone {
@@ -1322,8 +1317,9 @@ h4,
         gap: 1.5rem;
     }
 
-    .accommodation-right {
+    .accommodation-left {
         width: 100%;
+        padding-right: 0 !important;
     }
 
     .reserve-button {
@@ -1352,6 +1348,11 @@ h4,
 @media (max-width: 576px) {
     .accommodation-wrapper {
         padding: 1rem;
+    }
+
+    .accommodation-left {
+        width: 100%;
+        padding-right: 0 !important;
     }
 
     .main-title {
