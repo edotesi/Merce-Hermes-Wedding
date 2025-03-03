@@ -1,0 +1,157 @@
+/* Main Layout Styles */
+.main-content {
+    margin-top: 80px; /* Altura del navbar */
+    width: 100%;
+}
+
+/* Base styles */
+body {
+    font-family: "Playfair Display", serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--olive);
+}
+
+/* Typography */
+h1, .h1 {
+    font-size: 5rem;
+    font-weight: 300;
+    color: var(--gold-bright);
+    margin-bottom: 1rem;
+    line-height: 1;
+}
+
+h2, .h2 {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--gold-bright);
+    margin-bottom: 1rem;
+    margin: 0;
+}
+
+h3, .h3 {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--hillary);
+    margin-bottom: 0.5rem;
+    margin: 0;
+}
+
+h4, .h4 {
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--hillary);
+    margin-bottom: 0.5rem;
+    margin: 0;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--hillary);
+    font-weight: 300;
+    margin: 0;
+}
+
+/* Common Components */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.button {
+    background: transparent;
+    border: 1px solid var(--hillary);
+    color: var(--hillary);
+    padding: 0.8rem 2rem;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+}
+
+.button:hover {
+    background: var(--hillary);
+    color: var(--olive);
+}
+
+.button.primary {
+    background: var(--hillary);
+    color: var(--olive);
+}
+
+.button.primary:hover {
+    opacity: 0.9;
+}
+
+.button.secondary {
+    background: var(--gold-bright);
+    border-color: var(--gold-bright);
+    color: var(--olive);
+}
+
+.button.secondary:hover {
+    opacity: 0.9;
+}
+
+/* Contador común */
+.countdown {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 400px;
+    margin: 3rem auto;
+}
+
+.countdown-item {
+    text-align: center;
+}
+
+.countdown-number {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--hillary);
+    display: block;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+}
+
+.countdown-label {
+    font-size: 0.7rem;
+    color: var(--hillary);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    opacity: 0.8;
+}
+
+/* Media queries */
+@media (max-width: 991px) {
+    .button-group {
+        flex-direction: column;
+    }
+
+    .button {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    h1, .h1 {
+        font-size: 3rem;
+    }
+
+    h2, .h2 {
+        font-size: 2rem;
+    }
+
+    .subtitle {
+        font-size: 1.1rem;
+    }
+
+    .container {
+        padding: 0 1rem;
+    }
+}

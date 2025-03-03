@@ -1,0 +1,270 @@
+/* Gift Section */
+.gift-container {
+    min-height: 100vh;
+    padding-top: 2rem;
+}
+
+.gift-form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+    color: var(--hillary);
+}
+
+.gift-form-group {
+    margin-bottom: 2.5rem;
+}
+
+.gift-form-label {
+    display: block;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+}
+
+.gift-name {
+    font-size: 2rem;
+    color: var(--gold-bright);
+    margin: 0.5rem 0 2rem;
+}
+
+.code-display {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1.5rem;
+    font-family: monospace;
+    font-size: 1.5rem;
+    color: var(--gold-bright);
+}
+
+.warning-message {
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 4px solid var(--gold-bright);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 8px 8px 0;
+    color: var(--gold-bright);
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+/* Gift Grid Styles */
+.gift-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.gift-card {
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.gift-card:hover {
+    transform: translateY(-5px);
+}
+
+.gift-card-content {
+    padding: 1.5rem;
+}
+
+/* Grid/List View Styles - New */
+#giftsContainer.gift-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+#giftsContainer.gift-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* Gift card */
+
+/* Gift Card Styles */
+.gift-card {
+    position: relative;
+    background: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.gift-card img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+}
+
+.gift-card-content {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-info {
+    flex-grow: 0;
+}
+
+.action-container {
+    margin-top: auto;
+}
+
+/* Status Buttons */
+.status-button {
+    background: var(--hillary) !important;
+    color: var(--olive) !important;
+    padding: 0.8rem 2rem;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: default;
+    width: 100%;
+    text-align: center;
+    transition: none !important;
+}
+
+/* Botón normal de reserva */
+.reserve-btn {
+    background: transparent;
+    border: 1px solid var(--hillary);
+    color: var(--hillary);
+    padding: 0.8rem 2rem;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: center;
+}
+
+.reserve-btn:hover {
+    background: var(--hillary);
+    color: var(--olive);
+}
+
+.status-button.reserved {
+    background: var(--hillary);
+    color: var(--olive);
+    border-color: var(--hillary);
+}
+
+.status-button.purchased {
+    background: rgba(0, 0, 0, 0.1);
+    color: var(--hillary);
+    border-color: var(--hillary);
+}
+
+/* Hover disabled for status buttons */
+.status-button:hover {
+    background: inherit;
+    color: inherit;
+    opacity: 1;
+}
+
+.gift-card-content .button-container {
+    flex-grow: 1;  /* Ocupa el espacio disponible */
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.gift-card-content .stock-info {
+    margin-top: 1rem;
+    text-align: center;
+    color: var(--hillary);
+    font-size: 0.875rem;
+}
+
+/* View Toggle Styles - New */
+.view-toggle {
+    display: inline-flex;
+    margin-bottom: 1rem;
+}
+
+.view-toggle button {
+    padding: 0.25rem 1rem;
+    border: 1px solid var(--hillary);
+    background: transparent;
+    color: var(--hillary);
+    cursor: pointer;
+}
+
+.view-toggle button:first-child {
+    border-right: 0;
+    border-radius: 4px 0 0 4px;
+}
+
+.view-toggle button:last-child {
+    border-radius: 0 4px 4px 0;
+}
+
+.view-toggle button.active {
+    background: var(--hillary);
+    color: var(--olive);
+}
+
+/* Status Labels - Updated */
+.gift-card .status-label {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* New IBAN styles */
+.iban-section {
+    background: var(--white);
+    color: var(--olive);
+    padding: 2rem;
+    text-align: center;
+    border-radius: 8px;
+    margin-top: 2rem;
+}
+
+.iban-section h3 {
+    color: var(--olive);
+    margin-bottom: 1rem;
+}
+
+.iban-section p {
+    font-family: monospace;
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    color: var(--olive);
+}
+
+/* Media queries para gifts */
+@media (max-width: 991px) {
+    #giftsContainer.gift-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gift-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    }
+}
+
+@media (max-width: 576px) {
+    #giftsContainer.gift-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gift-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .gift-form-container {
+        padding: 2rem 1rem;
+    }
+}

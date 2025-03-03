@@ -1,0 +1,100 @@
+/* Navigation - Fixed */
+.navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 10;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.1), transparent);
+    backdrop-filter: blur(2px);
+    padding: 1.5rem 0;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: center;
+}
+
+.navbar-nav {
+    display: flex;
+    flex-direction: row;  /* Forzar dirección horizontal */
+    gap: 3rem;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-item {
+    list-style: none;
+}
+
+.nav-link {
+    color: var(--white) !important;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-link[href="/"] {
+    font-size: 2rem !important;
+    font-weight: 500;
+}
+
+.nav-link:hover {
+    color: var(--gold-bright) !important;
+}
+
+/* Mobile menu toggle - hidden by default */
+.mobile-menu-toggle {
+    display: none;  /* Oculto por defecto */
+}
+
+/* Media queries */
+@media (max-width: 991px) {
+    /* Quitamos el blur de la barra superior */
+    .navbar {
+        background: transparent;
+        backdrop-filter: none;
+    }
+
+    /* Estilizamos el botón de menú */
+    .mobile-menu-toggle {
+        display: block;
+        background: none;
+        border: none;
+        padding: 0.5rem;
+        position: fixed;
+        left: 1rem;
+        top: 1rem;
+        z-index: 1000;
+        cursor: pointer;
+    }
+
+    .mobile-menu-toggle::before {
+        font-family: "Font Awesome 6 Free";
+        content: "\f0c9";
+        font-weight: 900;
+        font-size: 1.5rem;
+        color: var(--white);
+    }
+
+    /* Añadimos el blur al menú lateral */
+    .navbar-nav {
+        position: fixed;
+        left: -250px;
+        top: 0;
+        height: 100vh;
+        width: 250px;
+        background: rgba(0, 0, 0, 0.2); /* Fondo sutil oscuro para mejor contraste */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px); /* Para soporte en Safari */
+        flex-direction: column;
+        padding: 4rem 2rem;
+        transition: left 0.3s ease;
+        gap: 2rem;
+    }
+
+    .navbar-nav.active {
+        left: 0;
+    }
+}
