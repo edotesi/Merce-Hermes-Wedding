@@ -12,7 +12,7 @@
 
         <div class="hero-right">
             <div class="location-content">
-                <h2>Castelló d’Empúries</h2>
+                <h2>La Farinera Sant Lluis</h2>
                 <h3>14 junio 2025</h3>
                 <h3>15:30</h3>
 
@@ -164,14 +164,6 @@
                 if (document.getElementById('days')) {
                     setInterval(updateCountdown, 1000);
                     updateCountdown();
-                }
-
-                // Menú móvil
-                const menuToggle = document.querySelector('.mobile-menu-toggle');
-                if (menuToggle) {
-                    menuToggle.addEventListener('click', function() {
-                        document.querySelector('.navbar-nav').classList.toggle('active');
-                    });
                 }
             });
         </script>

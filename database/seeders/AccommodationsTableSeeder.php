@@ -76,7 +76,7 @@ class AccommodationsTableSeeder extends Seeder
             'zone' => 'FIGUERES',
             'stars' => null,
             'distance' => 6.5,
-            'website' => 'www.r32apartments.com',
+            'website' => 'https://www.booking.com/hotel/es/r32-boutique-apartments.es.html',
             'order' => 2
         ]);
 
@@ -175,7 +175,7 @@ class AccommodationsTableSeeder extends Seeder
             'zone' => 'ALOJAMIENTOS DEL GRUPO FARINERA',
             'stars' => null,
             'distance' => 26.0,
-            'website' => 'www.villalacosta.com',
+            'website' => 'https://lescasetes.com/les-finques/villa-la-costa/ ',
             'is_farinera_group' => true,
             'order' => 5
         ]);
