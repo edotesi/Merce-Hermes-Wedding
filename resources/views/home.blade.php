@@ -2,42 +2,50 @@
 
 @section('content')
     <div class="hero-section">
-        <div class="hero-left">
-            <img src="{{ asset('images/home_background.jpg') }}" class="hero-image" alt="Mercè & Hermes">
-            <div class="hero-left-content">
-                <h1 class="hero-title">Mercè & Hermes</h1>
-                <p class="hero-subtitle">¡Nos casamos!</p>
-            </div>
+        <img src="{{ asset('images/home_background.jpg') }}" class="hero-image" alt="Mercè & Hermes">
+        <div class="hero-overlay"></div>
+
+        <div class="hero-left-content">
+            <h1 class="hero-title">Mercè & Hermes</h1>
+            <p class="hero-subtitle">¡Nos casamos!</p>
         </div>
 
-        <div class="hero-right">
-            <div class="location-content">
-                <h2>La Farinera Sant Lluis</h2>
-                <h3>14 junio 2025</h3>
-                <h3>15:30</h3>
+        <div class="hero-right-content">
+            <div class="elegant-container">
+                <!-- Elementos decorativos elegantes -->
+                <div class="elegant-border"></div>
+                <div class="elegant-border-inner"></div>
 
-                <div class="countdown">
-                    <div class="countdown-item">
-                        <span class="countdown-number" id="days">00</span>
-                        <span class="countdown-label">DÍAS</span>
+                <div class="location-content">
+                    <h2>La Farinera Sant Lluis</h2>
+                    <h3>14 junio 2025</h3>
+                    <h3>15:30</h3>
+
+                    <div class="elegant-divider"></div>
+
+                    <div class="countdown">
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="days">00</span>
+                            <span class="countdown-label">DÍAS</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="hours">00</span>
+                            <span class="countdown-label">HORAS</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="minutes">00</span>
+                            <span class="countdown-label">MINUTOS</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="seconds">00</span>
+                            <span class="countdown-label">SEGUNDOS</span>
+                        </div>
                     </div>
-                    <div class="countdown-item">
-                        <span class="countdown-number" id="hours">00</span>
-                        <span class="countdown-label">HORAS</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-number" id="minutes">00</span>
-                        <span class="countdown-label">MINUTOS</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-number" id="seconds">00</span>
-                        <span class="countdown-label">SEGUNDOS</span>
-                    </div>
+
+                    <button class="button" id="addToCalendar">
+                        AÑADIR AL CALENDARIO
+                    </button>
                 </div>
-
-                <button class="button" id="addToCalendar">
-                    AÑADIR AL CALENDARIO
-                </button>
             </div>
         </div>
     </div>

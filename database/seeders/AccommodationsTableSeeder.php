@@ -175,7 +175,7 @@ class AccommodationsTableSeeder extends Seeder
             'zone' => 'ALOJAMIENTOS DEL GRUPO FARINERA',
             'stars' => null,
             'distance' => 26.0,
-            'website' => 'https://lescasetes.com/les-finques/villa-la-costa/ ',
+            'website' => 'www.lescasetes.com/les-finques/villa-la-costa/',
             'is_farinera_group' => true,
             'order' => 5
         ]);
