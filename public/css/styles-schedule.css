@@ -1,77 +1,186 @@
-/* Schedule Section */
+/* Schedule Section - Versión final */
 .event-wrapper {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding: 2rem;
+    padding-top: 100px; /* Espacio para la navbar */
+    padding-bottom: 2rem;
+    min-height: calc(100vh - 80px);
 }
 
+/* Contenido principal del evento */
 .event-content {
     display: grid;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 3rem;
-    max-width: 1200px;
-    margin: 0 auto;
-    width: 100%;
-    padding: 4rem 0;
-    opacity: 1;
-    transition: opacity 0.5s ease;
+    margin-bottom: 3rem;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.event-image-container {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    max-height: 60vh; /* Limitar altura de la imagen */
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
 }
 
 .event-image {
-    width: 400px;
-    height: auto;
-    border-radius: 4px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px;
+    transition: transform 0.5s ease;
 }
+
+.event-image:hover {
+    transform: scale(1.03);
+}
+
+.event-time-badge {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: var(--gold-bright);
+    color: var(--olive);
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    width: 70px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+}
+
 
 .event-info {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    gap: 1.5rem;
 }
 
-.event-info .subtitle {
-    font-size: 2.5rem;
-    color: var(--hillary);
+.event-title {
+    font-size: 3rem;
+    color: var(--gold-bright);
+    margin-bottom: 1.5rem;
     font-weight: 300;
+    line-height: 1.2;
+    position: relative;
 }
 
-.event-info .location {
-    font-size: 1.2rem;
+.event-title::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -0.5rem;
+    width: 60px;
+    height: 2px;
+    background-color: var(--hillary);
+}
+
+.event-location {
+    font-size: 1.4rem;
     color: var(--hillary);
+    margin-bottom: 2.5rem;
     line-height: 1.4;
-}
-
-.event-info .datetime {
-    display: flex;
-    gap: 1rem;
-    color: var(--hillary);
-    font-size: 1rem;
 }
 
 .event-info .button {
     align-self: flex-start;
-    margin-top: 1rem;
+    background: transparent;
+    border: 1px solid var(--hillary);
+    color: var(--hillary);
+    padding: 0.8rem 2rem;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
 }
 
-/* Timeline */
-.event-display {
-    position: relative;
-    width: 100%;
-    height: 100px;
-    margin-top: 4rem;
+.event-info .button:hover {
+    background: var(--hillary);
+    color: var(--olive);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Navegación de eventos para móvil */
+.event-navigation {
+    display: none; /* Oculto por defecto en desktop */
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.event-nav-button {
+    background: transparent;
+    border: 1px solid var(--hillary);
+    color: var(--hillary);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
     display: flex;
     align-items: center;
-    overflow: visible;
+    justify-content: center;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-/* Línea horizontal */
+.event-nav-button:hover {
+    background: var(--hillary);
+    color: var(--olive);
+}
+
+.event-nav-button:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Miniatura de paginación para móvil */
+.mobile-pagination {
+    display: none; /* Oculto por defecto */
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.pagination-dots {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.pagination-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(167, 159, 125, 0.3);
+    transition: all 0.3s ease;
+}
+
+.pagination-dot.active {
+    background-color: var(--gold-bright);
+    transform: scale(1.2);
+}
+
+/* Timeline mejorado */
+.timeline-container {
+    margin: 4rem 0 2rem;
+    position: relative;
+}
+
 .timeline {
     width: 100vw;
     position: relative;
-    left: calc(-50vw + 50%);
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
     margin-right: -50vw;
+    overflow: visible;
 }
 
 .timeline-events {
@@ -91,25 +200,20 @@
     transform: translateY(-50%);
     height: 1px;
     background-color: var(--hillary);
-    width: 200vw;
-    left: -100vw;
+    width: 200vw; /* Línea infinita */
+    left: -50vw;
 }
 
 .diamond {
-    width: 20px;
-    height: 20px;
+    width: 24px;
+    height: 24px;
     background: var(--olive);
-    border: 1.5px solid var(--hillary);
+    border: 2px solid var(--hillary);
     transform: rotate(45deg);
     transition: all 0.3s ease;
     position: relative;
     z-index: 2;
-    box-shadow: 0 0 0 3px var(--olive);
-}
-
-.event-marker.active .diamond {
-    background: var(--hillary);
-    box-shadow: 0 0 0 3px var(--olive);
+    box-shadow: 0 0 0 5px var(--olive);
 }
 
 .event-marker {
@@ -121,78 +225,132 @@
     gap: 1rem;
     transition: all 0.3s ease;
     cursor: pointer;
-    padding: 1.5rem 0;
+    padding: 2rem 0;
 }
 
-.event-marker.active {
-    opacity: 1;
+.event-marker.active .diamond {
+    background: var(--hillary);
+    border-color: var(--hillary);
+    transform: rotate(45deg) scale(1.2);
+}
+
+.event-marker:hover .diamond {
+    transform: rotate(45deg) scale(1.1);
+}
+
+.event-marker.active .event-label h3 {
+    color: var(--hillary);
+    font-weight: 500;
 }
 
 .event-label {
     position: absolute;
-    bottom: -1rem;
+    bottom: -2.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 0.25rem;
     width: max-content;
+    transition: all 0.3s ease;
+}
+
+.event-marker:hover .event-label h3 {
+    transform: translateY(-3px);
 }
 
 .event-label h3 {
     margin: 0;
     color: var(--hillary);
-    font-size: 1.1rem;
+    font-size: 1.2rem;
+    font-weight: 400;
+    transition: all 0.3s ease;
 }
 
-.event-time {
-    color: var(--hillary);
-    font-size: 0.9rem;
-}
-
-/* Media queries para schedule */
+/* Media queries - Optimización para móviles */
 @media (max-width: 991px) {
     .event-content {
         grid-template-columns: 1fr;
-        padding: 2rem;
+        gap: 2rem;
     }
 
-    .event-image {
-        width: 100%;
-        max-width: 400px;
+    .event-image-container {
         margin: 0 auto;
+        max-width: 500px;
+        max-height: none;
     }
 
-    .schedule-container {
-        padding-top: 0;
-        flex-direction: row;
+    .event-title {
+        font-size: 2.5rem;
+    }
+
+    .event-title::after {
+        left: 50%;
+        transform: translateX(-50%);
     }
 }
 
 @media (max-width: 768px) {
-    .event-label h3 {
-        font-size: 0.9rem;
+    .event-wrapper {
+        padding-top: 120px; /* Más espacio superior en móvil */
     }
 
-    .event-time {
-        font-size: 0.8rem;
+    /* En móviles, ocultamos la timeline y mostramos los controles de navegación */
+    .timeline-container {
+        display: none;
     }
 
-    .event-info .subtitle {
-        font-size: 2rem;
+    .event-navigation {
+        display: flex; /* Mostrar en móvil */
+    }
+
+    .mobile-pagination {
+        display: flex; /* Mostrar en móvil */
+    }
+
+    .event-time-badge {
+        top: 15px;
+        right: 15px;
+        padding: 0.4rem 1rem;
+        font-size: 1rem;
+        width: 60px;
+        height: 30px;
+    }
+
+    .event-title {
+        text-align: center;
+        font-size: 2.2rem;
+    }
+
+    .event-location {
+        text-align: center;
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+    }
+
+    .event-info .button {
+        align-self: center;
+        width: 100%;
+        text-align: center;
     }
 }
 
 @media (max-width: 576px) {
-    .event-content {
-        padding: 1rem;
+    .event-wrapper {
+        padding-top: 100px;
     }
 
-    .timeline-events {
-        gap: 0.5rem;
+    .event-title {
+        font-size: 1.8rem;
     }
 
-    .diamond {
-        width: 15px;
-        height: 15px;
+    .event-location {
+        font-size: 1.1rem;
+    }
+
+    .event-time-badge {
+        padding: 0.3rem 0.8rem;
+        width: 60px;
+        height: 30px;
+        font-size: 0.9rem;
     }
 }

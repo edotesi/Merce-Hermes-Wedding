@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="event-wrapper">
-    <div class="event-content">
+<div class="container">
+    <div class="accommodation-content">
         <div class="intro-text">
             <p class="subtitle">
                 Estamos muy emocionados de compartir este día tan especial con vosotros.

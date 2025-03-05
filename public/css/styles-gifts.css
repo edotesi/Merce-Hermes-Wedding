@@ -244,14 +244,25 @@
     color: var(--olive);
 }
 
-/* Media queries para gifts */
+/* Estilos específicos para el nuevo contenedor de regalos */
+.gifts-container {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+
 @media (max-width: 991px) {
-    #giftsContainer.gift-grid {
-        grid-template-columns: repeat(2, 1fr);
+    .gifts-page .mobile-page-title {
+        display: block !important;
+        z-index: 5;
     }
 
+    .gifts-container {
+        padding-top: 0;
+    }
+
+    /* Asegurarse de que la cuadrícula de regalos esté bien posicionada */
     .gift-grid {
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        margin-top: 0.5rem;
     }
 }
 

@@ -4,6 +4,7 @@
 @import 'styles-variables.css';
 @import 'styles-base.css';
 @import 'styles-navbar.css';
+@import 'styles-header.css';
 
 /* Estilos de componentes y formularios */
 @import 'styles-forms.css';

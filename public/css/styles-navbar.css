@@ -20,6 +20,8 @@
     gap: 3rem;
     margin: 0;
     padding: 0;
+    height: 30px; /* Altura fija para evitar saltos */
+    align-items: center; /* Alinear verticalmente */
 }
 
 .nav-item {
@@ -33,6 +35,9 @@
     letter-spacing: 2px;
     text-decoration: none;
     transition: color 0.3s ease;
+    position: relative;
+    white-space: nowrap; /* Evita que el texto se rompa */
+    display: block; /* Asegura que ocupe todo el espacio del elemento li */
 }
 
 .nav-link[href="/"] {
@@ -42,6 +47,31 @@
 
 .nav-link:hover {
     color: var(--gold-bright) !important;
+}
+
+/* Estilos para link activo */
+.nav-link.active {
+    color: var(--gold-bright) !important;
+}
+
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 2px;
+    background-color: var(--gold-bright);
+}
+
+/* Excepción para el link de inicio (M&H) */
+.nav-link[href="/"]:not(.active) {
+    color: var(--white) !important;
+}
+
+.nav-link[href="/"].active::after {
+    display: none;
 }
 
 /* Mobile menu toggle - hidden by default */
@@ -92,6 +122,12 @@
         padding: 4rem 2rem;
         transition: left 0.3s ease;
         gap: 2rem;
+    }
+
+    /* Modificación para link activo en móvil */
+    .nav-link.active::after {
+        width: 15px;
+        bottom: -3px;
     }
 
     .navbar-nav.active {

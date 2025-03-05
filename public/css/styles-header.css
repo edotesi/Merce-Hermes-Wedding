@@ -1,0 +1,100 @@
+/* Estilos para el título en móvil - MEJORADO */
+.mobile-page-title {
+    display: none;
+    text-align: center;
+    padding: 0.8rem 1rem 0.5rem;
+    margin-top: 55px;
+    margin-bottom: 0;
+    position: relative;
+}
+
+.mobile-page-title h1 {
+    font-size: 1.8rem;
+    color: var(--gold-bright);
+    margin: 0;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Subrayado decorativo para título móvil */
+.mobile-page-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background-color: var(--hillary);
+}
+
+/* Ajustes para pantallas web */
+@media (min-width: 992px) {
+    .main-content {
+        margin-top: 80px !important;
+    }
+
+    .mobile-page-title {
+        display: none !important;
+    }
+}
+
+/* Ajustes para móvil */
+@media (max-width: 991px) {
+    .mobile-page-title {
+        display: block;
+    }
+
+    /* Quitar margen superior de los contenidos específicos en móvil */
+    .intro-text,
+    .accommodation-content,
+    .dress-code-info,
+    .event-wrapper,
+    .container .py-5 {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+
+    /* Casos específicos por sección */
+    body:not(.is-home) .main-content > .container {
+        padding-top: 0 !important;
+    }
+
+    /* Para la página de regalos */
+    .main-content > .container.py-5 {
+        padding-top: 0 !important;
+    }
+}
+
+/* Excepción para home */
+body.is-home .main-content {
+    margin-top: 80px !important;
+}
+
+@media (max-width: 991px) {
+    body.is-home .main-content {
+        margin-top: 0 !important;
+    }
+
+    body.is-home .mobile-page-title {
+        display: none;
+    }
+}
+
+/* Estilos específicos para la página de regalos */
+@media (max-width: 991px) {
+    .gifts-page .mobile-page-title {
+        display: block !important;
+        z-index: 5;
+    }
+
+    .gifts-container {
+        padding-top: 0;
+    }
+
+    /* Asegurarse de que la cuadrícula de regalos esté bien posicionada */
+    .gift-grid {
+        margin-top: 0.5rem;
+    }
+}

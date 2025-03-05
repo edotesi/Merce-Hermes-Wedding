@@ -19,39 +19,52 @@
     <link href="{{ asset('css/styles.css') }}" rel="stylesheet">
 </head>
 
-<body>
+<body class="{{ Request::routeIs('gifts.*') ? 'gifts-page' : '' }}">
     <nav class="navbar">
         <button class="mobile-menu-toggle"></button>
         <div class="container">
             <ul class="navbar-nav">
                 <li class="nav-item">
                     @if (Route::has('home'))
-                        <a class="nav-link" href="{{ routeWithPreview('home') }}">M&H</a>
+                        <a class="nav-link {{ Request::routeIs('home') ? 'active' : '' }}" href="{{ routeWithPreview('home') }}">M&H</a>
                     @endif
                 </li>
                 <li class="nav-item">
                     @if (Route::has('schedule'))
-                        <a class="nav-link" href="{{ routeWithPreview('schedule') }}">Programa</a>
+                        <a class="nav-link {{ Request::routeIs('schedule') ? 'active' : '' }}" href="{{ routeWithPreview('schedule') }}">Programa</a>
                     @endif
                 </li>
                 <li class="nav-item">
                     @if (Route::has('gifts.index'))
-                        <a class="nav-link" href="{{ routeWithPreview('gifts.index') }}">Regalos</a>
+                        <a class="nav-link {{ Request::routeIs('gifts.*') ? 'active' : '' }}" href="{{ routeWithPreview('gifts.index') }}">Regalos</a>
                     @endif
                 </li>
                 <li class="nav-item">
                     @if (Route::has('dress-code'))
-                        <a class="nav-link" href="{{ routeWithPreview('dress-code') }}">Dress Code</a>
+                        <a class="nav-link {{ Request::routeIs('dress-code') ? 'active' : '' }}" href="{{ routeWithPreview('dress-code') }}">Dress Code</a>
                     @endif
                 </li>
                 <li class="nav-item">
                     @if (Route::has('accommodations'))
-                        <a class="nav-link" href="{{ routeWithPreview('accommodations') }}">Alojamientos</a>
+                        <a class="nav-link {{ Request::routeIs('accommodations') ? 'active' : '' }}" href="{{ routeWithPreview('accommodations') }}">Alojamientos</a>
                     @endif
                 </li>
             </ul>
         </div>
     </nav>
+
+    <!-- Título móvil (solo visible en móvil) -->
+    <div class="mobile-page-title">
+        @if (Request::routeIs('schedule'))
+            <h1>Programa</h1>
+        @elseif (Request::routeIs('gifts.*'))
+            <h1>Regalos</h1>
+        @elseif (Request::routeIs('dress-code'))
+            <h1>Dress Code</h1>
+        @elseif (Request::routeIs('accommodations'))
+            <h1>Alojamientos</h1>
+        @endif
+    </div>
 
     <main class="main-content">
         @yield('content')
