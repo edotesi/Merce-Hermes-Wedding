@@ -13,18 +13,16 @@ class GiftPurchaseConfirmation extends Mailable
     public $uniqueCode;
     public $purchaserName;
     public $productUrl;
-    public $store;
-    public $orderNumber;
     public $confirmUrl;
     public $cancelUrl;
+    public $emailType;
 
     public function __construct(
         $giftName,
         $uniqueCode,
         $purchaserName,
         $productUrl = null,
-        $store = null,
-        $orderNumber = null,
+        $emailType = 'reservation',  // 'reservation', 'confirmation', 'cancellation'
         $confirmUrl = null,
         $cancelUrl = null
     ) {
@@ -32,16 +30,29 @@ class GiftPurchaseConfirmation extends Mailable
         $this->uniqueCode = $uniqueCode;
         $this->purchaserName = $purchaserName;
         $this->productUrl = $productUrl;
-        $this->store = $store;
-        $this->orderNumber = $orderNumber;
-        $this->confirmUrl = $confirmUrl;
-        $this->cancelUrl = $cancelUrl;
+        $this->emailType = $emailType;
+        $this->confirmUrl = $confirmUrl ? (string)$confirmUrl : null;
+        $this->cancelUrl = $cancelUrl ? (string)$cancelUrl : null;
     }
 
     public function envelope()
     {
+        $subject = 'Boda Mercè & Hermes - ';
+
+        switch ($this->emailType) {
+            case 'confirmation':
+                $subject .= 'Confirmación de Compra';
+                break;
+            case 'cancellation':
+                $subject .= 'Cancelación de Reserva';
+                break;
+            default:
+                $subject .= 'Reserva de Regalo';
+                break;
+        }
+
         return new \Illuminate\Mail\Mailables\Envelope(
-            subject: 'Confirmación Regalo - Boda Mercè & Hermes',
+            subject: $subject,
             from: new \Illuminate\Mail\Mailables\Address('informacion@merceyhermes.com', 'Mercè & Hermes')
         );
     }

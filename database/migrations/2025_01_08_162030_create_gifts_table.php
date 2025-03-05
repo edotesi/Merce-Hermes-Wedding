@@ -16,17 +16,25 @@ return new class extends Migration
             $table->decimal('price', 8, 2);
             $table->string('image_url');
             $table->string('product_url')->nullable();
-            $table->integer('stock')->default(1);
-            $table->integer('reserved_stock')->default(0);
-            $table->enum('status', ['available', 'reserved', 'purchased'])->default('available');
+
+            // Modificaciones en los campos de stock y estado
+            $table->unsignedInteger('stock')->default(1);
+            $table->unsignedInteger('reserved_stock')->default(0);
+            $table->enum('status', ['available', 'reserved', 'purchased'])
+                  ->default('available')
+                  ->index(); // Añadido índice para mejorar rendimiento en búsquedas
+
+            // Campos de reserva y compra
             $table->timestamp('reserved_at')->nullable();
             $table->timestamp('reservation_expires_at')->nullable();
+            $table->timestamp('purchased_at')->nullable();
+
+            // Información del comprador
             $table->string('purchaser_name')->nullable();
             $table->string('purchaser_email')->nullable();
-            $table->string('store')->nullable();
-            $table->string('order_number')->nullable();
-            $table->string('unique_code')->nullable();
-            $table->timestamps();
+            $table->string('unique_code')->nullable()->unique(); // Añadido unique para evitar códigos duplicados
+
+            $table->timestamps(); // created_at y updated_at
         });
     }
 

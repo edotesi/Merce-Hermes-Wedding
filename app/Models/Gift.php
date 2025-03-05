@@ -18,8 +18,6 @@ class Gift extends Model
         'purchased_at',
         'purchaser_name',
         'purchaser_email',
-        'store',
-        'order_number',
         'product_url',
         'unique_code'
     ];
