@@ -19,7 +19,6 @@
                 <div class="location-content">
                     <h2>La Farinera Sant Lluis</h2>
                     <h3>14 junio 2025</h3>
-                    <h3>15:30</h3>
 
                     <div class="elegant-divider"></div>
 
