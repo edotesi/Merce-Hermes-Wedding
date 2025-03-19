@@ -70,11 +70,14 @@ h4, .h4 {
     cursor: pointer;
     transition: all 0.3s ease;
     align-self: flex-start;
+    border-radius: 4px;
 }
 
 .button:hover {
     background: var(--hillary);
     color: var(--olive);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .button.primary {
@@ -84,6 +87,8 @@ h4, .h4 {
 
 .button.primary:hover {
     opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .button.secondary {
@@ -94,6 +99,8 @@ h4, .h4 {
 
 .button.secondary:hover {
     opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 /* Contador común */

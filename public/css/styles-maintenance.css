@@ -1,4 +1,4 @@
-/* Estilos específicos para la página de mantenimiento */
+/* Estilos específicos para la página de mantenimiento - Mejorados */
 .maintenance-page {
     position: relative;
     height: 100vh;
@@ -11,6 +11,18 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    filter: brightness(0.9);
+}
+
+.maintenance-page::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.2));
+    z-index: 1;
 }
 
 .maintenance-page .hero-center-content {
@@ -19,7 +31,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     text-align: center;
-    z-index: 1;
+    z-index: 2;
     width: 90%;
     max-width: 600px;
     display: flex;
@@ -33,21 +45,28 @@
     margin-bottom: 4rem;
     position: relative;
     top: -8rem; /* Subimos mucho más el logo */
-    filter: brightness(0) invert(1); /* Esto lo hará blanco puro */
+    filter: brightness(0) invert(1) drop-shadow(0 5px 15px rgba(0, 0, 0, 0.3)); /* Blanco puro con sombra */
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
 }
 
 .maintenance-page h1 {
     color: var(--white);
     font-size: clamp(2rem, 5vw, 3rem);
     margin-bottom: 0.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 3px 10px rgba(0, 0, 0, 0.5);
 }
 
 .maintenance-page p {
-    color: var(--white);
+    color: var(--gold-bright);
     font-size: clamp(1rem, 2.5vw, 1.2rem);
     margin-bottom: 2rem;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
 }
 
 /* Estilos específicos del contador para la página de mantenimiento */
@@ -55,6 +74,13 @@
     display: flex;
     justify-content: center;
     gap: clamp(1.5rem, 3vw, 2.5rem);
+    background: var(--bg-light);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .maintenance-page .countdown-item {
@@ -62,20 +88,20 @@
 }
 
 .maintenance-page .countdown-number {
-    color: var(--white);
+    color: var(--gold-bright);
     font-size: clamp(1.8rem, 4vw, 2.5rem);
     font-weight: 300;
     display: block;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
 }
 
 .maintenance-page .countdown-label {
-    color: var(--white);
+    color: var(--hillary);
     font-size: clamp(0.6rem, 1.5vw, 0.7rem);
     letter-spacing: 2px;
     text-transform: uppercase;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    opacity: 0.9;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    opacity: 1;
 }
 
 /* Media queries específicas para la página de mantenimiento */
@@ -88,6 +114,10 @@
         max-width: 200px; /* Ajustamos proporcionalmente para móvil */
         top: -6rem; /* Ajustamos la posición para móvil */
     }
+
+    .maintenance-page .countdown {
+        padding: 1.2rem;
+    }
 }
 
 @media (max-height: 600px) {
@@ -99,5 +129,9 @@
 
     .maintenance-page h1 {
         font-size: 1.8rem;
+    }
+
+    .maintenance-page .countdown {
+        padding: 1rem 0.8rem;
     }
 }

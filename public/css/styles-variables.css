@@ -1,7 +1,24 @@
-/* Variables globales */
+/* Variables globales - Paleta mejorada para mejor legibilidad */
 :root {
-    --olive: #6a735b;
-    --hillary: #a79f7d;
-    --white: #ffffff;
-    --gold-bright: #c5c49e;
+    /* Colores principales - ajustados para mejor contraste */
+    --olive: #5e664f;        /* Verde oliva más oscuro para mejor contraste */
+    --olive-light: #6a735b;  /* Versión original para mantener compatibilidad */
+
+    --hillary: #bfb58d;      /* Tono beige más claro para mejor legibilidad */
+    --hillary-dark: #a79f7d; /* Versión original para mantener compatibilidad */
+
+    --white: #ffffff;        /* Blanco puro para máximo contraste */
+
+    --gold-bright: #d8d7b6;  /* Dorado más claro para mejorar legibilidad */
+    --gold: #c5c49e;         /* Versión original para mantener compatibilidad */
+
+    /* Fondos semitransparentes para capas */
+    --bg-light: rgba(255, 255, 255, 0.15);     /* Fondo claro semitransparente */
+    --bg-medium: rgba(255, 255, 255, 0.1);     /* Fondo medio semitransparente */
+    --bg-dark: rgba(0, 0, 0, 0.15);            /* Fondo oscuro semitransparente */
+
+    /* Colores de acento y estado */
+    --accent: #d1c8a4;       /* Color de acento para elementos destacados */
+    --success: #8fa176;      /* Verde más vibrante para mensajes de éxito */
+    --error: #a17676;        /* Rojo muted para mensajes de error */
 }

@@ -1,4 +1,4 @@
-/* Schedule Section - Versión final */
+/* Schedule Section - Versión mejorada */
 .event-wrapper {
     padding-top: 100px; /* Espacio para la navbar */
     padding-bottom: 2rem;
@@ -19,7 +19,7 @@
     border-radius: 8px;
     overflow: hidden;
     max-height: 60vh; /* Limitar altura de la imagen */
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
 }
 
 .event-image {
@@ -49,6 +49,7 @@
     height: 35px;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
 
@@ -98,13 +99,14 @@
     text-decoration: none;
     display: inline-block;
     text-align: center;
+    border-radius: 4px;
 }
 
 .event-info .button:hover {
     background: var(--hillary);
     color: var(--olive);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 /* Navegación de eventos para móvil */
@@ -134,11 +136,15 @@
 .event-nav-button:hover {
     background: var(--hillary);
     color: var(--olive);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
 .event-nav-button:disabled {
     opacity: 0.3;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 /* Miniatura de paginación para móvil */
@@ -158,8 +164,13 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: rgba(167, 159, 125, 0.3);
+    background-color: rgba(191, 181, 141, 0.3);
     transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.pagination-dot:hover {
+    background-color: rgba(191, 181, 141, 0.6);
 }
 
 .pagination-dot.active {
@@ -236,6 +247,7 @@
 
 .event-marker:hover .diamond {
     transform: rotate(45deg) scale(1.1);
+    box-shadow: 0 0 0 5px var(--olive), 0 0 15px rgba(191, 181, 141, 0.5);
 }
 
 .event-marker.active .event-label h3 {
@@ -256,6 +268,7 @@
 
 .event-marker:hover .event-label h3 {
     transform: translateY(-3px);
+    color: var(--gold-bright);
 }
 
 .event-label h3 {

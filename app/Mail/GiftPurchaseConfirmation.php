@@ -16,15 +16,17 @@ class GiftPurchaseConfirmation extends Mailable
     public $confirmUrl;
     public $cancelUrl;
     public $emailType;
+    public $hoursRemaining;
 
     public function __construct(
         $giftName,
         $uniqueCode,
         $purchaserName,
         $productUrl = null,
-        $emailType = 'reservation',  // 'reservation', 'confirmation', 'cancellation'
+        $emailType = 'reservation',  // 'reservation', 'confirmation', 'cancellation', 'reminder'
         $confirmUrl = null,
-        $cancelUrl = null
+        $cancelUrl = null,
+        $hoursRemaining = null
     ) {
         $this->giftName = $giftName;
         $this->uniqueCode = $uniqueCode;
@@ -33,6 +35,7 @@ class GiftPurchaseConfirmation extends Mailable
         $this->emailType = $emailType;
         $this->confirmUrl = $confirmUrl ? (string)$confirmUrl : null;
         $this->cancelUrl = $cancelUrl ? (string)$cancelUrl : null;
+        $this->hoursRemaining = $hoursRemaining;
     }
 
     public function envelope()
@@ -45,6 +48,9 @@ class GiftPurchaseConfirmation extends Mailable
                 break;
             case 'cancellation':
                 $subject .= 'Cancelación de Reserva';
+                break;
+            case 'reminder':
+                $subject .= 'Recordatorio: Tu reserva expirará pronto';
                 break;
             default:
                 $subject .= 'Reserva de Regalo';

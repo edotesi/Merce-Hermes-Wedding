@@ -1,4 +1,4 @@
-/* Archivo principal que importa todos los archivos CSS */
+/* Archivo principal que importa todos los archivos CSS - Versión Mejorada */
 
 /* Primero variables y estilos base */
 @import 'styles-variables.css';
@@ -15,3 +15,38 @@
 @import 'styles-gifts.css';
 @import 'styles-info.css';
 @import 'styles-maintenance.css';
+
+/* Estilos globales adicionales */
+body::-webkit-scrollbar {
+    width: 10px;
+}
+
+body::-webkit-scrollbar-track {
+    background: var(--olive);
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: var(--hillary);
+    border-radius: 5px;
+    border: 2px solid var(--olive);
+}
+
+::selection {
+    background: var(--hillary);
+    color: var(--olive);
+}
+
+/* Animaciones globales */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease forwards;
+}
+
+/* Transiciones suaves para todos los elementos interactivos */
+a, button, input, select, textarea {
+    transition: all 0.3s ease;
+}
