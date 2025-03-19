@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
     const weddingDate = new Date('2025-06-14T15:30:00');
-    let globalGoogleCalendarUrl;
 
     // Detectar Apple devices (iOS y macOS)
     const isAppleDevice = /iPad|iPhone|iPod|Macintosh|MacIntel/.test(navigator.userAgent) ||
@@ -10,17 +9,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const appleCalendarBtn = document.getElementById('appleCalendarBtn');
     if (appleCalendarBtn && isAppleDevice) {
         appleCalendarBtn.style.display = 'block';
-    }
-
-    function generateGoogleCalendarUrl() {
-        const googleUrl = new URL('https://calendar.google.com/calendar/render');
-        googleUrl.searchParams.append('action', 'TEMPLATE');
-        googleUrl.searchParams.append('text', 'Boda Mercè & Hermes');
-        googleUrl.searchParams.append('details', 'Celebración de la boda de Mercè y Hermes');
-        googleUrl.searchParams.append('location', 'Plaça Mossèn Cinto Verdaguer, 1 Castelló d`Empúries');
-        googleUrl.searchParams.append('dates', '20250614T133000Z/20250614T230000Z');
-
-        globalGoogleCalendarUrl = googleUrl.toString();
     }
 
     function updateCountdown() {
@@ -38,58 +26,68 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
     }
 
+    // Función para generar la URL de Google Calendar
+    function getGoogleCalendarUrl() {
+        const googleUrl = new URL('https://calendar.google.com/calendar/render');
+        googleUrl.searchParams.append('action', 'TEMPLATE');
+        googleUrl.searchParams.append('text', 'Boda Mercè & Hermes');
+        googleUrl.searchParams.append('details', 'Celebración de la boda de Mercè y Hermes');
+        googleUrl.searchParams.append('location', 'Plaça Mossèn Cinto Verdaguer, 1 Castelló d`Empúries');
+        googleUrl.searchParams.append('dates', '20250614T133000Z/20250614T230000Z');
+
+        return googleUrl.toString();
+    }
+
+    // Función para generar la URL de Apple Calendar (iCal)
+    function getAppleCalendarUrl() {
+        return 'webcal://' + window.location.host + '/calendar.ics';
+    }
+
     // Handlers de calendario
     document.getElementById('appleCalendarBtn')?.addEventListener('click', function() {
-        const webcalUrl = 'webcal://' + window.location.host + '/calendar.ics';
-        window.location.href = webcalUrl;
+        window.location.href = getAppleCalendarUrl();
 
         setTimeout(() => {
-            bootstrap.Modal.getInstance(document.getElementById('calendarModal')).hide();
+            const modalElement = document.getElementById('calendarModal');
+            if (modalElement) {
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                if (modalInstance) modalInstance.hide();
+            }
         }, 500);
     });
 
     document.getElementById('googleCalendarBtn')?.addEventListener('click', function() {
-        window.open(globalGoogleCalendarUrl, '_blank');
+        window.open(getGoogleCalendarUrl(), '_blank');
+
+        const modalElement = document.getElementById('calendarModal');
+        if (modalElement) {
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if (modalInstance) modalInstance.hide();
+        }
     });
 
+    // Función para descargar el ICS para Outlook/otros
     window.downloadICS = function() {
         window.location.href = '/calendar.ics';
-        bootstrap.Modal.getInstance(document.getElementById('calendarModal')).hide();
+
+        const modalElement = document.getElementById('calendarModal');
+        if (modalElement) {
+            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+            if (modalInstance) modalInstance.hide();
+        }
     };
 
     // Handler para añadir al calendario
     const addToCalendarBtn = document.getElementById('addToCalendar');
     if (addToCalendarBtn) {
-        addToCalendarBtn.addEventListener('click', async function() {
-            generateGoogleCalendarUrl();
-
-            if (navigator.share) {
-                try {
-                    const response = await fetch('/calendar.ics');
-                    const blob = await response.blob();
-                    const file = new File([blob], 'boda-merce-hermes.ics', {
-                        type: 'text/calendar'
-                    });
-
-                    await navigator.share({
-                        files: [file],
-                        title: 'Añadir al Calendario - Boda Mercè & Hermes',
-                        text: '¡Guarda la fecha de nuestra boda!'
-                    });
-                } catch {
-                    const calendarModal = new bootstrap.Modal(document.getElementById(
-                        'calendarModal'));
-                    calendarModal.show();
-                }
-            } else {
-                const calendarModal = new bootstrap.Modal(document.getElementById(
-                    'calendarModal'));
-                calendarModal.show();
-            }
+        addToCalendarBtn.addEventListener('click', function() {
+            // Siempre mostrar el modal
+            const calendarModal = new bootstrap.Modal(document.getElementById('calendarModal'));
+            calendarModal.show();
         });
     }
 
-    // Inicializaciones
+    // Inicializaciones del contador
     if (document.getElementById('days')) {
         setInterval(updateCountdown, 1000);
         updateCountdown();
