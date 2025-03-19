@@ -6,7 +6,6 @@
     margin-top: 55px;
     margin-bottom: 0;
     position: relative;
-    background: var(--bg-medium);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
 }
