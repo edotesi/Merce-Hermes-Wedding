@@ -178,16 +178,17 @@
     transform: scale(1.2);
 }
 
-/* Timeline */
+/* Timeline - corregido */
 .timeline-container {
     margin: 4rem 0 2rem;
     position: relative;
+    width: 100%;
+    overflow: hidden;
 }
 
 .timeline {
     width: 100%;
     position: relative;
-    overflow: hidden;
 }
 
 .timeline-events {
@@ -200,6 +201,7 @@
     position: relative;
 }
 
+/* Línea horizontal que parezca infinita sin causar scroll */
 .timeline-events::before {
     content: "";
     position: absolute;
@@ -207,8 +209,8 @@
     transform: translateY(-50%);
     height: 1px;
     background-color: var(--hillary);
-    width: 200vw; /* Línea infinita */
-    left: -50vw;
+    width: 100%;
+    left: 0;
 }
 
 .diamond {
@@ -233,6 +235,7 @@
     transition: all 0.3s ease;
     cursor: pointer;
     padding: 2rem 0;
+    z-index: 3;
 }
 
 .event-marker.active .diamond {
@@ -260,6 +263,7 @@
     gap: 0.25rem;
     width: max-content;
     transition: all 0.3s ease;
+    z-index: 4;
 }
 
 .event-marker:hover .event-label h3 {
@@ -273,6 +277,8 @@
     font-size: 1.2rem;
     font-weight: 400;
     transition: all 0.3s ease;
+    white-space: nowrap;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
 /* Media queries - Optimización para móviles */
