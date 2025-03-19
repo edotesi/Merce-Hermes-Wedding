@@ -1,4 +1,4 @@
-/* Dress Code Styles - Mejorados */
+/* Dress Code Styles*/
 .dress-code-info {
     display: flex;
     flex-direction: column;
@@ -60,7 +60,7 @@
     text-align: center;
 }
 
-/* Accommodation Styles - Mejorados */
+/* Accommodation Styles */
 .accommodation-wrapper {
     min-height: 100vh;
 }

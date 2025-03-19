@@ -1,6 +1,6 @@
-/* Variables globales - Paleta mejorada para mejor legibilidad */
+/* Variables globales */
 :root {
-    /* Colores principales - ajustados para mejor contraste */
+    /* Colores principales */
     --olive: #5e664f;        /* Verde oliva más oscuro para mejor contraste */
     --olive-light: #6a735b;  /* Versión original para mantener compatibilidad */
 

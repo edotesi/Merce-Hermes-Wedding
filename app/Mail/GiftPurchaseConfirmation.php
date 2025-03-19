@@ -17,6 +17,7 @@ class GiftPurchaseConfirmation extends Mailable
     public $cancelUrl;
     public $emailType;
     public $hoursRemaining;
+    public $minutesLeft;
 
     public function __construct(
         $giftName,
@@ -26,7 +27,8 @@ class GiftPurchaseConfirmation extends Mailable
         $emailType = 'reservation',  // 'reservation', 'confirmation', 'cancellation', 'reminder'
         $confirmUrl = null,
         $cancelUrl = null,
-        $hoursRemaining = null
+        $hoursRemaining = null,
+        $minutesLeft = null
     ) {
         $this->giftName = $giftName;
         $this->uniqueCode = $uniqueCode;
@@ -36,6 +38,7 @@ class GiftPurchaseConfirmation extends Mailable
         $this->confirmUrl = $confirmUrl ? (string)$confirmUrl : null;
         $this->cancelUrl = $cancelUrl ? (string)$cancelUrl : null;
         $this->hoursRemaining = $hoursRemaining;
+        $this->minutesLeft = $minutesLeft;
     }
 
     public function envelope()

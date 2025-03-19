@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use App\Mail\GiftPurchaseConfirmation;
 use App\Models\Gift;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
@@ -25,34 +26,60 @@ class CheckExpiringReservationsCommand extends Command
     protected $description = 'Check for gift reservations that are about to expire and send reminder emails';
 
     /**
+     * Los momentos en que se envían recordatorios (horas antes de que expire)
+     */
+    protected $reminderHours = [24, 12, 3];
+
+    /**
      * Execute the console command.
      */
     public function handle()
     {
         $this->info('Checking for expiring gift reservations...');
 
-        // Buscar reservas que tengan aproximadamente 24 horas (más o menos un margen de tiempo)
-        // Esto significa que han pasado ~24 horas desde la reserva, y quedan ~24 horas para expirar
+        // Procesamos cada intervalo de recordatorio
+        foreach ($this->reminderHours as $hoursRemaining) {
+            $this->sendRemindersForInterval($hoursRemaining);
+        }
+
+        $this->info('Finished checking expiring reservations');
+
+        return 0;
+    }
+
+    /**
+     * Envía recordatorios para reservas que están a cierto número de horas de expirar
+     */
+    protected function sendRemindersForInterval($hoursRemaining)
+    {
+        // Calculamos el intervalo de tiempo para las reservas
+        $expiryTime = now()->addHours($hoursRemaining);
+
+        // Buscamos reservas que expiran aproximadamente en el número de horas indicado
+        // (con un margen de 30 minutos para evitar problemas de precisión)
         $expiringReservations = Gift::where('status', 'reserved')
             ->whereNotNull('reserved_at')
             ->whereNotNull('reservation_expires_at')
-            // La reserva se hizo hace aproximadamente 24 horas (entre 23 y 25 horas atrás)
-            ->where('reserved_at', '<=', now()->subHours(23))
-            ->where('reserved_at', '>=', now()->subHours(25))
+            ->where('reservation_expires_at', '>=', $expiryTime->copy()->subMinutes(30))
+            ->where('reservation_expires_at', '<=', $expiryTime->copy()->addMinutes(30))
+            // Añadimos una verificación para evitar enviar recordatorios duplicados
+            ->whereRaw("(SELECT COUNT(*) FROM jobs WHERE JSON_EXTRACT(payload, '$.data.command') LIKE '%SendReminderEmail%' AND JSON_EXTRACT(payload, '$.data.command') LIKE CONCAT('%\"gift_id\":', id, '%') AND JSON_EXTRACT(payload, '$.data.command') LIKE CONCAT('%\"hours_remaining\":', ?, '%')) = 0", [$hoursRemaining])
             ->get();
 
-        $this->info("Found {$expiringReservations->count()} expiring reservations");
+        $this->info("Found {$expiringReservations->count()} reservations expiring in approximately {$hoursRemaining} hours");
 
         foreach ($expiringReservations as $gift) {
             try {
                 // Asegurarse de que tenemos la información para enviar el email
                 if ($gift->purchaser_email && $gift->purchaser_name) {
-                    // Calcular tiempo restante para mostrar en el email
-                    $hoursRemaining = now()->diffInHours($gift->reservation_expires_at, false);
+                    // Calcular tiempo restante exacto para mostrar en el email
+                    $minutesRemaining = now()->diffInMinutes($gift->reservation_expires_at, false);
+                    $exactHoursRemaining = floor($minutesRemaining / 60);
+                    $minutesLeft = $minutesRemaining % 60;
 
-                    // Solo enviar si quedan horas positivas (por si acaso)
-                    if ($hoursRemaining > 0) {
-                        $this->info("Sending reminder email for gift: {$gift->id} - {$gift->name}");
+                    // Solo enviar si quedan minutos positivos (por si acaso)
+                    if ($minutesRemaining > 0) {
+                        $this->info("Sending {$hoursRemaining}-hour reminder email for gift: {$gift->id} - {$gift->name}");
 
                         // Generar URLs para confirmar o cancelar
                         $confirmUrl = route('gifts.confirm', ['gift' => $gift->id, 'code' => $gift->unique_code]);
@@ -68,10 +95,18 @@ class CheckExpiringReservationsCommand extends Command
                                 'reminder',
                                 $confirmUrl,
                                 $cancelUrl,
-                                $hoursRemaining
+                                $exactHoursRemaining,
+                                $minutesLeft
                             ));
 
                         $this->info("Reminder email sent to {$gift->purchaser_email}");
+
+                        // Registrar en logs que se envió este recordatorio específico
+                        Log::info("Sent {$hoursRemaining}-hour reminder for gift {$gift->id}", [
+                            'gift_id' => $gift->id,
+                            'hours_remaining' => $hoursRemaining,
+                            'email' => $gift->purchaser_email
+                        ]);
                     } else {
                         $this->warn("Reservation already expired for gift: {$gift->id}");
                     }
@@ -87,9 +122,5 @@ class CheckExpiringReservationsCommand extends Command
                 ]);
             }
         }
-
-        $this->info('Finished checking expiring reservations');
-
-        return 0;
     }
 }

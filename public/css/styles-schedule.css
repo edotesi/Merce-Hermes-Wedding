@@ -1,4 +1,4 @@
-/* Schedule Section - Versión mejorada */
+/* Schedule Section */
 .event-wrapper {
     padding-top: 100px; /* Espacio para la navbar */
     padding-bottom: 2rem;
@@ -178,7 +178,7 @@
     transform: scale(1.2);
 }
 
-/* Timeline mejorado */
+/* Timeline */
 .timeline-container {
     margin: 4rem 0 2rem;
     position: relative;
