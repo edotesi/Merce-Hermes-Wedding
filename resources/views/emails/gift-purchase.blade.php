@@ -188,8 +188,7 @@
                                 <div
                                     style="background-color: rgba(255,255,255,0.1) !important; border: 1px solid #a79f7d !important; padding: 15px; margin: 20px 0; text-align: center; color: #c5c49e !important; border-radius: 4px;">
                                     <p style="margin: 0; font-size: 18px;"><strong>Tu reserva expirará en:</strong></p>
-                                    <p style="margin: 10px 0 0 0; font-size: 24px; color: #d8d7b6 !important;">
-                                        {{ $hoursRemaining }} horas y {{ $minutesLeft }} minutos</p>
+                                    <p style="margin: 10px 0 0 0; font-size: 24px; color: #d8d7b6 !important;">{{ $hoursRemaining }} horas</p>
                                 </div>
 
                                 <p style="margin: 0 0 15px 0; color: #c5c49e !important;">Tu código de reserva es:</p>
