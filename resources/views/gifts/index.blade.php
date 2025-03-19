@@ -92,7 +92,15 @@
                         <p>Una vez comprado, confirma tu compra usando el código recibido.</p>
                     </div>
                     <div class="help-note">
-                        <p>Las reservas son válidas durante 48 horas para que todos los invitados tengan oportunidad de participar.</p>
+                        <div class="help-note">
+                            <p>Las reservas son válidas durante <strong>48 horas</strong>. Si la compra no se confirma dentro de este plazo, la reserva se cancelará automáticamente para que otros invitados puedan adquirir el regalo.</p>
+                        </div>
+                        <div class="help-note">
+                            <p>Si prefieres hacer un regalo monetario, puedes utilizar el <strong>IBAN</strong> que aparece al final de la página. Basta con hacer clic en el botón "Copiar IBAN" para copiarlo fácilmente.</p>
+                        </div>
+                        <div class="help-note">
+                            <p>El contador de "Disponibles" y "Solicitados" se actualiza en tiempo real, mostrando siempre el estado actual de cada regalo.</p>
+                        </div>
                     </div>
                     <button type="button" class="button" data-bs-dismiss="modal">
                         ENTENDIDO
