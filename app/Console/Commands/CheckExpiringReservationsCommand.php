@@ -52,18 +52,19 @@ class CheckExpiringReservationsCommand extends Command
      */
     protected function sendRemindersForInterval($hoursRemaining)
     {
-        // Calculamos el intervalo de tiempo para las reservas
-        $expiryTime = now()->addHours($hoursRemaining);
+        // Calculamos el rango de tiempo para las reservas que deben recibir recordatorio
+        // Por ejemplo, para recordatorio de 24h, buscamos reservas que expirarán entre 23.5 y 24.5 horas desde ahora
+        $lowerBound = now()->addHours($hoursRemaining - 0.5); // 30 minutos menos
+        $upperBound = now()->addHours($hoursRemaining + 0.5); // 30 minutos más
 
-        // Buscamos reservas que expiran aproximadamente en el número de horas indicado
-        // (con un margen de 30 minutos para evitar problemas de precisión)
+        $this->info("Buscando reservas que expiran entre {$lowerBound} y {$upperBound}");
+
+        // Buscamos reservas activas cuya fecha de expiración caiga en nuestro rango objetivo
         $expiringReservations = Gift::where('status', 'reserved')
             ->whereNotNull('reserved_at')
             ->whereNotNull('reservation_expires_at')
-            ->where('reservation_expires_at', '>=', $expiryTime->copy()->subMinutes(30))
-            ->where('reservation_expires_at', '<=', $expiryTime->copy()->addMinutes(30))
-            // Añadimos una verificación para evitar enviar recordatorios duplicados
-            ->whereRaw("(SELECT COUNT(*) FROM jobs WHERE JSON_EXTRACT(payload, '$.data.command') LIKE '%SendReminderEmail%' AND JSON_EXTRACT(payload, '$.data.command') LIKE CONCAT('%\"gift_id\":', id, '%') AND JSON_EXTRACT(payload, '$.data.command') LIKE CONCAT('%\"hours_remaining\":', ?, '%')) = 0", [$hoursRemaining])
+            ->where('reservation_expires_at', '>=', $lowerBound)
+            ->where('reservation_expires_at', '<=', $upperBound)
             ->get();
 
         $this->info("Found {$expiringReservations->count()} reservations expiring in approximately {$hoursRemaining} hours");
@@ -79,7 +80,7 @@ class CheckExpiringReservationsCommand extends Command
 
                     // Solo enviar si quedan minutos positivos (por si acaso)
                     if ($minutesRemaining > 0) {
-                        $this->info("Sending {$hoursRemaining}-hour reminder email for gift: {$gift->id} - {$gift->name}");
+                        $this->info("Sending {$hoursRemaining}-hour reminder email for gift: {$gift->id} - {$gift->name} - Expires at: {$gift->reservation_expires_at}");
 
                         // Generar URLs para confirmar o cancelar
                         $confirmUrl = route('gifts.confirm', ['gift' => $gift->id, 'code' => $gift->unique_code]);
@@ -105,7 +106,8 @@ class CheckExpiringReservationsCommand extends Command
                         Log::info("Sent {$hoursRemaining}-hour reminder for gift {$gift->id}", [
                             'gift_id' => $gift->id,
                             'hours_remaining' => $hoursRemaining,
-                            'email' => $gift->purchaser_email
+                            'email' => $gift->purchaser_email,
+                            'expires_at' => $gift->reservation_expires_at
                         ]);
                     } else {
                         $this->warn("Reservation already expired for gift: {$gift->id}");
