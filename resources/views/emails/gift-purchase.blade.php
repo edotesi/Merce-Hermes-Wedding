@@ -85,7 +85,7 @@
                     <!-- Header -->
                     <tr>
                         <td align="center" style="padding: 20px 0; border-bottom: 2px solid #a79f7d;">
-                            <img src="{{ asset('images/logo.png') }}" alt="Mercè & Hermes" width="250" style="width: 250px; max-width: 80%; height: auto; display: block; margin: 0 auto;">
+                            <img src="https://merceyhermes.com/images/logo.png" alt="Mercè & Hermes" width="250" style="width: 250px; max-width: 80%; height: auto; display: block; margin: 0 auto; filter: brightness(0) invert(1) sepia(20%) saturate(346%) hue-rotate(13deg) brightness(99%) contrast(93%);"
                         </td>
                     </tr>
 
