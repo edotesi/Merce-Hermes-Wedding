@@ -55,6 +55,9 @@ class GiftPurchaseConfirmation extends Mailable
             case 'reminder':
                 $subject .= 'Recordatorio: Tu reserva expirará pronto';
                 break;
+            case 'expiration':
+                $subject .= 'Reserva Cancelada Automáticamente';
+                break;
             default:
                 $subject .= 'Reserva de Regalo';
                 break;
