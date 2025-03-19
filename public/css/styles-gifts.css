@@ -306,6 +306,36 @@
     .gift-grid {
         margin-top: 0.5rem;
     }
+
+    /* Convertir el icono de ayuda en un botón flotante en móvil */
+    .gifts-title-container {
+        display: none; /* Ocultar el contenedor original */
+    }
+
+    .help-icon {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 45px;
+        height: 45px;
+        background: var(--hillary);
+        color: var(--olive);
+        border: none;
+        z-index: 100;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .help-icon i {
+        font-size: 1.2rem;
+    }
+
+    .help-icon:hover, .help-icon:active {
+        background: var(--gold-bright);
+        transform: scale(1.1);
+    }
 }
 
 @media (max-width: 768px) {
@@ -345,5 +375,11 @@
 
     .help-step p {
         font-size: 0.9rem;
+    }
+
+    /* Ajustar posición del botón flotante en pantallas más pequeñas */
+    .help-icon {
+        bottom: 15px;
+        right: 15px;
     }
 }

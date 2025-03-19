@@ -3,7 +3,7 @@
 @section('content')
     <!-- Eliminado el div.main-content redundante -->
     <div class="container gifts-container">
-        <!-- Título con icono de ayuda -->
+        <!-- Título con icono de ayuda (versión desktop) -->
         <div class="gifts-title-container">
             <div class="help-icon" id="giftHelpIcon">
                 <i class="fas fa-question-circle"></i>
@@ -60,6 +60,11 @@
                 Copiar IBAN
             </button>
         </div>
+    </div>
+
+    <!-- Botón de ayuda flotante para móviles -->
+    <div class="help-icon" id="giftHelpIconMobile">
+        <i class="fas fa-question-circle"></i>
     </div>
 
     <!-- Modal de información de funcionamiento del sistema de regalos -->

@@ -3,8 +3,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const helpModal = new bootstrap.Modal(document.getElementById('helpModal'));
     let currentGiftId = null;
 
-    // Help Icon Click Event
+    // Help Icon Click Event - Version desktop
     document.getElementById('giftHelpIcon')?.addEventListener('click', function() {
+        helpModal.show();
+    });
+
+    // Help Icon Click Event - Version móvil
+    document.getElementById('giftHelpIconMobile')?.addEventListener('click', function() {
         helpModal.show();
     });
 
