@@ -3,6 +3,13 @@
 @section('content')
     <!-- Eliminado el div.main-content redundante -->
     <div class="container gifts-container">
+        <!-- Título con icono de ayuda -->
+        <div class="gifts-title-container">
+            <div class="help-icon" id="giftHelpIcon">
+                <i class="fas fa-question-circle"></i>
+            </div>
+        </div>
+
         <!-- Grid/List Container -->
         <div id="giftsContainer" class="gift-grid">
             @foreach ($gifts as $gift)
@@ -52,6 +59,41 @@
             <button onclick="copyIban()" id="copyButton" class="button">
                 Copiar IBAN
             </button>
+        </div>
+    </div>
+
+    <!-- Modal de información de funcionamiento del sistema de regalos -->
+    <div class="modal fade" id="helpModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">¿Cómo funciona el sistema de regalos?</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="help-step">
+                        <div class="step-number">1</div>
+                        <p>Reserva un regalo haciendo clic en el botón "RESERVAR REGALO".</p>
+                    </div>
+                    <div class="help-step">
+                        <div class="step-number">2</div>
+                        <p>Completa el formulario con tu nombre y email para recibir las instrucciones.</p>
+                    </div>
+                    <div class="help-step">
+                        <div class="step-number">3</div>
+                        <p>Recibirás un email con un código único y un enlace a la tienda para comprar el regalo.</p>
+                    </div>
+                    <div class="help-step">
+                        <div class="step-number">4</div>
+                        <p>Una vez comprado, confirma tu compra usando el código recibido.</p>
+                    </div>
+                    <div class="help-note">
+                        <p>Las reservas son válidas durante 48 horas para que todos los invitados tengan oportunidad de participar.</p>
+                    </div>
+                    <button type="button" class="button" data-bs-dismiss="modal">
+                        ENTENDIDO
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -205,6 +205,93 @@
     padding-bottom: 2rem;
 }
 
+/* Contenedor del título con icono de ayuda */
+.gifts-title-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 0.5rem 0;
+}
+
+/* Icono de ayuda */
+.help-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: transparent;
+    border: 1px solid var(--hillary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--hillary);
+}
+
+.help-icon i {
+    font-size: 1rem;
+}
+
+.help-icon:hover {
+    background: var(--hillary);
+    color: var(--olive);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos para los pasos en el modal de ayuda */
+.help-step {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    background: var(--bg-light);
+    padding: 1rem;
+    border-radius: 6px;
+    transition: transform 0.3s ease;
+}
+
+.help-step:hover {
+    transform: translateX(5px);
+}
+
+.step-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--hillary);
+    color: var(--olive);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.help-step p {
+    margin: 0;
+    color: var(--hillary);
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.help-note {
+    background: var(--bg-medium);
+    padding: 1rem;
+    border-left: 3px solid var(--gold-bright);
+    margin-bottom: 1.5rem;
+    border-radius: 0 6px 6px 0;
+}
+
+.help-note p {
+    margin: 0;
+    color: var(--gold-bright);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    font-style: italic;
+}
+
 /* Media queries */
 @media (max-width: 991px) {
     .gifts-page .mobile-page-title {
@@ -244,5 +331,19 @@
         min-width: 100%;
         font-size: 1rem;
         word-break: break-all;
+    }
+
+    .help-step {
+        padding: 0.8rem;
+    }
+
+    .step-number {
+        width: 24px;
+        height: 24px;
+        font-size: 0.9rem;
+    }
+
+    .help-step p {
+        font-size: 0.9rem;
     }
 }
