@@ -87,7 +87,7 @@
                     <!-- Header -->
                     <tr>
                         <td align="center" style="padding: 20px 0; border-bottom: 2px solid #a79f7d;">
-                            <img src="{{ asset('images/logo-gold.png') }}" alt="Mercè & Hermes" width="250"
+                            <img src="{{ asset('images/logo.png') }}" alt="Mercè & Hermes" width="250"
                                 style="width: 250px; max-width: 80%; height: auto; display: block; margin: 0 auto;
                                         image-rendering: -webkit-optimize-contrast;
                                         image-rendering: crisp-edges;
