@@ -1,27 +1,27 @@
 name: Deploy to Hostinger
 on:
-  push:
-    branches: [ main ]
+ push:
+   branches: [ main ]
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+ deploy:
+   runs-on: ubuntu-latest
+   steps:
+     - uses: actions/checkout@v3
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
+     - name: Setup PHP
+       uses: shivammathur/setup-php@v2
+       with:
+         php-version: '8.2'
 
-      - name: Install Dependencies
-        run: composer install --no-dev --optimize-autoloader
+     - name: Install Dependencies
+       run: composer install --no-dev --optimize-autoloader
 
-      - name: Create .env file
+           - name: Create .env file
         run: |
           echo "APP_NAME=Laravel" > .env
           echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
-          echo "APP_TIMEZONE=Europe/Madrid" >> .env
+          echo "APP_TIMEZONE=UTC" >> .env
           echo "APP_ENV=production" >> .env
           echo "APP_DEBUG=false" >> .env
           echo "APP_URL=https://merceyhermes.com" >> .env
@@ -70,48 +70,34 @@ jobs:
           # Verificar archivo creado
           ls -la .env
 
-      # Paso específico solo para el .env (alta prioridad)
-      - name: Deploy .env file separately
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: domains/merceyhermes.com/public_html/
-          local-dir: ./
-          include: |
-            .env
-          timeout: 600000
 
-      # Despliegue normal de archivos principales
-      - name: Deploy Core Files
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: domains/merceyhermes.com/public_html/
-          timeout: 600000
-          exclude: |
-            **/.git/**
-            .git/**
-            .git*
-            **/.github/**
-            **/node_modules/**
-            **/vendor/**
-            tests/
-            README.md
-            .env.example
-            .env.production
-            .DS_Store
+     - name: 📂 Deploy Core Files
+       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+       with:
+         server: ${{ secrets.FTP_SERVER }}
+         username: ${{ secrets.FTP_USERNAME }}
+         password: ${{ secrets.FTP_PASSWORD }}
+         server-dir: domains/merceyhermes.com/public_html/
+         timeout: 600000
+         exclude: |
+           **/.git/**
+           .git/**
+           .git*
+           **/.github/**
+           **/node_modules/**
+           **/vendor/**
+           tests/
+           README.md
+           .env.example
+           .env.production
+           .DS_Store
 
-      # Despliegue de vendor
-      - name: Deploy Vendor Files
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          server-dir: domains/merceyhermes.com/public_html/vendor/
-          local-dir: ./vendor/
-          timeout: 600000
+     - name: 📂 Deploy Vendor Files
+       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+       with:
+         server: ${{ secrets.FTP_SERVER }}
+         username: ${{ secrets.FTP_USERNAME }}
+         password: ${{ secrets.FTP_PASSWORD }}
+         server-dir: domains/merceyhermes.com/public_html/vendor/
+         local-dir: ./vendor/
+         timeout: 600000
