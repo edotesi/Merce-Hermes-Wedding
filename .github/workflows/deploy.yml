@@ -1,99 +1,160 @@
 name: Deploy to Hostinger
 on:
- push:
-   branches: [ main ]
+  push:
+    branches: [ main ]
 
 jobs:
- deploy:
-   runs-on: ubuntu-latest
-   steps:
-     - uses: actions/checkout@v3
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-     - name: Setup PHP
-       uses: shivammathur/setup-php@v2
-       with:
-         php-version: '8.2'
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
 
-     - name: Install Dependencies
-       run: composer install --no-dev --optimize-autoloader
+      - name: Install Dependencies
+        run: composer install --no-dev --optimize-autoloader
 
-     - name: Create .env file
-       run: |
-         echo "APP_NAME=Laravel" > .env
-         echo "APP_KEY=${{ secrets.APP_KEY }}" >> .env
-         echo "APP_TIMEZONE=UTC" >> .env
-         echo "APP_ENV=production" >> .env
-         echo "APP_DEBUG=false" >> .env
-         echo "APP_URL=https://merceyhermes.com" >> .env
-         echo "APP_LOCALE=en" >> .env
-         echo "APP_FALLBACK_LOCALE=en" >> .env
-         echo "APP_FAKER_LOCALE=en_US" >> .env
-         echo "APP_MAINTENANCE_DRIVER=file" >> .env
-         echo "PHP_CLI_SERVER_WORKERS=4" >> .env
-         echo "BCRYPT_ROUNDS=12" >> .env
-         echo "LOG_CHANNEL=stack" >> .env
-         echo "LOG_STACK=single" >> .env
-         echo "LOG_DEPRECATIONS_CHANNEL=null" >> .env
-         echo "LOG_LEVEL=debug" >> .env
-         echo "DB_CONNECTION=mysql" >> .env
-         echo "DB_HOST=localhost" >> .env
-         echo "DB_PORT=3306" >> .env
-         echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
-         echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
-         echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
-         echo "SESSION_DRIVER=database" >> .env
-         echo "SESSION_LIFETIME=120" >> .env
-         echo "SESSION_ENCRYPT=false" >> .env
-         echo "SESSION_PATH=/" >> .env
-         echo "SESSION_DOMAIN=null" >> .env
-         echo "BROADCAST_CONNECTION=log" >> .env
-         echo "FILESYSTEM_DISK=local" >> .env
-         echo "QUEUE_CONNECTION=database" >> .env
-         echo "CACHE_STORE=database" >> .env
-         echo "CACHE_PREFIX=" >> .env
-         echo "MEMCACHED_HOST=127.0.0.1" >> .env
-         echo "REDIS_CLIENT=phpredis" >> .env
-         echo "REDIS_HOST=127.0.0.1" >> .env
-         echo "REDIS_PASSWORD=null" >> .env
-         echo "REDIS_PORT=6379" >> .env
-         echo "MAIL_MAILER=smtp" >> .env
-         echo "MAIL_HOST=smtp.hostinger.com" >> .env
-         echo "MAIL_PORT=465" >> .env
-         echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env
-         echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env
-         echo "MAIL_ENCRYPTION=ssl" >> .env
-         echo "MAIL_FROM_ADDRESS=informacion@merceyhermes.com" >> .env
-         echo 'MAIL_FROM_NAME="Mercè & Hermes"' >> .env
-         echo "MAINTENANCE_MODE=${{ vars.MAINTENANCE_MODE }}" >> .env
-         echo "MAINTENANCE_TOKEN=${{ secrets.MAINTENANCE_TOKEN }}" >> .env
+      - name: Create .env file
+        run: |
+          cat > .env <<EOF
+          APP_NAME=Laravel
+          APP_KEY=${{ secrets.APP_KEY }}
+          APP_TIMEZONE=UTC
+          APP_ENV=production
+          APP_DEBUG=false
+          APP_URL=https://merceyhermes.com
 
-     - name: 📂 Deploy Core Files
-       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-       with:
-         server: ${{ secrets.FTP_SERVER }}
-         username: ${{ secrets.FTP_USERNAME }}
-         password: ${{ secrets.FTP_PASSWORD }}
-         server-dir: domains/merceyhermes.com/public_html/
-         timeout: 600000
-         exclude: |
-           **/.git/**
-           .git/**
-           .git*
-           **/.github/**
-           **/node_modules/**
-           **/vendor/**
-           tests/
-           README.md
-           .env.example
-           .env.production
-           .DS_Store
+          APP_LOCALE=en
+          APP_FALLBACK_LOCALE=en
+          APP_FAKER_LOCALE=en_US
 
-     - name: 📂 Deploy Vendor Files
-       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
-       with:
-         server: ${{ secrets.FTP_SERVER }}
-         username: ${{ secrets.FTP_USERNAME }}
-         password: ${{ secrets.FTP_PASSWORD }}
-         server-dir: domains/merceyhermes.com/public_html/vendor/
-         local-dir: ./vendor/
-         timeout: 600000
+          APP_MAINTENANCE_DRIVER=file
+
+          PHP_CLI_SERVER_WORKERS=4
+
+          BCRYPT_ROUNDS=12
+
+          LOG_CHANNEL=stack
+          LOG_STACK=single
+          LOG_DEPRECATIONS_CHANNEL=null
+          LOG_LEVEL=debug
+
+          DB_CONNECTION=mysql
+          DB_HOST=localhost
+          DB_PORT=3306
+          DB_DATABASE=${{ secrets.DB_DATABASE }}
+          DB_USERNAME=${{ secrets.DB_USERNAME }}
+          DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+
+          SESSION_DRIVER=database
+          SESSION_LIFETIME=120
+          SESSION_ENCRYPT=false
+          SESSION_PATH=/
+          SESSION_DOMAIN=null
+
+          BROADCAST_CONNECTION=log
+          FILESYSTEM_DISK=local
+          QUEUE_CONNECTION=database
+
+          CACHE_STORE=database
+          CACHE_PREFIX=
+
+          MEMCACHED_HOST=127.0.0.1
+
+          REDIS_CLIENT=phpredis
+          REDIS_HOST=127.0.0.1
+          REDIS_PASSWORD=null
+          REDIS_PORT=6379
+
+          MAIL_MAILER=smtp
+          MAIL_HOST=smtp.hostinger.com
+          MAIL_PORT=465
+          MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
+          MAIL_ENCRYPTION=ssl
+          MAIL_FROM_ADDRESS=informacion@merceyhermes.com
+          MAIL_FROM_NAME="Mercè & Hermes"
+
+          MAINTENANCE_MODE=${{ vars.MAINTENANCE_MODE }}
+          MAINTENANCE_TOKEN=${{ secrets.MAINTENANCE_TOKEN }}
+          EOF
+
+          # Verificar que el archivo .env se creó correctamente
+          echo "--- Contenido del archivo .env creado: ---"
+          ls -la .env
+          head -n 5 .env
+
+      - name: Create htaccess fallback
+        run: |
+          echo "Creating .htaccess fallback for Laravel routing"
+          cat > public/.htaccess <<EOF
+          <IfModule mod_rewrite.c>
+              <IfModule mod_negotiation.c>
+                  Options -MultiViews -Indexes
+              </IfModule>
+
+              RewriteEngine On
+
+              # Handle Authorization Header
+              RewriteCond %{HTTP:Authorization} .
+              RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+              # Redirect Trailing Slashes If Not A Folder...
+              RewriteCond %{REQUEST_FILENAME} !-d
+              RewriteCond %{REQUEST_URI} (.+)/$
+              RewriteRule ^ %1 [L,R=301]
+
+              # Send Requests To Front Controller...
+              RewriteCond %{REQUEST_FILENAME} !-d
+              RewriteCond %{REQUEST_FILENAME} !-f
+              RewriteRule ^ index.php [L]
+          </IfModule>
+          EOF
+
+      - name: Generate key if not provided
+        if: ${{ secrets.APP_KEY == '' }}
+        run: php artisan key:generate --force
+
+      - name: Deploy Core Files (including .env)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: domains/merceyhermes.com/public_html/
+          timeout: 600000
+          exclude: |
+            **/.git/**
+            **/.github/**
+            **/node_modules/**
+            **/vendor/**
+            tests/
+            README.md
+            .env.example
+            .DS_Store
+
+      - name: Special upload for .env file
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: domains/merceyhermes.com/public_html/
+          local-dir: ./
+          include: |
+            .env
+          timeout: 600000
+
+      - name: Deploy Vendor Files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: domains/merceyhermes.com/public_html/vendor/
+          local-dir: ./vendor/
+          timeout: 600000
