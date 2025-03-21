@@ -1,4 +1,4 @@
-/* Schedule Section */
+/* Schedule Section - Versión mejorada */
 .event-wrapper {
     padding-top: 100px; /* Espacio para la navbar */
     padding-bottom: 2rem;
@@ -180,15 +180,16 @@
 
 /* Timeline - corregido */
 .timeline-container {
-    margin: 4rem 0 2rem;
+    margin: 4rem 0 5rem; /* Aumentado margen inferior para dar espacio a las etiquetas */
     position: relative;
     width: 100%;
-    overflow: hidden;
+    overflow: visible; /* Cambiado de hidden a visible para que las etiquetas se muestren */
 }
 
 .timeline {
     width: 100%;
     position: relative;
+    overflow: visible;
 }
 
 .timeline-events {
@@ -201,7 +202,7 @@
     position: relative;
 }
 
-/* Línea horizontal que parezca infinita sin causar scroll */
+/* Línea horizontal perfectamente centrada con los rombos */
 .timeline-events::before {
     content: "";
     position: absolute;
@@ -211,6 +212,32 @@
     background-color: var(--hillary);
     width: 100%;
     left: 0;
+    z-index: 1;
+}
+
+/* Extensión infinita de la línea usando pseudo-elementos adicionales */
+.timeline-events::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 1px;
+    background-color: var(--hillary);
+    width: 100vw;
+    left: 100%;
+    z-index: 1;
+}
+
+.timeline::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 1px;
+    background-color: var(--hillary);
+    width: 100vw;
+    right: 100%;
+    z-index: 1;
 }
 
 .diamond {
@@ -277,7 +304,7 @@
     font-size: 1.2rem;
     font-weight: 400;
     transition: all 0.3s ease;
-    white-space: nowrap;
+    white-space: nowrap; /* Prevenir saltos de línea */
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
@@ -367,5 +394,14 @@
         font-size: 1.4rem;
         width: 90px;
         height: 45px;
+    }
+}
+
+/* Estilos específicos para desktop */
+@media (min-width: 769px) {
+    /* Mostrar siempre los nombres debajo de cada rombo en desktop */
+    .event-label {
+        opacity: 1;
+        visibility: visible;
     }
 }
