@@ -3,13 +3,6 @@
 @section('content')
     <!-- Eliminado el div.main-content redundante -->
     <div class="container gifts-container">
-        <!-- Título con icono de ayuda (versión desktop) -->
-        <div class="gifts-title-container">
-            <div class="help-icon" id="giftHelpIcon">
-                <i class="fas fa-question-circle"></i>
-            </div>
-        </div>
-
         <!-- Grid/List Container -->
         <div id="giftsContainer" class="gift-grid">
             @foreach ($gifts as $gift)
@@ -62,8 +55,8 @@
         </div>
     </div>
 
-    <!-- Botón de ayuda flotante para móviles -->
-    <div class="help-icon" id="giftHelpIconMobile">
+    <!-- Botón de ayuda flotante (único) -->
+    <div class="help-icon" id="giftHelpIcon">
         <i class="fas fa-question-circle"></i>
     </div>
 
@@ -91,17 +84,17 @@
                         <div class="step-number">4</div>
                         <p>Una vez comprado, confirma tu compra usando el código recibido.</p>
                     </div>
+
                     <div class="help-note">
-                        <div class="help-note">
-                            <p>Las reservas son válidas durante <strong>48 horas</strong>. Si la compra no se confirma dentro de este plazo, la reserva se cancelará automáticamente para que otros invitados puedan adquirir el regalo.</p>
-                        </div>
-                        <div class="help-note">
-                            <p>Si prefieres hacer un regalo monetario, puedes utilizar el <strong>IBAN</strong> que aparece al final de la página. Basta con hacer clic en el botón "Copiar IBAN" para copiarlo fácilmente.</p>
-                        </div>
-                        <div class="help-note">
-                            <p>El contador de "Disponibles" y "Solicitados" se actualiza en tiempo real, mostrando siempre el estado actual de cada regalo.</p>
-                        </div>
+                        <p>Las reservas son válidas durante <strong>48 horas</strong>. Si la compra no se confirma dentro de este plazo, la reserva se cancelará automáticamente para que otros invitados puedan adquirir el regalo.</p>
                     </div>
+                    <div class="help-note">
+                        <p>Si prefieres hacer un regalo monetario, puedes utilizar el <strong>IBAN</strong> que aparece al final de la página. Basta con hacer clic en el botón "Copiar IBAN" para copiarlo fácilmente.</p>
+                    </div>
+                    <div class="help-note">
+                        <p>El contador de "Disponibles" y "Solicitados" se actualiza en tiempo real, mostrando siempre el estado actual de cada regalo.</p>
+                    </div>
+
                     <button type="button" class="button" data-bs-dismiss="modal">
                         ENTENDIDO
                     </button>

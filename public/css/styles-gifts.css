@@ -207,37 +207,34 @@
 
 /* Contenedor del título con icono de ayuda */
 .gifts-title-container {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-bottom: 1rem;
-    padding: 0.5rem 0;
+    display: none; /* Ocultar el contenedor original siempre */
 }
 
-/* Icono de ayuda */
+/* Icono de ayuda - Ahora siempre como botón flotante */
 .help-icon {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: transparent;
-    border: 1px solid var(--hillary);
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 45px;
+    height: 45px;
+    background: var(--hillary);
+    color: var(--olive);
+    border: none;
+    z-index: 100;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: var(--hillary);
+    border-radius: 50%;
 }
 
 .help-icon i {
-    font-size: 1rem;
+    font-size: 1.2rem;
 }
 
-.help-icon:hover {
-    background: var(--hillary);
-    color: var(--olive);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+.help-icon:hover, .help-icon:active {
+    background: var(--gold-bright);
+    transform: scale(1.1);
 }
 
 /* Estilos para los pasos en el modal de ayuda */
@@ -292,6 +289,11 @@
     font-style: italic;
 }
 
+/* Ajustar el modal para que sea más ancho */
+#helpModal .modal-dialog {
+    max-width: 600px;
+}
+
 /* Media queries */
 @media (max-width: 991px) {
     .gifts-page .mobile-page-title {
@@ -306,41 +308,16 @@
     .gift-grid {
         margin-top: 0.5rem;
     }
-
-    /* Convertir el icono de ayuda en un botón flotante en móvil */
-    .gifts-title-container {
-        display: none; /* Ocultar el contenedor original */
-    }
-
-    .help-icon {
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        width: 45px;
-        height: 45px;
-        background: var(--hillary);
-        color: var(--olive);
-        border: none;
-        z-index: 100;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .help-icon i {
-        font-size: 1.2rem;
-    }
-
-    .help-icon:hover, .help-icon:active {
-        background: var(--gold-bright);
-        transform: scale(1.1);
-    }
 }
 
 @media (max-width: 768px) {
     #giftsContainer.gift-grid {
         grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Reducir el tamaño del modal en tablets */
+    #helpModal .modal-dialog {
+        max-width: 90%;
     }
 }
 
