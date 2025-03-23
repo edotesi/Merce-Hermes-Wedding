@@ -36,7 +36,7 @@
                 </li>
                 <li class="nav-item">
                     @if (Route::has('gifts.index'))
-                        <a class="nav-link {{ Request::routeIs('gifts.*') ? 'active' : '' }}" href="{{ routeWithPreview('gifts.index') }}">Regalos</a>
+                        <a class="nav-link {{ Request::routeIs('gifts.*') ? 'active' : '' }}" href="{{ routeWithPreview('gifts.index') }}">Lista de bodas</a>
                     @endif
                 </li>
                 <li class="nav-item">
