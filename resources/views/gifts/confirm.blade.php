@@ -16,6 +16,11 @@
                     <label class="event-label">Código de reserva</label>
                     <div class="code-display">{{ $code }}</div>
                 </div>
+                <div class="warning-message">
+                    ¿Estás seguro de que quieres confirmar la reserva?
+                    El regalo será marcado como comprado. Confirma una vez hayas comprado el producto.
+                </div>
+
                 <div class="button-group">
                     <button type="button" onclick="window.history.back()" class="button">
                         VOLVER

@@ -16,6 +16,11 @@
                     <label class="event-label">Código de reserva</label>
                     <div class="code-display">{{ $code }}</div>
                 </div>
+                <div class="warning-message">
+                    ¿Estás seguro de que quieres cancelar la reserva?
+                    El regalo volverá a estar disponible para otros invitados.
+                </div>
+
                 <div class="button-group">
                     <button type="button" onclick="window.history.back()" class="button">
                         VOLVER
