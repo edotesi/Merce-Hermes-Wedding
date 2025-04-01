@@ -136,8 +136,26 @@
                                 </p>
                                 <ul style="margin: 0 0 20px 20px; padding: 0; color: #c5c49e !important;">
                                     <li style="margin-bottom: 5px;">Esta reserva es válida durante 48 horas</li>
-                                    <li>Para confirmar tu compra, necesitarás usar este código</li>
+                                    <li style="margin-bottom: 5px;">Para confirmar tu compra, necesitarás usar este código</li>
                                 </ul>
+
+                                <div style="background-color: rgba(255,255,255,0.05) !important; border-left: 3px solid #d8d7b6 !important; padding: 20px; margin: 5px 0 20px 0; color: #c5c49e !important; border-radius: 0 4px 4px 0; font-size: 16px; line-height: 1.6;">
+                                    <p style="margin: 0 0 15px 0; color: #d8d7b6 !important; font-weight: bold;">DIRECCIONES PARA EL ENVÍO DE LOS REGALOS:</p>
+
+                                    <p style="margin: 0 0 10px 0; color: #c5c49e !important;">
+                                        Por favor, envía el regalo a una de estas direcciones:
+                                    </p>
+
+                                    <p style="margin: 0 0 10px 0; color: #c5c49e !important; padding-left: 10px; border-left: 1px solid rgba(191, 181, 141, 0.3);">
+                                        c/ de la Salut 125-127, 08202, Sabadell<br>
+                                        <strong>Mercè Martinez Montllor</strong>
+                                    </p>
+
+                                    <p style="margin: 0; color: #c5c49e !important; padding-left: 10px; border-left: 1px solid rgba(191, 181, 141, 0.3);">
+                                        c/ Tenor Masini 112, 1º2ª, 08028, Barcelona<br>
+                                        <strong>Hermes Andres I Sobrevia</strong>
+                                    </p>
+                                </div>
 
                                 <div style="text-align: center; margin: 30px 0;">
                                     <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
@@ -213,6 +231,24 @@
                                             </td>
                                         </tr>
                                     </table>
+                                </div>
+
+                                <div style="background-color: rgba(255,255,255,0.05) !important; border-left: 3px solid #d8d7b6 !important; padding: 20px; margin: 20px 0; color: #c5c49e !important; border-radius: 0 4px 4px 0; font-size: 16px; line-height: 1.6;">
+                                    <p style="margin: 0 0 15px 0; color: #d8d7b6 !important; font-weight: bold;">DIRECCIONES PARA EL ENVÍO DE LOS REGALOS:</p>
+
+                                    <p style="margin: 0 0 10px 0; color: #c5c49e !important;">
+                                        Por favor, envía el regalo a una de estas direcciones:
+                                    </p>
+
+                                    <p style="margin: 0 0 10px 0; color: #c5c49e !important; padding-left: 10px; border-left: 1px solid rgba(191, 181, 141, 0.3);">
+                                        C/ de la Salut 125-127, 08202, Sabadell<br>
+                                        <strong>Mercè Martinez Montllor</strong>
+                                    </p>
+
+                                    <p style="margin: 0; color: #c5c49e !important; padding-left: 10px; border-left: 1px solid rgba(191, 181, 141, 0.3);">
+                                        C/ Tenor Masini 112, 1º2ª, 08028, Barcelona<br>
+                                        <strong>Hermes Andres I Sobrevia</strong>
+                                    </p>
                                 </div>
 
                                 <p style="margin: 20px 0 10px 0; color: #c5c49e !important; font-size: 18px;">
