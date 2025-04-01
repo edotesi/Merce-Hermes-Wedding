@@ -276,9 +276,15 @@
                                     {{ $uniqueCode }}
                                 </div>
 
-                                <p style="margin: 0 0 15px 0; color: #c5c49e !important;">Guarda este código por si
-                                    necesitas hacer
-                                    cualquier gestión relacionada con el regalo.</p>
+                                <div style="background-color: rgba(255,255,255,0.05) !important; border-left: 3px solid #a79f7d !important; padding: 20px; margin: 25px 0; color: #c5c49e !important; border-radius: 0 4px 4px 0; font-size: 16px; line-height: 1.8;">
+                                    <p style="margin: 0 0 15px 0; color: #d8d7b6 !important;">Queremos agradecerte sinceramente por haber elegido un regalo de nuestra lista de bodas.</p>
+
+                                    <p style="margin: 0 0 15px 0; color: #c5c49e !important;">Tu gesto significa mucho para nosotros y estamos seguros de que tu regalo será algo que disfrutaremos durante muchos años. ¡Gracias por acompañarnos en este nuevo capítulo de nuestras vidas!</p>
+
+                                    <p style="margin: 0; color: #c5c49e !important; font-style: italic;">Con todo nuestro cariño,<br>Mercè y Hermes</p>
+                                </div>
+
+                                <p style="margin: 25px 0 15px 0; color: #c5c49e !important;">Guarda este código por si necesitas hacer cualquier gestión relacionada con el regalo.</p>
                             @elseif ($emailType == 'cancellation')
                                 <h2
                                     style="margin: 0 0 15px 0; font-size: 2.5rem; font-weight: 300; color: #c5c49e !important; text-align: left;">
