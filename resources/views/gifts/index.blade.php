@@ -32,7 +32,7 @@
                                 </div>
                             @else
                                 <button class="button w-full reserve-btn" data-gift-id="{{ $gift->id }}">
-                                    RESERVAR REGALO
+                                    RESERVAR
                                 </button>
                             @endif
 
@@ -65,12 +65,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">¿Cómo funciona el sistema de regalos?</h5>
+                    <h5 class="modal-title">¿Cómo funciona el sistema de reservas?</h5>
                 </div>
                 <div class="modal-body">
                     <div class="help-step">
                         <div class="step-number">1</div>
-                        <p>Reserva un regalo haciendo clic en el botón "RESERVAR REGALO".</p>
+                        <p>Reserva un artículo haciendo clic en el botón "RESERVAR".</p>
                     </div>
                     <div class="help-step">
                         <div class="step-number">2</div>
@@ -78,7 +78,7 @@
                     </div>
                     <div class="help-step">
                         <div class="step-number">3</div>
-                        <p>Recibirás un email con un código único y un enlace a la tienda para comprar el regalo.</p>
+                        <p>Recibirás un email con un código único y un enlace a la tienda para comprar el artículo.</p>
                     </div>
                     <div class="help-step">
                         <div class="step-number">4</div>
@@ -86,15 +86,12 @@
                     </div>
 
                     <div class="help-note">
-                        <p>Las reservas son válidas durante <strong>48 horas</strong>. Si la compra no se confirma dentro de este plazo, la reserva se cancelará automáticamente para que otros invitados puedan adquirir el regalo.</p>
+                        <p>Las reservas son válidas durante <strong>48 horas</strong>. Si la compra no se confirma dentro de este plazo, la reserva se cancelará automáticamente para que otros invitados puedan adquirir el artículo.</p>
                     </div>
-                    <div class="help-note">
-                        <p>Si prefieres hacer un regalo monetario, puedes utilizar el <strong>IBAN</strong> que aparece al final de la página. Basta con hacer clic en el botón "Copiar IBAN" para copiarlo fácilmente.</p>
+                      <div class="help-note">
+                        <p>El contador de "Disponibles" y "Solicitados" se actualiza en tiempo real, mostrando siempre el estado actual de cada artículo.</p>
                     </div>
-                    <div class="help-note">
-                        <p>El contador de "Disponibles" y "Solicitados" se actualiza en tiempo real, mostrando siempre el estado actual de cada regalo.</p>
-                    </div>
-
+                 
                     <button type="button" class="button" data-bs-dismiss="modal">
                         ENTENDIDO
                     </button>
@@ -108,7 +105,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Reservar Regalo</h5>
+                    <h5 class="modal-title">Reservar Producto</h5>
                 </div>
                 <div class="modal-body">
                     <form id="reserveForm">
