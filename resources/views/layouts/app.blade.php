@@ -58,7 +58,7 @@
         @if (Request::routeIs('schedule'))
             <h1>Programa</h1>
         @elseif (Request::routeIs('gifts.*'))
-            <h1>Regalos</h1>
+            <h1>Lista de bodas</h1>
         @elseif (Request::routeIs('dress-code'))
             <h1>Dress Code</h1>
         @elseif (Request::routeIs('accommodations'))
