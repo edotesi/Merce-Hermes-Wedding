@@ -37,7 +37,7 @@
                             @endif
 
                             <div class="text-sm text-[#a79f7d] mt-3 text-center">
-                                Solicitados: {{ $gift->stock }} • Disponibles: {{ $availableStock }}
+                                Disponibles: {{ $availableStock }}
                             </div>
                         </div>
                     </div>
@@ -89,9 +89,9 @@
                         <p>Las reservas son válidas durante <strong>48 horas</strong>. Si la compra no se confirma dentro de este plazo, la reserva se cancelará automáticamente para que otros invitados puedan adquirir el artículo.</p>
                     </div>
                       <div class="help-note">
-                        <p>El contador de "Disponibles" y "Solicitados" se actualiza en tiempo real, mostrando siempre el estado actual de cada artículo.</p>
+                        <p>El contador de "Disponibles" se actualiza en tiempo real, mostrando siempre el estado actual de cada artículo.</p>
                     </div>
-                 
+
                     <button type="button" class="button" data-bs-dismiss="modal">
                         ENTENDIDO
                     </button>
