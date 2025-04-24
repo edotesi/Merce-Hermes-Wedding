@@ -42,6 +42,7 @@ if ($appMode == 'true') {
         Route::get('/{gift}/cancel/{code}', [GiftController::class, 'showCancelForm'])->name('gifts.cancel');
         Route::post('/{gift}/cancel', [GiftController::class, 'cancelReservation'])->name('gifts.cancelReservation');
     });
+    Route::get('/nuestra-historia', [App\Http\Controllers\StoryController::class, 'index'])->name('story');
     Route::get('/calendar.ics', function () {
         $event = [
             'begin' => '2025-06-14T17:00:00',

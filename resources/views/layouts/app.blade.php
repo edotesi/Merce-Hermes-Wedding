@@ -26,27 +26,38 @@
             <ul class="navbar-nav">
                 <li class="nav-item">
                     @if (Route::has('home'))
-                        <a class="nav-link {{ Request::routeIs('home') ? 'active' : '' }}" href="{{ routeWithPreview('home') }}">M&H</a>
+                        <a class="nav-link {{ Request::routeIs('home') ? 'active' : '' }}"
+                            href="{{ routeWithPreview('home') }}">M&H</a>
+                    @endif
+                </li>
+                <li class="nav-item">
+                    @if (Route::has('story'))
+                        <a class="nav-link {{ Request::routeIs('story') ? 'active' : '' }}"
+                            href="{{ routeWithPreview('story') }}">Nuestra Historia</a>
                     @endif
                 </li>
                 <li class="nav-item">
                     @if (Route::has('schedule'))
-                        <a class="nav-link {{ Request::routeIs('schedule') ? 'active' : '' }}" href="{{ routeWithPreview('schedule') }}">Programa</a>
+                        <a class="nav-link {{ Request::routeIs('schedule') ? 'active' : '' }}"
+                            href="{{ routeWithPreview('schedule') }}">Programa</a>
                     @endif
                 </li>
                 <li class="nav-item">
                     @if (Route::has('gifts.index'))
-                        <a class="nav-link {{ Request::routeIs('gifts.*') ? 'active' : '' }}" href="{{ routeWithPreview('gifts.index') }}">Lista de bodas</a>
+                        <a class="nav-link {{ Request::routeIs('gifts.*') ? 'active' : '' }}"
+                            href="{{ routeWithPreview('gifts.index') }}">Lista de bodas</a>
                     @endif
                 </li>
                 <li class="nav-item">
                     @if (Route::has('dress-code'))
-                        <a class="nav-link {{ Request::routeIs('dress-code') ? 'active' : '' }}" href="{{ routeWithPreview('dress-code') }}">Dress Code</a>
+                        <a class="nav-link {{ Request::routeIs('dress-code') ? 'active' : '' }}"
+                            href="{{ routeWithPreview('dress-code') }}">Dress Code</a>
                     @endif
                 </li>
                 <li class="nav-item">
                     @if (Route::has('accommodations'))
-                        <a class="nav-link {{ Request::routeIs('accommodations') ? 'active' : '' }}" href="{{ routeWithPreview('accommodations') }}">Alojamientos</a>
+                        <a class="nav-link {{ Request::routeIs('accommodations') ? 'active' : '' }}"
+                            href="{{ routeWithPreview('accommodations') }}">Alojamientos</a>
                     @endif
                 </li>
             </ul>
@@ -63,6 +74,8 @@
             <h1>Dress Code</h1>
         @elseif (Request::routeIs('accommodations'))
             <h1>Alojamientos</h1>
+        @elseif (Request::routeIs('story'))
+            <h1>Nuestra Historia</h1>
         @endif
     </div>
 

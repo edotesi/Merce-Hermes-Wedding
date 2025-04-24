@@ -1,0 +1,385 @@
+/* Our Story Styles */
+.story-wrapper {
+    min-height: 100vh;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+
+.story-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    color: var(--hillary);
+}
+
+.story-title {
+    color: var(--gold-bright);
+    font-size: 2.5rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    position: relative;
+    font-weight: 300;
+}
+
+.story-title::after {
+    content: '';
+    position: absolute;
+    bottom: -0.8rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 2px;
+    background-color: var(--hillary);
+}
+
+.story-text {
+    line-height: 1.8;
+    font-size: 1.1rem;
+    margin-bottom: 3.5rem;
+}
+
+.story-text p {
+    margin-bottom: 1.5rem;
+}
+
+.story-text strong {
+    color: var(--gold-bright);
+    font-weight: 500;
+}
+
+/* Imagen de encabezado y estilos responsivos */
+.story-header-image-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    margin-bottom: 3rem;
+}
+
+.story-header-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top; /* Esto prioriza la parte superior de la imagen */
+}
+
+.story-header-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.4));
+    z-index: 1;
+}
+
+/* Carrusel de fotos */
+.photo-carousel-container {
+    margin: 4rem 0;
+    position: relative;
+}
+
+/* Configuración del carrusel con tamaño fijo */
+.photo-carousel {
+    position: relative;
+    width: 100%;
+    height: 600px; /* Altura fija */
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    background-color: #000; /* Fondo negro para mejor contraste */
+}
+
+/* Contenedor de imagen con fondo */
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Fondo borroso para imágenes verticales */
+.image-background {
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px) brightness(0.4);
+    transform: scale(1.1);
+    z-index: 0;
+}
+
+.carousel-inner {
+    height: 100%;
+}
+
+.carousel-item {
+    display: none;
+    height: 100%;
+}
+
+.carousel-item.active {
+    display: block;
+}
+
+/* Imagen principal centrada */
+.carousel-image {
+    position: relative;
+    z-index: 1;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Mantiene proporción original */
+    height: auto; /* Altura automática para mantener proporción */
+    width: auto; /* Ancho automático para mantener proporción */
+    cursor: zoom-in;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Para detectar imágenes verticales automáticamente */
+.carousel-image.vertical {
+    max-height: 100%;
+    max-width: 85%;
+}
+
+/* Controles y navegación */
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 45px;
+    height: 45px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    opacity: 0.9;
+    z-index: 10;
+    border: 1px solid rgba(255,255,255,0.3);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.carousel-control:hover {
+    background: var(--hillary);
+    color: var(--olive);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-control-prev {
+    left: 15px;
+}
+
+.carousel-control-next {
+    right: 15px;
+}
+
+/* Indicadores de navegación */
+.carousel-indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: fit-content;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    padding: 5px 15px;
+    background-color: rgba(0,0,0,0.4);
+    border-radius: 20px;
+    z-index: 5;
+}
+
+.carousel-indicators button {
+    width: 10px;
+    height: 10px;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.5);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.carousel-indicators button.active {
+    background-color: white;
+    transform: scale(1.2);
+}
+
+/* Estilos para el zoom de imágenes */
+.image-zoom-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.image-zoom-content {
+    position: relative;
+    width: 80%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image-zoom-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Corregir posición del botón de cierre */
+.image-zoom-close {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* Botones de navegación para el zoom */
+.zoom-nav-buttons {
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.zoom-nav-button {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.zoom-nav-button:hover {
+    background: var(--hillary);
+    color: var(--olive);
+}
+
+.zoom-info {
+    position: absolute;
+    bottom: -40px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+}
+
+/* Media queries */
+@media (max-width: 991px) {
+    .story-wrapper {
+        padding-top: 3rem;
+        padding-bottom: 3rem;
+    }
+
+    .story-title {
+        font-size: 2.2rem;
+    }
+
+    .photo-carousel {
+        height: 450px;
+    }
+
+    .story-header-image-container {
+        height: 350px;
+    }
+}
+
+@media (max-width: 768px) {
+    .story-wrapper {
+        padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
+    }
+
+    .story-text {
+        font-size: 1rem;
+    }
+
+    .photo-carousel {
+        height: 350px;
+    }
+
+    .carousel-control {
+        width: 35px;
+        height: 35px;
+    }
+
+    .story-header-image-container {
+        height: 300px;
+        margin-bottom: 2rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .story-wrapper {
+        padding-top: 0;
+        padding-bottom: 2rem;
+    }
+
+    .story-content {
+        padding: 0 1rem;
+    }
+
+    /* Ocultar título normal en móvil - IMPORTANTE! */
+    .story-title {
+        display: none !important;
+    }
+
+    .photo-carousel {
+        height: 250px;
+    }
+
+    .carousel-control {
+        width: 30px;
+        height: 30px;
+    }
+
+    .carousel-indicators {
+        bottom: 10px;
+    }
+
+    .carousel-indicators button {
+        width: 8px;
+        height: 8px;
+    }
+
+    .story-header-image-container {
+        height: 200px;
+        margin-bottom: 1.5rem;
+    }
+}
