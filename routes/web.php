@@ -7,6 +7,7 @@ use App\Http\Controllers\DressCodeController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\MaintenanceController;
 use App\Http\Controllers\AccommodationController;
+use App\Http\Controllers\GalleryController;
 
 // Variables desde el .env
 $appMode = env('MAINTENANCE_MODE', 'false'); // Modo de la aplicación
@@ -67,4 +68,10 @@ if ($appMode == 'true') {
             ->header('Content-Type', 'text/calendar; charset=utf-8')
             ->header('Content-Disposition', 'attachment; filename="calendar.ics"');
     })->name('calendar.ics');
+
+    // Rutas para galería
+// Rutas para galería
+    Route::get('/galeria', [GalleryController::class, 'index'])->name('gallery.index');
+    Route::get('/galeria/download/{id}', [GalleryController::class, 'download'])->name('gallery.download');
+    Route::get('/galeria/download-all', [GalleryController::class, 'downloadAll'])->name('gallery.downloadAll');
 }

@@ -16,6 +16,7 @@
 @import 'styles-info.css';
 @import 'styles-maintenance.css';
 @import 'styles-story.css';
+@import 'styles-gallery.css';
 
 /* Estilos globales adicionales */
 body::-webkit-scrollbar {

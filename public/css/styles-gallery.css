@@ -1,0 +1,721 @@
+/* Gallery Styles - Diseño mejorado inspirado en "Nuestra Historia" */
+.gallery-wrapper {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    min-height: calc(100vh - 80px);
+}
+
+/* Controles superiores */
+.gallery-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 3rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 2rem;
+}
+
+.category-filters {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    background: transparent;
+    border: 1px solid var(--hillary);
+    color: var(--hillary);
+    padding: 0.6rem 1.2rem;
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+}
+
+.filter-btn:hover,
+.filter-btn.active {
+    background: var(--hillary);
+    color: var(--olive);
+}
+
+.view-controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.view-toggle,
+.download-all {
+    background: transparent;
+    border: 1px solid var(--hillary);
+    color: var(--hillary);
+    padding: 0.6rem 1.2rem;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.view-toggle:hover,
+.download-all:hover {
+    background: var(--hillary);
+    color: var(--olive);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Vista Carrusel - MEJORADA: Carrusel de punta a punta */
+.gallery-carousel-view {
+    display: block;
+}
+
+.main-image-container {
+    position: relative;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    height: 70vh;
+    min-height: 500px;
+    margin-bottom: 2rem;
+    background: #000;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Fondo borroso para imágenes verticales (como en "Nuestra Historia") */
+.main-image-container::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background-image: var(--bg-image);
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px) brightness(0.4);
+    transform: scale(1.1);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.main-image-container.has-vertical::before {
+    opacity: 1;
+}
+
+.main-image-container img {
+    position: relative;
+    z-index: 1;
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    cursor: zoom-in;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+/* Botones de navegación MEJORADOS */
+.image-controls {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 2rem;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.nav-btn {
+    background: rgba(0, 0, 0, 0.6);
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    pointer-events: all;
+    font-size: 1.4rem;
+    backdrop-filter: blur(10px);
+}
+
+.nav-btn:hover:not(:disabled) {
+    background: var(--hillary);
+    color: var(--olive);
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Botones de acción reposicionados */
+.action-buttons {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    gap: 1rem;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.download-btn,
+.fullscreen-btn {
+    background: rgba(0, 0, 0, 0.6);
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    pointer-events: all;
+    text-decoration: none;
+    font-size: 1.1rem;
+    backdrop-filter: blur(10px);
+}
+
+.download-btn:hover,
+.fullscreen-btn:hover {
+    background: var(--hillary);
+    color: var(--olive);
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Thumbnails mejorados */
+.thumbnails-container {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.thumbnails-scroll {
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
+    padding: 1rem 0;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.thumbnails-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.thumbnail {
+    flex: 0 0 auto;
+    width: 120px;
+    height: 80px;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 3px solid transparent;
+    transition: all 0.3s ease;
+    position: relative;
+    background: var(--bg-light);
+}
+
+.thumbnail.active {
+    border-color: var(--gold-bright);
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(216, 215, 182, 0.4);
+}
+
+.thumbnail:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--hillary);
+    color: var(--hillary);
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 2;
+    font-size: 1.1rem;
+}
+
+.scroll-btn:hover {
+    background: var(--hillary);
+    color: var(--olive);
+    transform: translateY(-50%) scale(1.1);
+}
+
+.scroll-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: translateY(-50%);
+}
+
+.scroll-left {
+    left: -25px;
+}
+
+.scroll-right {
+    right: -25px;
+}
+
+/* Vista Grid MEJORADA */
+.gallery-grid-view {
+    display: none;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+}
+
+.photos-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.grid-photo {
+    position: relative;
+    aspect-ratio: 1;
+    cursor: pointer;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    background: var(--bg-light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.grid-photo:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 25px rgba(0, 0, 0, 0.2);
+}
+
+.grid-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.grid-photo:hover img {
+    transform: scale(1.1);
+}
+
+.photo-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    backdrop-filter: blur(2px);
+}
+
+.grid-photo:hover .photo-overlay {
+    opacity: 1;
+}
+
+.overlay-download,
+.overlay-fullscreen {
+    background: var(--hillary);
+    color: var(--olive);
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+
+.overlay-download:hover,
+.overlay-fullscreen:hover {
+    background: var(--gold-bright);
+    transform: scale(1.1);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal pantalla completa MEJORADO */
+.fullscreen-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+}
+
+.fullscreen-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-content {
+    position: relative;
+    width: 90%;
+    height: 90%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* Fondo borroso para modal también */
+.modal-content::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background-image: var(--modal-bg-image);
+    background-size: cover;
+    background-position: center;
+    filter: blur(20px) brightness(0.3);
+    transform: scale(1.1);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-content.has-vertical::before {
+    opacity: 1;
+}
+
+.modal-close {
+    position: absolute;
+    top: -60px;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: var(--white);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    z-index: 1001;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+.modal-close:hover {
+    background: var(--hillary);
+    color: var(--olive);
+    transform: scale(1.1);
+}
+
+#modalImage {
+    position: relative;
+    z-index: 1;
+    max-width: 95%;
+    max-height: 95%;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.modal-controls {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 3rem;
+    pointer-events: none;
+    z-index: 10;
+}
+
+.modal-nav {
+    background: rgba(0, 0, 0, 0.6);
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    pointer-events: all;
+    font-size: 1.5rem;
+    backdrop-filter: blur(10px);
+}
+
+.modal-nav:hover:not(:disabled) {
+    background: var(--hillary);
+    color: var(--olive);
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-nav:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.modal-download {
+    position: absolute;
+    bottom: -80px;
+    right: 3rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: var(--white);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    font-size: 1.3rem;
+    backdrop-filter: blur(10px);
+    z-index: 10;
+}
+
+.modal-download:hover {
+    background: var(--hillary);
+    color: var(--olive);
+    transform: scale(1.1);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Estado sin fotos */
+.no-photos {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--hillary);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.no-photos h3 {
+    color: var(--gold-bright);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+/* Media queries */
+@media (max-width: 991px) {
+    .gallery-wrapper {
+        padding-top: 0;
+    }
+
+    .gallery-controls {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+
+    .category-filters {
+        justify-content: center;
+    }
+
+    .view-controls {
+        justify-content: center;
+    }
+
+    .main-image-container {
+        height: 50vh;
+        min-height: 350px;
+    }
+
+    .photos-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .thumbnails-container {
+        padding: 0 1rem;
+    }
+
+    .thumbnails-scroll {
+        gap: 0.5rem;
+    }
+
+    .thumbnail {
+        width: 100px;
+        height: 67px;
+    }
+
+    .action-buttons {
+        bottom: 1rem;
+        right: 1rem;
+    }
+
+    .nav-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+    }
+
+    .image-controls {
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .photos-grid {
+        grid-template-columns: repeat(4, 1fr); /* MÁS PEQUEÑAS en móvil */
+        gap: 0.5rem;
+    }
+
+    .main-image-container {
+        height: 40vh;
+        min-height: 300px;
+    }
+
+    .action-buttons {
+        gap: 0.5rem;
+    }
+
+    .download-btn,
+    .fullscreen-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .nav-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 1.1rem;
+    }
+
+    .modal-controls {
+        padding: 0 1rem;
+    }
+
+    .modal-nav {
+        width: 60px;
+        height: 60px;
+        font-size: 1.3rem;
+    }
+
+    .modal-download {
+        width: 50px;
+        height: 50px;
+        bottom: -70px;
+        right: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .category-filters {
+        gap: 0.3rem;
+    }
+
+    .filter-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 0.7rem;
+    }
+
+    .photos-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 columnas en móvil pequeño */
+        gap: 0.3rem;
+    }
+
+    .thumbnail {
+        width: 80px;
+        height: 53px;
+    }
+
+    .view-controls {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .view-toggle,
+    .download-all {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .main-image-container {
+        height: 35vh;
+        min-height: 250px;
+    }
+
+    .action-buttons {
+        bottom: 0.5rem;
+        right: 0.5rem;
+    }
+
+    .scroll-left {
+        left: -20px;
+    }
+
+    .scroll-right {
+        right: -20px;
+    }
+}

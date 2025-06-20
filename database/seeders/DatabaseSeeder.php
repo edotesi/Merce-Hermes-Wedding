@@ -21,7 +21,8 @@ class DatabaseSeeder extends Seeder
             PartySeeder::class,
             AppetizerSeeder::class,
             FeastSeeder::class,
-            AccommodationsTableSeeder::class
+            AccommodationsTableSeeder::class,
+            GallerySeeder::class
         ]);
     }
 }

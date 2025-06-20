@@ -1,15 +1,96 @@
 <?php
 
 if (!function_exists('routeWithPreview')) {
-    function routeWithPreview($name, $parameters = []) {
-        $route = route($name, $parameters);
+    /**
+     * Generar URL de ruta con parámetro de preview si está en modo mantenimiento
+     */
+    function routeWithPreview($routeName, $parameters = [])
+    {
+        $url = route($routeName, $parameters);
 
-        // Si estamos en modo mantenimiento O ya hay un token válido en la URL actual
-        if (env('MAINTENANCE_MODE') === 'true' ||
-            request()->query('preview') === env('MAINTENANCE_TOKEN')) {
-            return $route . '?preview=' . env('MAINTENANCE_TOKEN');
+        // Si estamos en modo preview, añadir el token
+        if (request()->query('preview') === env('MAINTENANCE_TOKEN', '')) {
+            $separator = strpos($url, '?') !== false ? '&' : '?';
+            $url .= $separator . 'preview=' . env('MAINTENANCE_TOKEN', '');
         }
 
-        return $route;
+        return $url;
+    }
+}
+
+if (!function_exists('formatFileSize')) {
+    /**
+     * Formatear tamaño de archivo en bytes a formato legible
+     */
+    function formatFileSize($bytes, $precision = 2)
+    {
+        if ($bytes === 0 || $bytes === null) {
+            return '0 B';
+        }
+
+        $units = ['B', 'KB', 'MB', 'GB', 'TB'];
+
+        for ($i = 0; $bytes > 1024 && $i < count($units) - 1; $i++) {
+            $bytes /= 1024;
+        }
+
+        return round($bytes, $precision) . ' ' . $units[$i];
+    }
+}
+
+if (!function_exists('generateUniqueFilename')) {
+    /**
+     * Generar nombre de archivo único
+     */
+    function generateUniqueFilename($originalName, $directory = '')
+    {
+        $pathInfo = pathinfo($originalName);
+        $filename = $pathInfo['filename'];
+        $extension = isset($pathInfo['extension']) ? '.' . $pathInfo['extension'] : '';
+
+        $counter = 1;
+        $newName = $originalName;
+
+        while (file_exists($directory . '/' . $newName)) {
+            $newName = $filename . '_' . $counter . $extension;
+            $counter++;
+        }
+
+        return $newName;
+    }
+}
+
+if (!function_exists('isImageFile')) {
+    /**
+     * Verificar si un archivo es una imagen válida
+     */
+    function isImageFile($filename)
+    {
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'];
+        $extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
+
+        return in_array($extension, $allowedExtensions);
+    }
+}
+
+if (!function_exists('optimizeImagePath')) {
+    /**
+     * Optimizar ruta de imagen para web (convertir espacios, caracteres especiales)
+     */
+    function optimizeImagePath($path)
+    {
+        // Reemplazar espacios y caracteres especiales
+        $path = preg_replace('/[^a-zA-Z0-9\/\-_\.]/', '_', $path);
+
+        // Eliminar múltiples underscores consecutivos
+        $path = preg_replace('/_+/', '_', $path);
+
+        // Eliminar underscores al inicio y final de nombres de archivo
+        $pathParts = explode('/', $path);
+        $filename = array_pop($pathParts);
+        $filename = trim($filename, '_');
+        $pathParts[] = $filename;
+
+        return implode('/', $pathParts);
     }
 }

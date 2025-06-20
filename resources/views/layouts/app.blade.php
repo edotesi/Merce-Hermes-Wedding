@@ -60,6 +60,11 @@
                             href="{{ routeWithPreview('accommodations') }}">Alojamientos</a>
                     @endif
                 </li>
+                <li class="nav-item">
+                    @if (Route::has('gallery.index'))
+                        <a class="nav-link {{ Request::routeIs('gallery.*') ? 'active' : '' }}" href="{{ routeWithPreview('gallery.index') }}">Galería</a>
+                    @endif
+                </li>
             </ul>
         </div>
     </nav>
@@ -76,6 +81,8 @@
             <h1>Alojamientos</h1>
         @elseif (Request::routeIs('story'))
             <h1>Nuestra Historia</h1>
+        @elseif (Request::routeIs('gallery.*'))
+            <h1>Galería</h1>
         @endif
     </div>
 
