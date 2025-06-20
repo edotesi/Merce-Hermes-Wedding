@@ -111,10 +111,8 @@
         </div>
     </div>
 
-    <!-- Canvas Confetti -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
-
     @push('scripts')
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
         <script src="{{ asset('js/home.js') }}"></script>
     @endpush
 @endsection
