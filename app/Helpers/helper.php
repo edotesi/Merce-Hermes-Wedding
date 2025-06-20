@@ -94,3 +94,79 @@ if (!function_exists('optimizeImagePath')) {
         return implode('/', $pathParts);
     }
 }
+
+// Nuevas funciones para la galería
+
+if (!function_exists('getCategoryIcon')) {
+    /**
+     * Obtener icono FontAwesome para una categoría de galería
+     */
+    function getCategoryIcon($category)
+    {
+        $icons = [
+            'ceremonia' => 'church',
+            'bienvenida' => 'glass-cheers',
+            'banquete' => 'utensils',
+            'fiesta' => 'music',
+            'fotomaton' => 'camera',
+            'preboda' => 'heart',
+            'todo' => 'images'
+        ];
+
+        return $icons[strtolower($category)] ?? 'image';
+    }
+}
+
+if (!function_exists('getCategoryDisplayName')) {
+    /**
+     * Obtener nombre de display para una categoría
+     */
+    function getCategoryDisplayName($category)
+    {
+        $names = [
+            'ceremonia' => 'Ceremonia',
+            'bienvenida' => 'Bienvenida',
+            'banquete' => 'Banquete',
+            'fiesta' => 'Fiesta',
+            'fotomaton' => 'Fotomatón',
+            'preboda' => 'Preboda',
+            'todo' => 'Todas'
+        ];
+
+        return $names[strtolower($category)] ?? ucfirst($category);
+    }
+}
+
+if (!function_exists('getCategoryColor')) {
+    /**
+     * Obtener color temático para una categoría
+     */
+    function getCategoryColor($category)
+    {
+        $colors = [
+            'ceremonia' => '#d4af37',      // Dorado
+            'bienvenida' => '#8fbc8f',     // Verde suave
+            'banquete' => '#cd853f',       // Marrón dorado
+            'fiesta' => '#ff6b6b',         // Coral
+            'fotomaton' => '#4ecdc4',      // Turquesa
+            'preboda' => '#ff8a95',        // Rosa suave
+            'todo' => '#a79f7d'            // Color principal
+        ];
+
+        return $colors[strtolower($category)] ?? '#a79f7d';
+    }
+}
+
+if (!function_exists('formatImageDimensions')) {
+    /**
+     * Formatear dimensiones de imagen
+     */
+    function formatImageDimensions($width, $height)
+    {
+        if (!$width || !$height) {
+            return 'N/A';
+        }
+
+        return $width . 'x' . $height;
+    }
+}
