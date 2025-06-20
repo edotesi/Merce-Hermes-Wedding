@@ -76,56 +76,66 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Función para crear fuegos artificiales
     function launchFireworks() {
+        // Verificar que confetti esté disponible
+        if (typeof confetti === 'undefined') {
+            console.error('Canvas-confetti no está cargado');
+            return;
+        }
+
         // Función para lanzar confetti desde diferentes posiciones
         function randomInRange(min, max) {
             return Math.random() * (max - min) + min;
         }
 
-        // Primer estallido
-        confetti({
-            angle: randomInRange(55, 125),
-            spread: randomInRange(50, 70),
-            particleCount: randomInRange(50, 100),
-            origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
-        });
-
-        // Segundo estallido
-        confetti({
-            angle: randomInRange(55, 125),
-            spread: randomInRange(50, 70),
-            particleCount: randomInRange(50, 100),
-            origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
-        });
-
-        // Tercer estallido central
-        setTimeout(() => {
-            confetti({
-                angle: 90,
-                spread: 45,
-                particleCount: 100,
-                origin: { x: 0.5, y: 0.6 }
-            });
-        }, 250);
-
-        // Lluvia de confetti dorado
-        setTimeout(() => {
-            confetti({
-                particleCount: 100,
-                spread: 70,
-                origin: { y: 0.6 },
-                colors: ['#d8d7b6', '#bfb58d', '#c5c49e', '#a79f7d']
-            });
-        }, 500);
-
-        // Estallido final
-        setTimeout(() => {
+        try {
+            // Primer estallido
             confetti({
                 angle: randomInRange(55, 125),
                 spread: randomInRange(50, 70),
-                particleCount: randomInRange(80, 120),
-                origin: { x: 0.5, y: 0.4 }
+                particleCount: randomInRange(50, 100),
+                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
             });
-        }, 750);
+
+            // Segundo estallido
+            confetti({
+                angle: randomInRange(55, 125),
+                spread: randomInRange(50, 70),
+                particleCount: randomInRange(50, 100),
+                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+            });
+
+            // Tercer estallido central
+            setTimeout(() => {
+                confetti({
+                    angle: 90,
+                    spread: 45,
+                    particleCount: 100,
+                    origin: { x: 0.5, y: 0.6 }
+                });
+            }, 250);
+
+            // Lluvia de confetti dorado
+            setTimeout(() => {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: { y: 0.6 },
+                    colors: ['#d8d7b6', '#bfb58d', '#c5c49e', '#a79f7d']
+                });
+            }, 500);
+
+            // Estallido final
+            setTimeout(() => {
+                confetti({
+                    angle: randomInRange(55, 125),
+                    spread: randomInRange(50, 70),
+                    particleCount: randomInRange(80, 120),
+                    origin: { x: 0.5, y: 0.4 }
+                });
+            }, 750);
+        } catch (error) {
+            console.error('Error lanzando fuegos artificiales:', error);
+        }
     }
 
     // Función para generar la URL de Google Calendar

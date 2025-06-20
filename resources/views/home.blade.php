@@ -7,7 +7,6 @@
 
         <div class="hero-left-content">
             <h1 class="hero-title">Mercè & Hermes</h1>
-            <p class="hero-subtitle">¡Nos casamos!</p>
         </div>
 
         <div class="hero-right-content">
@@ -111,8 +110,10 @@
         </div>
     </div>
 
+    <!-- Scripts directos en el HTML para garantizar orden -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+
     @push('scripts')
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
         <script src="{{ asset('js/home.js') }}"></script>
     @endpush
 @endsection
