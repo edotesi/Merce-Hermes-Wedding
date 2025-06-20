@@ -69,9 +69,8 @@ if ($appMode == 'true') {
             ->header('Content-Disposition', 'attachment; filename="calendar.ics"');
     })->name('calendar.ics');
 
-    // Rutas para galería
-// Rutas para galería
     Route::get('/galeria', [GalleryController::class, 'index'])->name('gallery.index');
     Route::get('/galeria/download/{id}', [GalleryController::class, 'download'])->name('gallery.download');
     Route::get('/galeria/download-all', [GalleryController::class, 'downloadAll'])->name('gallery.downloadAll');
+    Route::post('/galeria/download-selected', [GalleryController::class, 'downloadSelected'])->name('gallery.downloadSelected');
 }

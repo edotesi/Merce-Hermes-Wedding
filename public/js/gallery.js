@@ -1,408 +1,303 @@
-/**
- * Simplified Gallery JavaScript
- * Maneja la galería simplificada con masonry en desktop y grid en móvil
- */
+document.addEventListener('DOMContentLoaded', function() {
+    // Variables globales
+    let currentIndex = 0;
+    let filteredPhotos = [];
+    let currentCategory = 'todo';
+    let selectedPhotos = new Set();
+    let isSelectionMode = false;
+    let isGridView = false;
+    let isMobile = window.innerWidth <= 991;
 
-class SimplifiedGallery {
-    constructor() {
-        this.photos = window.galleryData?.photos || [];
-        this.currentCategory = window.galleryData?.currentCategory || 'todo';
-        this.currentPhotoIndex = 0;
-        this.isSelectionMode = false;
-        this.selectedPhotos = new Set();
-        this.isLightboxOpen = false;
+    // Elementos del DOM
+    const mainViewerImage = document.querySelector('#mainViewerImage');
+    const viewerCategory = document.querySelector('#viewerCategory');
+    const viewerCounter = document.querySelector('#viewerCounter');
+    const photosRow = document.querySelector('#photosRow');
+    const photoGrid = document.querySelector('#photoGrid');
+    const gridViewSection = document.querySelector('#gridViewSection');
+    const toggleGridBtn = document.querySelector('#toggleGridView');
+    const selectionBar = document.querySelector('#selectionBar');
+    const selectedCountEl = document.querySelector('#selectedCount');
+    const fullscreenModal = document.querySelector('#fullscreenModal');
+    const mobileModal = document.querySelector('#mobileModal');
+    const loadingOverlay = document.querySelector('.loading-overlay');
+    const mobilePhotoGrid = document.querySelector('#mobilePhotoGrid');
 
-        this.init();
+    // Verificar que los datos existen
+    if (typeof window.galleryData === 'undefined' || !window.galleryData.photos) {
+        console.error('Gallery data not found');
+        return;
     }
 
-    init() {
-        this.setupEventListeners();
-        this.setupKeyboardNavigation();
-        this.setupIntersectionObserver();
-        this.setupCategoryIcons();
-    }
+    const allPhotos = window.galleryData.photos;
+    filteredPhotos = [...allPhotos];
+    currentCategory = window.galleryData.currentCategory || 'todo';
 
-    setupEventListeners() {
-        // Category filters
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const category = e.currentTarget.dataset.category;
-                this.filterByCategory(category);
-            });
-        });
+    console.log('🎬 Gallery starting...', {
+        isMobile,
+        photos: allPhotos.length,
+        mobilePhotoGrid: !!mobilePhotoGrid,
+        currentCategory
+    });
 
-        // Selection mode
-        document.getElementById('selectModeBtn')?.addEventListener('click', () => {
-            this.toggleSelectionMode();
-        });
+    /**
+     * Inicializar la galería
+     */
+    function initGallery() {
+        console.log('🚀 Initializing gallery...');
 
-        // Photo interactions
-        this.setupPhotoListeners();
-
-        // Lightbox controls
-        this.setupLightboxListeners();
-
-        // Selection bar
-        this.setupSelectionBarListeners();
-    }
-
-    setupPhotoListeners() {
-        document.addEventListener('click', (e) => {
-            const photoItem = e.target.closest('.gallery-photo');
-            if (!photoItem) return;
-
-            const action = e.target.closest('[data-action]')?.dataset.action;
-            const photoIndex = parseInt(photoItem.dataset.index);
-
-            switch (action) {
-                case 'view':
-                    e.preventDefault();
-                    this.openLightbox(photoIndex);
-                    break;
-                case 'select':
-                    e.preventDefault();
-                    this.togglePhotoSelection(photoItem);
-                    break;
-                default:
-                    // Click en la foto sin acción específica
-                    if (!this.isSelectionMode && !e.target.closest('.photo-actions')) {
-                        this.openLightbox(photoIndex);
-                    } else if (this.isSelectionMode) {
-                        this.togglePhotoSelection(photoItem);
-                    }
-            }
-        });
-    }
-
-    setupLightboxListeners() {
-        // Close lightbox
-        document.getElementById('lightboxClose')?.addEventListener('click', () => {
-            this.closeLightbox();
-        });
-
-        // Navigation
-        document.getElementById('lightboxPrev')?.addEventListener('click', () => {
-            this.navigateLightbox(-1);
-        });
-
-        document.getElementById('lightboxNext')?.addEventListener('click', () => {
-            this.navigateLightbox(1);
-        });
-
-        // Thumbnail navigation
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.thumbnail-item')) {
-                const index = parseInt(e.target.closest('.thumbnail-item').dataset.index);
-                this.showPhotoInLightbox(index);
-            }
-        });
-
-        // Click outside to close
-        document.getElementById('lightboxModal')?.addEventListener('click', (e) => {
-            if (e.target.id === 'lightboxModal') {
-                this.closeLightbox();
-            }
-        });
-    }
-
-    setupSelectionBarListeners() {
-        document.getElementById('selectAllBtn')?.addEventListener('click', () => {
-            this.selectAllPhotos();
-        });
-
-        document.getElementById('deselectAllBtn')?.addEventListener('click', () => {
-            this.deselectAllPhotos();
-        });
-
-        document.getElementById('downloadSelectedBtn')?.addEventListener('click', () => {
-            this.downloadSelectedPhotos();
-        });
-
-        document.getElementById('cancelSelectionBtn')?.addEventListener('click', () => {
-            this.toggleSelectionMode();
-        });
-    }
-
-    setupKeyboardNavigation() {
-        document.addEventListener('keydown', (e) => {
-            if (!this.isLightboxOpen) return;
-
-            switch (e.key) {
-                case 'Escape':
-                    this.closeLightbox();
-                    break;
-                case 'ArrowLeft':
-                    e.preventDefault();
-                    this.navigateLightbox(-1);
-                    break;
-                case 'ArrowRight':
-                    e.preventDefault();
-                    this.navigateLightbox(1);
-                    break;
-            }
-        });
-    }
-
-    setupIntersectionObserver() {
-        // Lazy loading para imágenes
-        const imageObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const img = entry.target;
-                    if (img.dataset.src) {
-                        img.src = img.dataset.src;
-                        img.removeAttribute('data-src');
-                        imageObserver.unobserve(img);
-                    }
-                }
-            });
-        }, {
-            rootMargin: '100px'
-        });
-
-        // Observar imágenes con data-src
-        document.querySelectorAll('img[data-src]').forEach(img => {
-            imageObserver.observe(img);
-        });
-    }
-
-    setupCategoryIcons() {
-        // Función helper para obtener iconos de categorías
-        window.getCategoryIcon = (category) => {
-            const icons = {
-                'ceremonia': 'church',
-                'bienvenida': 'glass-cheers',
-                'banquete': 'utensils',
-                'fiesta': 'music',
-                'fotomaton': 'camera',
-                'preboda': 'heart'
-            };
-            return icons[category] || 'image';
-        };
-    }
-
-    filterByCategory(category) {
-        // Mostrar loading
-        this.showLoading();
-
-        // Actualizar URL sin recargar página
-        const url = new URL(window.location);
-        if (category === 'todo') {
-            url.searchParams.delete('category');
+        if (isMobile) {
+            console.log('📱 Initializing mobile gallery');
+            initMobileGallery();
         } else {
-            url.searchParams.set('category', category);
+            console.log('💻 Initializing desktop gallery');
+            initDesktopGallery();
         }
-        window.history.pushState({}, '', url);
 
-        // Simular carga (en una implementación real sería una llamada AJAX)
+        initCategoryFilters();
+        initSelectionMode();
+        initKeyboardNavigation();
+        initTouchNavigation();
+
+        // Filtrar por categoría inicial
+        if (currentCategory !== 'todo') {
+            filterByCategory(currentCategory);
+        } else {
+            updateAllViews();
+        }
+
+        console.log('✅ Gallery initialization complete');
+    }
+
+    /**
+     * Inicializar galería desktop
+     */
+    function initDesktopGallery() {
+        initMainViewer();
+        initPhotosRow();
+        initToggleGrid();
+        initFullscreenModal();
+        updateMainViewer();
+        updatePhotosRow();
+    }
+
+    /**
+     * Inicializar galería móvil
+     */
+    function initMobileGallery() {
+        console.log('📱 Setting up mobile gallery...');
+
+        // Verificar elemento
+        if (!mobilePhotoGrid) {
+            console.error('❌ Mobile photo grid element not found!');
+            return;
+        }
+
+        console.log('✅ Mobile photo grid element found');
+
+        initMobileModal();
+        createMobileGrid();
+
+        // Debug: verificar visibilidad
+        const section = document.querySelector('.mobile-grid-section');
+        if (section) {
+            const styles = getComputedStyle(section);
+            console.log('📐 Mobile section styles:', {
+                display: styles.display,
+                visibility: styles.visibility,
+                opacity: styles.opacity
+            });
+        }
+    }
+
+    /**
+     * Inicializar visualizador principal
+     */
+    function initMainViewer() {
+        if (!mainViewerImage) return;
+
+        const prevBtn = document.querySelector('.viewer-prev');
+        const nextBtn = document.querySelector('.viewer-next');
+        const fullscreenBtn = document.querySelector('.fullscreen-btn');
+
+        console.log('🎮 Setting up main viewer controls:', {
+            prevBtn: !!prevBtn,
+            nextBtn: !!nextBtn,
+            fullscreenBtn: !!fullscreenBtn
+        });
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                console.log('⬅️ Previous button clicked');
+                navigateViewer(-1);
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                console.log('➡️ Next button clicked');
+                navigateViewer(1);
+            });
+        }
+
+        if (fullscreenBtn) {
+            fullscreenBtn.addEventListener('click', () => {
+                console.log('🔍 Fullscreen button clicked');
+                openFullscreen();
+            });
+        }
+    }
+
+    /**
+     * Actualizar visualizador principal
+     */
+    function updateMainViewer() {
+        if (!mainViewerImage || filteredPhotos.length === 0) return;
+
+        const photo = filteredPhotos[currentIndex];
+        if (!photo) return;
+
+        mainViewerImage.src = photo.url;
+        mainViewerImage.alt = photo.name;
+
+        if (viewerCategory) {
+            viewerCategory.textContent = window.getCategoryDisplayName(photo.category);
+        }
+
+        if (viewerCounter) {
+            viewerCounter.textContent = `${currentIndex + 1} de ${filteredPhotos.length}`;
+        }
+    }
+
+    /**
+     * Navegar en el visualizador principal
+     */
+    function navigateViewer(direction) {
+        if (filteredPhotos.length === 0) return;
+
+        currentIndex += direction;
+
+        if (currentIndex >= filteredPhotos.length) {
+            currentIndex = 0;
+        } else if (currentIndex < 0) {
+            currentIndex = filteredPhotos.length - 1;
+        }
+
+        updateMainViewer();
+        updatePhotosRow();
+        updatePhotoGrid();
+    }
+
+    /**
+     * Crear fila horizontal de fotos
+     */
+    function createPhotosRow() {
+        if (!photosRow) return;
+
+        photosRow.innerHTML = '';
+
+        filteredPhotos.forEach((photo, index) => {
+            const item = document.createElement('div');
+            item.className = `row-photo-item ${index === currentIndex ? 'active' : ''}`;
+            item.dataset.index = index;
+
+            item.innerHTML = `
+                <img src="${photo.url}" alt="${photo.name}" loading="lazy">
+                <div class="row-photo-overlay">
+                    <div class="row-photo-actions">
+                        <button class="row-action-btn view-btn" title="Ver">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <a href="${photo.downloadUrl}" class="row-action-btn download-btn" title="Descargar">
+                            <i class="fas fa-download"></i>
+                        </a>
+                        <button class="row-action-btn select-btn" title="Seleccionar">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="selection-indicator">
+                    <i class="fas fa-check"></i>
+                </div>
+            `;
+
+            // Event listeners
+            item.addEventListener('click', () => selectPhoto(index));
+
+            const viewBtn = item.querySelector('.view-btn');
+            const selectBtn = item.querySelector('.select-btn');
+
+            if (viewBtn) {
+                viewBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openFullscreen(index);
+                });
+            }
+
+            if (selectBtn) {
+                selectBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    togglePhotoSelection(photo.id);
+                });
+            }
+
+            photosRow.appendChild(item);
+        });
+    }
+
+    /**
+     * Inicializar fila de fotos - ARREGLADO
+     */
+    function initPhotosRow() {
+        if (!photosRow) return;
+
+        createPhotosRow();
+
+        // ARREGLADO: Esperar a que el DOM esté listo
         setTimeout(() => {
-            this.currentCategory = category;
-            this.updateActiveFilter();
-            this.filterPhotosDisplay();
-            this.hideLoading();
-        }, 300);
-    }
+            const scrollLeft = document.querySelector('.row-scroll-left');
+            const scrollRight = document.querySelector('.row-scroll-right');
 
-    updateActiveFilter() {
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.category === this.currentCategory);
-        });
-    }
+            console.log('🔧 Setting up scroll buttons:', {
+                scrollLeft: !!scrollLeft,
+                scrollRight: !!scrollRight,
+                photosRow: !!photosRow
+            });
 
-    filterPhotosDisplay() {
-        const photoItems = document.querySelectorAll('.gallery-photo');
-
-        photoItems.forEach(item => {
-            const photoCategory = item.dataset.category;
-            const shouldShow = this.currentCategory === 'todo' || photoCategory === this.currentCategory;
-
-            if (shouldShow) {
-                item.style.display = '';
-                this.animateIn(item);
-            } else {
-                this.animateOut(item);
+            if (scrollLeft && photosRow) {
+                scrollLeft.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('⬅️ Scroll left clicked');
+                    photosRow.scrollBy({ left: -300, behavior: 'smooth' });
+                });
             }
-        });
-    }
 
-    toggleSelectionMode() {
-        this.isSelectionMode = !this.isSelectionMode;
-
-        // Actualizar botón
-        const selectBtn = document.getElementById('selectModeBtn');
-        if (selectBtn) {
-            selectBtn.classList.toggle('active', this.isSelectionMode);
-            const icon = selectBtn.querySelector('i');
-            const text = selectBtn.querySelector('span');
-
-            if (this.isSelectionMode) {
-                icon.className = 'fas fa-times';
-                text.textContent = 'Cancelar';
-            } else {
-                icon.className = 'fas fa-check-square';
-                text.textContent = 'Seleccionar fotos';
-                this.deselectAllPhotos();
+            if (scrollRight && photosRow) {
+                scrollRight.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log('➡️ Scroll right clicked');
+                    photosRow.scrollBy({ left: 300, behavior: 'smooth' });
+                });
             }
-        }
-
-        // Mostrar/ocultar barra de selección
-        const selectionBar = document.getElementById('selectionBar');
-        if (this.isSelectionMode) {
-            selectionBar?.classList.add('active');
-        } else {
-            selectionBar?.classList.remove('active');
-        }
-
-        // Actualizar cursor del documento
-        document.body.classList.toggle('selection-mode', this.isSelectionMode);
+        }, 100);
     }
 
-    togglePhotoSelection(photoItem) {
-        const photoId = photoItem.dataset.photoId;
+    /**
+     * Actualizar fila de fotos
+     */
+    function updatePhotosRow() {
+        if (!photosRow) return;
 
-        if (this.selectedPhotos.has(photoId)) {
-            this.selectedPhotos.delete(photoId);
-            photoItem.classList.remove('selected');
-        } else {
-            this.selectedPhotos.add(photoId);
-            photoItem.classList.add('selected');
-        }
-
-        this.updateSelectionCount();
-    }
-
-    selectAllPhotos() {
-        const visiblePhotos = document.querySelectorAll('.gallery-photo:not([style*="display: none"])');
-
-        visiblePhotos.forEach(photo => {
-            const photoId = photo.dataset.photoId;
-            this.selectedPhotos.add(photoId);
-            photo.classList.add('selected');
+        // Actualizar estados activos
+        const items = photosRow.querySelectorAll('.row-photo-item');
+        items.forEach((item, index) => {
+            item.classList.toggle('active', index === currentIndex);
         });
 
-        this.updateSelectionCount();
-    }
-
-    deselectAllPhotos() {
-        this.selectedPhotos.clear();
-        document.querySelectorAll('.gallery-photo').forEach(photo => {
-            photo.classList.remove('selected');
-        });
-
-        this.updateSelectionCount();
-    }
-
-    updateSelectionCount() {
-        const countElement = document.getElementById('selectedCount');
-        if (countElement) {
-            countElement.textContent = this.selectedPhotos.size;
-        }
-
-        // Habilitar/deshabilitar botones según selección
-        const downloadBtn = document.getElementById('downloadSelectedBtn');
-        const deselectBtn = document.getElementById('deselectAllBtn');
-
-        const hasSelection = this.selectedPhotos.size > 0;
-        downloadBtn?.classList.toggle('disabled', !hasSelection);
-        deselectBtn?.classList.toggle('disabled', !hasSelection);
-    }
-
-    downloadSelectedPhotos() {
-        if (this.selectedPhotos.size === 0) return;
-
-        // En una implementación real, esto haría una llamada al servidor
-        // Para este ejemplo, abrimos cada enlace de descarga
-        const selectedPhotosData = this.photos.filter(photo =>
-            this.selectedPhotos.has(photo.id.toString())
-        );
-
-        selectedPhotosData.forEach((photo, index) => {
-            setTimeout(() => {
-                const link = document.createElement('a');
-                link.href = photo.downloadUrl;
-                link.download = photo.name;
-                link.click();
-            }, index * 100); // Pequeño delay entre descargas
-        });
-
-        this.showNotification(`Descargando ${this.selectedPhotos.size} fotos...`);
-    }
-
-    openLightbox(photoIndex) {
-        this.currentPhotoIndex = photoIndex;
-        this.isLightboxOpen = true;
-
-        const modal = document.getElementById('lightboxModal');
-        modal?.classList.add('active');
-
-        this.showPhotoInLightbox(photoIndex);
-
-        // Prevenir scroll del body
-        document.body.style.overflow = 'hidden';
-    }
-
-    closeLightbox() {
-        this.isLightboxOpen = false;
-
-        const modal = document.getElementById('lightboxModal');
-        modal?.classList.remove('active');
-
-        // Restaurar scroll del body
-        document.body.style.overflow = '';
-    }
-
-    navigateLightbox(direction) {
-        const newIndex = this.currentPhotoIndex + direction;
-
-        if (newIndex >= 0 && newIndex < this.photos.length) {
-            this.showPhotoInLightbox(newIndex);
-        }
-    }
-
-    showPhotoInLightbox(index) {
-        if (index < 0 || index >= this.photos.length) return;
-
-        this.currentPhotoIndex = index;
-        const photo = this.photos[index];
-
-        // Actualizar imagen
-        const lightboxImage = document.getElementById('lightboxImage');
-        if (lightboxImage) {
-            lightboxImage.src = photo.url;
-            lightboxImage.alt = photo.name;
-        }
-
-        // Actualizar información
-        document.getElementById('lightboxTitle').textContent = photo.name;
-        document.getElementById('lightboxCategory').textContent = `Categoría: ${photo.category}`;
-
-        // Actualizar botón de descarga
-        const downloadBtn = document.getElementById('lightboxDownload');
-        if (downloadBtn) {
-            downloadBtn.href = photo.downloadUrl;
-        }
-
-        // Actualizar contador
-        document.getElementById('lightboxPosition').textContent = index + 1;
-        document.getElementById('lightboxTotal').textContent = this.photos.length;
-
-        // Actualizar thumbnails activos
-        this.updateActiveThumbnail(index);
-
-        // Scroll a thumbnail visible
-        this.scrollToThumbnail(index);
-    }
-
-    updateActiveThumbnail(index) {
-        document.querySelectorAll('.thumbnail-item').forEach((thumb, i) => {
-            thumb.classList.toggle('active', i === index);
-        });
-    }
-
-    scrollToThumbnail(index) {
-        const thumbnail = document.querySelector(`.thumbnail-item[data-index="${index}"]`);
-        if (thumbnail) {
-            thumbnail.scrollIntoView({
+        // Scroll al elemento activo
+        const activeItem = photosRow.querySelector('.row-photo-item.active');
+        if (activeItem) {
+            activeItem.scrollIntoView({
                 behavior: 'smooth',
                 block: 'nearest',
                 inline: 'center'
@@ -410,99 +305,863 @@ class SimplifiedGallery {
         }
     }
 
-    // Utility methods
-    showLoading() {
-        document.getElementById('galleryLoading')?.classList.add('active');
+    /**
+     * Seleccionar foto del row
+     */
+    function selectPhoto(index) {
+        if (isSelectionMode) {
+            const photo = filteredPhotos[index];
+            togglePhotoSelection(photo.id);
+        } else {
+            currentIndex = index;
+            updateMainViewer();
+            updatePhotosRow();
+        }
     }
 
-    hideLoading() {
-        document.getElementById('galleryLoading')?.classList.remove('active');
-    }
+    /**
+     * Inicializar toggle de vista grid
+     */
+    function initToggleGrid() {
+        if (!toggleGridBtn || isMobile) return;
 
-    showNotification(message) {
-        // Crear notificación temporal
-        const notification = document.createElement('div');
-        notification.className = 'notification';
-        notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            background: var(--gold-bright);
-            color: var(--olive);
-            padding: 1rem 2rem;
-            border-radius: 8px;
-            z-index: 10001;
-            animation: slideInRight 0.3s ease;
-        `;
+        console.log('🔄 Setting up grid toggle');
 
-        document.body.appendChild(notification);
+        toggleGridBtn.addEventListener('click', () => {
+            isGridView = !isGridView;
+            console.log('🔄 Grid view toggled:', isGridView);
 
-        setTimeout(() => {
-            notification.style.animation = 'slideOutRight 0.3s ease';
-            setTimeout(() => notification.remove(), 300);
-        }, 3000);
-    }
+            if (isGridView) {
+                // Cambiar a vista Grid
+                document.querySelector('.main-viewer-section').style.display = 'none';
+                document.querySelector('.photos-row-section').style.display = 'none';
+                gridViewSection.style.display = 'block';
 
-    animateIn(element) {
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
-        element.style.transition = 'all 0.3s ease';
+                // Cambiar texto a "Visualizador"
+                toggleGridBtn.innerHTML = '<i class="fas fa-images"></i><span>Visualizador</span>';
+                toggleGridBtn.classList.add('active');
 
-        requestAnimationFrame(() => {
-            element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
+                updatePhotoGrid();
+            } else {
+                // Cambiar a vista Visualizador
+                gridViewSection.style.display = 'none';
+                document.querySelector('.main-viewer-section').style.display = 'block';
+                document.querySelector('.photos-row-section').style.display = 'block';
+
+                // Cambiar texto a "Grid"
+                toggleGridBtn.innerHTML = '<i class="fas fa-th"></i><span>Grid</span>';
+                toggleGridBtn.classList.remove('active');
+
+                updateMainViewer();
+                updatePhotosRow();
+            }
         });
     }
 
-    animateOut(element) {
-        element.style.transition = 'all 0.3s ease';
-        element.style.opacity = '0';
-        element.style.transform = 'translateY(-20px)';
+    /**
+     * Crear grid de fotos WEB
+     */
+    function createPhotoGrid() {
+        if (!photoGrid) return;
 
+        photoGrid.innerHTML = '';
+
+        filteredPhotos.forEach((photo, index) => {
+            const item = document.createElement('div');
+            item.className = 'grid-photo-item';
+            item.dataset.index = index;
+
+            item.innerHTML = `
+                <img src="${photo.url}" alt="${photo.name}" loading="lazy">
+                <div class="grid-photo-overlay">
+                    <div class="grid-photo-actions">
+                        <button class="grid-action-btn view-btn" title="Ver">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <a href="${photo.downloadUrl}" class="grid-action-btn download-btn" title="Descargar">
+                            <i class="fas fa-download"></i>
+                        </a>
+                        <button class="grid-action-btn select-btn" title="Seleccionar">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="selection-indicator">
+                    <i class="fas fa-check"></i>
+                </div>
+            `;
+
+            // Event listeners
+            item.addEventListener('click', () => selectPhoto(index));
+
+            const viewBtn = item.querySelector('.view-btn');
+            const selectBtn = item.querySelector('.select-btn');
+
+            if (viewBtn) {
+                viewBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openFullscreen(index);
+                });
+            }
+
+            if (selectBtn) {
+                selectBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    togglePhotoSelection(photo.id);
+                });
+            }
+
+            photoGrid.appendChild(item);
+        });
+    }
+
+    /**
+     * Actualizar grid de fotos WEB
+     */
+    function updatePhotoGrid() {
+        createPhotoGrid();
+        updateSelectionStates();
+    }
+
+    /**
+     * Crear grid móvil - ARREGLADO CON DEBUG
+     */
+    function createMobileGrid() {
+        console.log('📱 Creating mobile grid...');
+
+        if (!mobilePhotoGrid) {
+            console.error('❌ Mobile photo grid element not found');
+            return;
+        }
+
+        console.log('📱 Grid element found, photos:', filteredPhotos.length);
+
+        // Limpiar grid
+        mobilePhotoGrid.innerHTML = '';
+
+        if (filteredPhotos.length === 0) {
+            console.warn('⚠️ No photos to display');
+            return;
+        }
+
+        // Crear elementos
+        filteredPhotos.forEach((photo, index) => {
+            const item = document.createElement('div');
+            item.className = 'mobile-grid-item';
+            item.dataset.index = index;
+
+            item.innerHTML = `
+                <img src="${photo.url}" alt="${photo.name}" loading="lazy" onerror="console.error('Image failed to load:', this.src)">
+                <div class="mobile-grid-overlay">
+                    <div class="mobile-grid-actions">
+                        <button class="mobile-grid-action-btn view-btn" title="Ver">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <a href="${photo.downloadUrl}" class="mobile-grid-action-btn download-btn" title="Descargar">
+                            <i class="fas fa-download"></i>
+                        </a>
+                        <button class="mobile-grid-action-btn select-btn" title="Seleccionar">
+                            <i class="fas fa-check"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="selection-indicator">
+                    <i class="fas fa-check"></i>
+                </div>
+            `;
+
+            // Event listeners
+            item.addEventListener('click', () => {
+                console.log('📱 Mobile grid item clicked:', index);
+                if (isSelectionMode) {
+                    togglePhotoSelection(photo.id);
+                } else {
+                    openMobileModal(index);
+                }
+            });
+
+            const viewBtn = item.querySelector('.view-btn');
+            const selectBtn = item.querySelector('.select-btn');
+
+            if (viewBtn) {
+                viewBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    console.log('📱 View button clicked:', index);
+                    openMobileModal(index);
+                });
+            }
+
+            if (selectBtn) {
+                selectBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    console.log('📱 Select button clicked:', photo.id);
+                    togglePhotoSelection(photo.id);
+                });
+            }
+
+            mobilePhotoGrid.appendChild(item);
+        });
+
+        console.log('✅ Mobile grid created with', mobilePhotoGrid.children.length, 'items');
+
+        // Debug: verificar que los elementos están en el DOM
         setTimeout(() => {
-            element.style.display = 'none';
-        }, 300);
-    }
-}
+            const items = document.querySelectorAll('.mobile-grid-item');
+            console.log('🔍 Mobile grid items in DOM:', items.length);
 
-// CSS adicional para animaciones
-const additionalStyles = `
-    @keyframes slideInRight {
-        from { transform: translateX(100%); opacity: 0; }
-        to { transform: translateX(0); opacity: 1; }
-    }
-
-    @keyframes slideOutRight {
-        from { transform: translateX(0); opacity: 1; }
-        to { transform: translateX(100%); opacity: 0; }
-    }
-
-    .selection-mode .gallery-photo {
-        cursor: pointer !important;
+            if (items.length > 0) {
+                const firstItem = items[0];
+                const styles = getComputedStyle(firstItem);
+                console.log('📐 First item styles:', {
+                    display: styles.display,
+                    width: styles.width,
+                    height: styles.height,
+                    visibility: styles.visibility
+                });
+            }
+        }, 100);
     }
 
-    .gallery-photo.selected {
-        transform: scale(0.95) !important;
-        opacity: 0.8 !important;
+    /**
+     * Actualizar grid móvil
+     */
+    function updateMobileGrid() {
+        createMobileGrid();
+        updateSelectionStates();
     }
 
-    .selection-btn.disabled {
-        opacity: 0.5;
-        cursor: not-allowed;
-        pointer-events: none;
+    /**
+     * Inicializar filtros de categoría
+     */
+    function initCategoryFilters() {
+        // Filtros web
+        const webFilters = document.querySelectorAll('.filter-btn');
+        webFilters.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.dataset.category;
+                console.log('🏷️ Category filter clicked:', category);
+                filterByCategory(category);
+                updateFilterStates(category);
+            });
+        });
+
+        // Filtros móvil
+        const mobileFilters = document.querySelectorAll('.filter-btn-mobile');
+        mobileFilters.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const category = btn.dataset.category;
+                console.log('📱 Mobile category filter clicked:', category);
+                filterByCategory(category);
+                updateFilterStates(category);
+            });
+        });
     }
-`;
 
-// Inyectar estilos adicionales
-const styleSheet = document.createElement('style');
-styleSheet.textContent = additionalStyles;
-document.head.appendChild(styleSheet);
+    /**
+     * Filtrar por categoría
+     */
+    function filterByCategory(category) {
+        currentCategory = category;
+        currentIndex = 0;
 
-// Inicializar galería cuando el DOM esté listo
-document.addEventListener('DOMContentLoaded', () => {
-    new SimplifiedGallery();
+        if (category === 'todo') {
+            filteredPhotos = [...allPhotos];
+        } else {
+            filteredPhotos = allPhotos.filter(photo => photo.category === category);
+        }
+
+        console.log('🏷️ Filtered to category:', category, 'Photos:', filteredPhotos.length);
+
+        updateAllViews();
+        updateURL(category);
+    }
+
+    /**
+     * Actualizar estados de filtros
+     */
+    function updateFilterStates(activeCategory) {
+        // Filtros web
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.category === activeCategory);
+        });
+
+        // Filtros móvil
+        document.querySelectorAll('.filter-btn-mobile').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.category === activeCategory);
+        });
+    }
+
+    /**
+     * Actualizar URL sin recargar página
+     */
+    function updateURL(category) {
+        const url = new URL(window.location);
+        if (category === 'todo') {
+            url.searchParams.delete('category');
+        } else {
+            url.searchParams.set('category', category);
+        }
+        window.history.pushState({}, '', url);
+    }
+
+    /**
+     * Actualizar todas las vistas
+     */
+    function updateAllViews() {
+        console.log('🔄 Updating all views...');
+
+        if (isMobile) {
+            console.log('📱 Updating mobile grid');
+            updateMobileGrid();
+        } else {
+            console.log('💻 Updating desktop views');
+            updateMainViewer();
+            updatePhotosRow();
+            if (isGridView) {
+                updatePhotoGrid();
+            }
+        }
+    }
+
+    /**
+     * Inicializar modo selección
+     */
+    function initSelectionMode() {
+        const selectModeBtn = document.querySelector('#selectModeBtn');
+        const selectModeBtnMobile = document.querySelector('#selectModeBtnMobile');
+        const cancelBtn = document.querySelector('#cancelSelectionBtn');
+        const selectAllBtn = document.querySelector('#selectAllBtn');
+        const deselectAllBtn = document.querySelector('#deselectAllBtn');
+        const downloadSelectedBtn = document.querySelector('#downloadSelectedBtn');
+
+        if (selectModeBtn) {
+            selectModeBtn.addEventListener('click', toggleSelectionMode);
+        }
+
+        if (selectModeBtnMobile) {
+            selectModeBtnMobile.addEventListener('click', toggleSelectionMode);
+        }
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', exitSelectionMode);
+        }
+
+        if (selectAllBtn) {
+            selectAllBtn.addEventListener('click', selectAllPhotos);
+        }
+
+        if (deselectAllBtn) {
+            deselectAllBtn.addEventListener('click', deselectAllPhotos);
+        }
+
+        if (downloadSelectedBtn) {
+            downloadSelectedBtn.addEventListener('click', downloadSelectedPhotos);
+        }
+    }
+
+    /**
+     * Toggle modo selección
+     */
+    function toggleSelectionMode() {
+        isSelectionMode = !isSelectionMode;
+        console.log('✅ Selection mode toggled:', isSelectionMode);
+
+        document.body.classList.toggle('selection-mode', isSelectionMode);
+        if (selectionBar) {
+            selectionBar.classList.toggle('active', isSelectionMode);
+        }
+
+        if (!isSelectionMode) {
+            selectedPhotos.clear();
+            updateSelectionStates();
+        }
+
+        updateSelectionCounter();
+    }
+
+    /**
+     * Salir del modo selección
+     */
+    function exitSelectionMode() {
+        isSelectionMode = false;
+        selectedPhotos.clear();
+
+        document.body.classList.remove('selection-mode');
+        if (selectionBar) {
+            selectionBar.classList.remove('active');
+        }
+
+        updateSelectionStates();
+        updateSelectionCounter();
+    }
+
+    /**
+     * Seleccionar todas las fotos
+     */
+    function selectAllPhotos() {
+        filteredPhotos.forEach(photo => {
+            selectedPhotos.add(photo.id);
+        });
+        updateSelectionStates();
+        updateSelectionCounter();
+    }
+
+    /**
+     * Deseleccionar todas las fotos
+     */
+    function deselectAllPhotos() {
+        selectedPhotos.clear();
+        updateSelectionStates();
+        updateSelectionCounter();
+    }
+
+    /**
+     * Toggle selección de foto
+     */
+    function togglePhotoSelection(photoId) {
+        if (selectedPhotos.has(photoId)) {
+            selectedPhotos.delete(photoId);
+        } else {
+            selectedPhotos.add(photoId);
+        }
+        updateSelectionStates();
+        updateSelectionCounter();
+    }
+
+    /**
+     * Actualizar estados de selección
+     */
+    function updateSelectionStates() {
+        // Actualizar elementos en la fila
+        document.querySelectorAll('.row-photo-item').forEach(item => {
+            const index = parseInt(item.dataset.index);
+            const photo = filteredPhotos[index];
+            if (photo) {
+                item.classList.toggle('selected', selectedPhotos.has(photo.id));
+            }
+        });
+
+        // Actualizar elementos en el grid web
+        document.querySelectorAll('.grid-photo-item').forEach(item => {
+            const index = parseInt(item.dataset.index);
+            const photo = filteredPhotos[index];
+            if (photo) {
+                item.classList.toggle('selected', selectedPhotos.has(photo.id));
+            }
+        });
+
+        // Actualizar elementos en grid móvil
+        document.querySelectorAll('.mobile-grid-item').forEach(item => {
+            const index = parseInt(item.dataset.index);
+            const photo = filteredPhotos[index];
+            if (photo) {
+                item.classList.toggle('selected', selectedPhotos.has(photo.id));
+            }
+        });
+    }
+
+    /**
+     * Actualizar contador de selección
+     */
+    function updateSelectionCounter() {
+        if (selectedCountEl) {
+            selectedCountEl.textContent = selectedPhotos.size;
+        }
+    }
+
+    /**
+     * Descargar fotos seleccionadas
+     */
+    function downloadSelectedPhotos() {
+        if (selectedPhotos.size === 0) return;
+
+        const selectedIds = Array.from(selectedPhotos);
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '/gallery/download-selected';
+        form.style.display = 'none';
+
+        // CSRF token
+        const csrfInput = document.createElement('input');
+        csrfInput.type = 'hidden';
+        csrfInput.name = '_token';
+        csrfInput.value = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+        form.appendChild(csrfInput);
+
+        // IDs seleccionados
+        selectedIds.forEach(id => {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'photo_ids[]';
+            input.value = id;
+            form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
+        document.body.removeChild(form);
+    }
+
+    /**
+     * Inicializar modal fullscreen - ARREGLADO
+     */
+    function initFullscreenModal() {
+        if (!fullscreenModal) {
+            console.warn('⚠️ Fullscreen modal not found');
+            return;
+        }
+
+        console.log('🔍 Setting up fullscreen modal');
+
+        const closeBtn = fullscreenModal.querySelector('.fullscreen-close');
+        const prevBtn = fullscreenModal.querySelector('.fullscreen-prev');
+        const nextBtn = fullscreenModal.querySelector('.fullscreen-next');
+        const downloadBtn = fullscreenModal.querySelector('#fullscreenDownload');
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+                console.log('❌ Fullscreen close clicked');
+                closeFullscreen();
+            });
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                console.log('⬅️ Fullscreen prev clicked');
+                navigateFullscreen(-1);
+            });
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                console.log('➡️ Fullscreen next clicked');
+                navigateFullscreen(1);
+            });
+        }
+
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', () => {
+                console.log('💾 Fullscreen download clicked');
+                downloadCurrentPhoto();
+            });
+        }
+
+        // Cerrar con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && fullscreenModal.classList.contains('active')) {
+                console.log('⌨️ ESC pressed - closing fullscreen');
+                closeFullscreen();
+            }
+        });
+
+        // Cerrar al hacer clic fuera
+        fullscreenModal.addEventListener('click', (e) => {
+            if (e.target === fullscreenModal) {
+                console.log('🖱️ Clicked outside - closing fullscreen');
+                closeFullscreen();
+            }
+        });
+    }
+
+    /**
+     * Abrir modal fullscreen - ARREGLADO
+     */
+    function openFullscreen(index = null) {
+        if (!fullscreenModal) {
+            console.error('❌ Fullscreen modal not available');
+            return;
+        }
+
+        if (index !== null) {
+            currentIndex = index;
+        }
+
+        const photo = filteredPhotos[currentIndex];
+        if (!photo) {
+            console.error('❌ No photo found for index:', currentIndex);
+            return;
+        }
+
+        console.log('🔍 Opening fullscreen for photo:', currentIndex);
+
+        const image = fullscreenModal.querySelector('.fullscreen-image');
+        const title = fullscreenModal.querySelector('.fullscreen-title');
+        const category = fullscreenModal.querySelector('.fullscreen-category');
+        const position = fullscreenModal.querySelector('#fullscreenPosition');
+        const total = fullscreenModal.querySelector('#fullscreenTotal');
+        const downloadBtn = fullscreenModal.querySelector('#fullscreenDownload');
+
+        if (image) image.src = photo.url;
+        if (title) title.textContent = photo.name;
+        if (category) category.textContent = window.getCategoryDisplayName(photo.category);
+        if (position) position.textContent = currentIndex + 1;
+        if (total) total.textContent = filteredPhotos.length;
+        if (downloadBtn) downloadBtn.href = photo.downloadUrl;
+
+        fullscreenModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    /**
+     * Cerrar modal fullscreen
+     */
+    function closeFullscreen() {
+        if (!fullscreenModal) return;
+
+        fullscreenModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    /**
+     * Navegar en fullscreen
+     */
+    function navigateFullscreen(direction) {
+        if (filteredPhotos.length === 0) return;
+
+        currentIndex += direction;
+
+        if (currentIndex >= filteredPhotos.length) {
+            currentIndex = 0;
+        } else if (currentIndex < 0) {
+            currentIndex = filteredPhotos.length - 1;
+        }
+
+        openFullscreen();
+        updatePhotosRow();
+    }
+
+    /**
+     * Inicializar modal móvil
+     */
+    function initMobileModal() {
+        if (!mobileModal) return;
+
+        console.log('📱 Setting up mobile modal');
+
+        const closeBtn = mobileModal.querySelector('.mobile-close-btn');
+        const prevBtn = mobileModal.querySelector('.mobile-prev');
+        const nextBtn = mobileModal.querySelector('.mobile-next');
+        const downloadBtn = mobileModal.querySelector('.mobile-download-btn');
+
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeMobileModal);
+        }
+
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => navigateMobileModal(-1));
+        }
+
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => navigateMobileModal(1));
+        }
+
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', downloadCurrentPhoto);
+        }
+    }
+
+    /**
+     * Abrir modal móvil
+     */
+    function openMobileModal(index = null) {
+        if (!mobileModal) return;
+
+        if (index !== null) {
+            currentIndex = index;
+        }
+
+        const photo = filteredPhotos[currentIndex];
+        if (!photo) return;
+
+        console.log('📱 Opening mobile modal for photo:', currentIndex);
+
+        const image = mobileModal.querySelector('.mobile-modal-image');
+        const title = mobileModal.querySelector('.mobile-modal-title');
+        const category = mobileModal.querySelector('.mobile-modal-category');
+        const position = mobileModal.querySelector('#mobilePosition');
+        const total = mobileModal.querySelector('#mobileTotal');
+
+        if (image) image.src = photo.url;
+        if (title) title.textContent = photo.name;
+        if (category) category.textContent = window.getCategoryDisplayName(photo.category);
+        if (position) position.textContent = currentIndex + 1;
+        if (total) total.textContent = filteredPhotos.length;
+
+        createMobileThumbnails();
+        mobileModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    /**
+     * Cerrar modal móvil
+     */
+    function closeMobileModal() {
+        if (!mobileModal) return;
+
+        mobileModal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    /**
+     * Navegar en modal móvil
+     */
+    function navigateMobileModal(direction) {
+        if (filteredPhotos.length === 0) return;
+
+        currentIndex += direction;
+
+        if (currentIndex >= filteredPhotos.length) {
+            currentIndex = 0;
+        } else if (currentIndex < 0) {
+            currentIndex = filteredPhotos.length - 1;
+        }
+
+        openMobileModal();
+    }
+
+    /**
+     * Crear thumbnails para móvil
+     */
+    function createMobileThumbnails() {
+        const track = document.querySelector('#mobileThumbnailsTrack');
+        if (!track) return;
+
+        track.innerHTML = '';
+
+        filteredPhotos.forEach((photo, index) => {
+            const thumb = document.createElement('div');
+            thumb.className = `mobile-thumb-item ${index === currentIndex ? 'active' : ''}`;
+            thumb.innerHTML = `<img src="${photo.thumbnailUrl || photo.url}" alt="${photo.name}">`;
+
+            thumb.addEventListener('click', () => {
+                currentIndex = index;
+                openMobileModal();
+            });
+
+            track.appendChild(thumb);
+        });
+    }
+
+    /**
+     * Descargar foto actual
+     */
+    function downloadCurrentPhoto() {
+        const photo = filteredPhotos[currentIndex];
+        if (photo && photo.downloadUrl) {
+            console.log('💾 Downloading photo:', photo.name);
+            window.open(photo.downloadUrl, '_blank');
+        }
+    }
+
+    /**
+     * Inicializar navegación por teclado
+     */
+    function initKeyboardNavigation() {
+        document.addEventListener('keydown', (e) => {
+            if (fullscreenModal && fullscreenModal.classList.contains('active')) {
+                switch (e.key) {
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        navigateFullscreen(-1);
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        navigateFullscreen(1);
+                        break;
+                    case 'Escape':
+                        closeFullscreen();
+                        break;
+                }
+            } else if (!isMobile) {
+                switch (e.key) {
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        navigateViewer(-1);
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        navigateViewer(1);
+                        break;
+                }
+            }
+        });
+    }
+
+    /**
+     * Inicializar navegación táctil
+     */
+    function initTouchNavigation() {
+        if (!isMobile) return;
+
+        let startX = 0;
+        let startY = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+            const diffX = startX - endX;
+            const diffY = startY - endY;
+
+            // Solo si el movimiento horizontal es mayor que el vertical
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                if (diffX > 0) {
+                    navigateViewer(1); // Swipe left - next
+                } else {
+                    navigateViewer(-1); // Swipe right - previous
+                }
+            }
+        });
+    }
+
+    /**
+     * Configurar lazy loading de imágenes
+     */
+    function setupLazyLoading() {
+        if ('IntersectionObserver' in window) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const img = entry.target;
+                        if (img.dataset.src) {
+                            img.src = img.dataset.src;
+                            img.removeAttribute('data-src');
+                            imageObserver.unobserve(img);
+                        }
+                    }
+                });
+            });
+
+            // Observar imágenes con data-src
+            document.querySelectorAll('img[data-src]').forEach(img => {
+                imageObserver.observe(img);
+            });
+        }
+    }
+
+    // Cleanup al salir
+    window.addEventListener('beforeunload', () => {
+        document.body.style.overflow = '';
+    });
+
+    // INICIALIZAR TODO
+    initGallery();
+    setupLazyLoading();
+
+    // Debug final
+    setTimeout(() => {
+        console.log('🎯 Final gallery state:', {
+            isMobile,
+            totalPhotos: allPhotos.length,
+            filteredPhotos: filteredPhotos.length,
+            currentCategory,
+            mobilePhotoGrid: !!mobilePhotoGrid,
+            mobileGridVisible: isMobile ? (mobilePhotoGrid ? getComputedStyle(mobilePhotoGrid.parentElement).display : 'N/A') : 'N/A',
+            mobileGridItems: isMobile ? document.querySelectorAll('.mobile-grid-item').length : 'N/A'
+        });
+    }, 500);
 });
-
-// Exportar para uso global si es necesario
-window.SimplifiedGallery = SimplifiedGallery;

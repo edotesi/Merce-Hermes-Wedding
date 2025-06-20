@@ -72,4 +72,47 @@ class GalleryController extends Controller
 
         abort(500, 'Error al crear el archivo ZIP');
     }
+
+public function downloadSelected(Request $request)
+{
+    $validated = $request->validate([
+        'photo_ids' => 'required|array',
+        'photo_ids.*' => 'integer|exists:galleries,id'
+    ]);
+
+    $photos = Gallery::whereIn('id', $validated['photo_ids'])
+        ->orderBy('created_at', 'asc')
+        ->get();
+
+    if ($photos->isEmpty()) {
+        abort(404, 'No hay fotos para descargar');
+    }
+
+    // Crear archivo ZIP temporal
+    $zipFileName = 'fotos_seleccionadas_' . date('Y-m-d_H-i-s') . '.zip';
+    $zipPath = storage_path('app/temp/' . $zipFileName);
+
+    // Crear directorio temporal si no existe
+    if (!file_exists(dirname($zipPath))) {
+        mkdir(dirname($zipPath), 0755, true);
+    }
+
+    $zip = new ZipArchive;
+
+    if ($zip->open($zipPath, ZipArchive::CREATE) === TRUE) {
+        foreach ($photos as $photo) {
+            $filePath = public_path($photo->path);
+            if (file_exists($filePath)) {
+                // Usar nombre con categoría para evitar duplicados
+                $fileName = $photo->category . '_' . $photo->name;
+                $zip->addFile($filePath, $fileName);
+            }
+        }
+        $zip->close();
+
+        return Response::download($zipPath, $zipFileName)->deleteFileAfterSend(true);
+    }
+
+    abort(500, 'Error al crear el archivo ZIP');
+}
 }
