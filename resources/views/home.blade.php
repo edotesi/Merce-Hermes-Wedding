@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="hero-section">
-        <img src="{{ asset('images/home_background.jpg') }}" class="hero-image" alt="Mercè & Hermes">
+        <img src="{{ asset('images/home_background.jpg') }}" class="hero-image" alt="Mercè & Hermes" id="heroImage">
         <div class="hero-overlay"></div>
 
         <div class="hero-left-content">
@@ -22,7 +22,7 @@
 
                     <div class="elegant-divider"></div>
 
-                    <div class="countdown">
+                    {{-- <div class="countdown">
                         <div class="countdown-item">
                             <span class="countdown-number" id="days">00</span>
                             <span class="countdown-label">DÍAS</span>
@@ -43,7 +43,8 @@
 
                     <button class="button" id="addToCalendar">
                         AÑADIR AL CALENDARIO
-                    </button>
+                    </button> --}}
+                    <h2 id="marriedTimeEasterEgg" style="cursor: pointer;">¡Viva los novios!</h2>
                 </div>
             </div>
         </div>
@@ -73,6 +74,45 @@
             </div>
         </div>
     </div>
+
+    <!-- Modal del Easter Egg -->
+    <div class="modal fade" id="marriedTimeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">🎉 Mercè y Hermes llevan casados 🎉</h5>
+                </div>
+                <div class="modal-body">
+                    <div class="countdown">
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="daysUp">00</span>
+                            <span class="countdown-label">DÍAS</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="hoursUp">00</span>
+                            <span class="countdown-label">HORAS</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="minutesUp">00</span>
+                            <span class="countdown-label">MINUTOS</span>
+                        </div>
+                        <div class="countdown-item">
+                            <span class="countdown-number" id="secondsUp">00</span>
+                            <span class="countdown-label">SEGUNDOS</span>
+                        </div>
+                    </div>
+                    <div style="text-align: center; margin-top: 1rem;">
+                        <button class="button" data-bs-dismiss="modal">
+                            CERRAR
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Canvas Confetti -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/canvas-confetti/1.9.2/confetti.browser.min.js"></script>
 
     @push('scripts')
         <script src="{{ asset('js/home.js') }}"></script>
