@@ -1,13 +1,12 @@
 /**
- * Modern Gallery JavaScript
- * Maneja toda la interactividad de la galería de fotos
+ * Simplified Gallery JavaScript
+ * Maneja la galería simplificada con masonry en desktop y grid en móvil
  */
 
-class ModernGallery {
+class SimplifiedGallery {
     constructor() {
         this.photos = window.galleryData?.photos || [];
         this.currentCategory = window.galleryData?.currentCategory || 'todo';
-        this.currentView = 'grid';
         this.currentPhotoIndex = 0;
         this.isSelectionMode = false;
         this.selectedPhotos = new Set();
@@ -20,7 +19,6 @@ class ModernGallery {
         this.setupEventListeners();
         this.setupKeyboardNavigation();
         this.setupIntersectionObserver();
-        this.updateGalleryView();
         this.setupCategoryIcons();
     }
 
@@ -31,15 +29,6 @@ class ModernGallery {
                 const category = e.currentTarget.dataset.category;
                 this.filterByCategory(category);
             });
-        });
-
-        // View toggles
-        document.getElementById('gridViewBtn')?.addEventListener('click', () => {
-            this.switchView('grid');
-        });
-
-        document.getElementById('masonryViewBtn')?.addEventListener('click', () => {
-            this.switchView('masonry');
         });
 
         // Selection mode
@@ -55,16 +44,11 @@ class ModernGallery {
 
         // Selection bar
         this.setupSelectionBarListeners();
-
-        // Window resize
-        window.addEventListener('resize', this.debounce(() => {
-            this.handleResize();
-        }, 300));
     }
 
     setupPhotoListeners() {
         document.addEventListener('click', (e) => {
-            const photoItem = e.target.closest('.photo-item, .masonry-item');
+            const photoItem = e.target.closest('.gallery-photo');
             if (!photoItem) return;
 
             const action = e.target.closest('[data-action]')?.dataset.action;
@@ -81,7 +65,7 @@ class ModernGallery {
                     break;
                 default:
                     // Click en la foto sin acción específica
-                    if (!this.isSelectionMode && !e.target.closest('.photo-actions, .masonry-actions')) {
+                    if (!this.isSelectionMode && !e.target.closest('.photo-actions')) {
                         this.openLightbox(photoIndex);
                     } else if (this.isSelectionMode) {
                         this.togglePhotoSelection(photoItem);
@@ -155,10 +139,6 @@ class ModernGallery {
                     e.preventDefault();
                     this.navigateLightbox(1);
                     break;
-                case ' ':
-                    e.preventDefault();
-                    // Spacebar para pausar/reanudar auto-scroll de thumbnails
-                    break;
             }
         });
     }
@@ -230,7 +210,7 @@ class ModernGallery {
     }
 
     filterPhotosDisplay() {
-        const photoItems = document.querySelectorAll('.photo-item, .masonry-item');
+        const photoItems = document.querySelectorAll('.gallery-photo');
 
         photoItems.forEach(item => {
             const photoCategory = item.dataset.category;
@@ -243,43 +223,6 @@ class ModernGallery {
                 this.animateOut(item);
             }
         });
-
-        // Actualizar contador
-        const visibleCount = Array.from(photoItems).filter(item =>
-            this.currentCategory === 'todo' || item.dataset.category === this.currentCategory
-        ).length;
-
-        this.updatePhotoCount(visibleCount);
-    }
-
-    switchView(view) {
-        if (this.currentView === view) return;
-
-        this.currentView = view;
-
-        // Actualizar botones activos
-        document.querySelectorAll('.view-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.getElementById(view + 'ViewBtn')?.classList.add('active');
-
-        // Mostrar/ocultar vistas
-        const gridView = document.getElementById('gridView');
-        const masonryView = document.getElementById('masonryView');
-
-        if (view === 'grid') {
-            this.fadeOut(masonryView, () => {
-                masonryView.style.display = 'none';
-                gridView.style.display = 'grid';
-                this.fadeIn(gridView);
-            });
-        } else {
-            this.fadeOut(gridView, () => {
-                gridView.style.display = 'none';
-                masonryView.style.display = 'block';
-                this.fadeIn(masonryView);
-            });
-        }
     }
 
     toggleSelectionMode() {
@@ -297,7 +240,7 @@ class ModernGallery {
                 text.textContent = 'Cancelar';
             } else {
                 icon.className = 'fas fa-check-square';
-                text.textContent = 'Seleccionar';
+                text.textContent = 'Seleccionar fotos';
                 this.deselectAllPhotos();
             }
         }
@@ -329,7 +272,7 @@ class ModernGallery {
     }
 
     selectAllPhotos() {
-        const visiblePhotos = document.querySelectorAll('.photo-item:not([style*="display: none"]), .masonry-item:not([style*="display: none"])');
+        const visiblePhotos = document.querySelectorAll('.gallery-photo:not([style*="display: none"])');
 
         visiblePhotos.forEach(photo => {
             const photoId = photo.dataset.photoId;
@@ -342,7 +285,7 @@ class ModernGallery {
 
     deselectAllPhotos() {
         this.selectedPhotos.clear();
-        document.querySelectorAll('.photo-item, .masonry-item').forEach(photo => {
+        document.querySelectorAll('.gallery-photo').forEach(photo => {
             photo.classList.remove('selected');
         });
 
@@ -467,36 +410,6 @@ class ModernGallery {
         }
     }
 
-    updateGalleryView() {
-        // Inicializar vista según parámetros URL o preferencias guardadas
-        const savedView = localStorage.getItem('galleryView') || 'grid';
-        this.switchView(savedView);
-    }
-
-    handleResize() {
-        // Reagrupar masonry en redimensión
-        if (this.currentView === 'masonry') {
-            this.reflowMasonry();
-        }
-    }
-
-    reflowMasonry() {
-        // Re-aplicar layout de masonry después de resize
-        const masonryContainer = document.getElementById('masonryView');
-        if (masonryContainer) {
-            // CSS columns se reajusta automáticamente
-            // Aquí podríamos añadir lógica adicional si fuera necesario
-        }
-    }
-
-    updatePhotoCount(count) {
-        // Actualizar estadísticas
-        const statNumbers = document.querySelectorAll('.stat-number');
-        if (statNumbers[0]) {
-            statNumbers[0].textContent = count;
-        }
-    }
-
     // Utility methods
     showLoading() {
         document.getElementById('galleryLoading')?.classList.add('active');
@@ -551,27 +464,6 @@ class ModernGallery {
             element.style.display = 'none';
         }, 300);
     }
-
-    fadeIn(element) {
-        element.classList.add('active');
-    }
-
-    fadeOut(element, callback) {
-        element.classList.remove('active');
-        setTimeout(callback, 300);
-    }
-
-    debounce(func, wait) {
-        let timeout;
-        return function executedFunction(...args) {
-            const later = () => {
-                clearTimeout(timeout);
-                func(...args);
-            };
-            clearTimeout(timeout);
-            timeout = setTimeout(later, wait);
-        };
-    }
 }
 
 // CSS adicional para animaciones
@@ -586,13 +478,11 @@ const additionalStyles = `
         to { transform: translateX(100%); opacity: 0; }
     }
 
-    .selection-mode .photo-item,
-    .selection-mode .masonry-item {
+    .selection-mode .gallery-photo {
         cursor: pointer !important;
     }
 
-    .photo-item.selected,
-    .masonry-item.selected {
+    .gallery-photo.selected {
         transform: scale(0.95) !important;
         opacity: 0.8 !important;
     }
@@ -611,8 +501,8 @@ document.head.appendChild(styleSheet);
 
 // Inicializar galería cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
-    new ModernGallery();
+    new SimplifiedGallery();
 });
 
 // Exportar para uso global si es necesario
-window.ModernGallery = ModernGallery;
+window.SimplifiedGallery = SimplifiedGallery;

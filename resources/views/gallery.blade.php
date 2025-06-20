@@ -3,23 +3,10 @@
 @section('content')
 <div class="gallery-wrapper">
     <div class="container">
-        <!-- Header de la galería -->
+        <!-- Header de la galería simplificado -->
         <div class="gallery-header">
             <div class="gallery-intro">
-                <h1 class="gallery-title">Nuestra Galería</h1>
                 <p class="gallery-subtitle">Revive los momentos más especiales de nuestro gran día</p>
-            </div>
-
-            <!-- Estadísticas -->
-            <div class="gallery-stats">
-                <div class="stat-item">
-                    <span class="stat-number">{{ $photos->count() }}</span>
-                    <span class="stat-label">Fotos</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">{{ count($categories) }}</span>
-                    <span class="stat-label">Categorías</span>
-                </div>
             </div>
         </div>
 
@@ -42,67 +29,52 @@
                 @endforeach
             </div>
 
-            <!-- Controles de vista y acciones -->
+            <!-- Controles de vista y acciones simplificados -->
             <div class="view-controls">
-                <div class="view-toggles">
-                    <button id="gridViewBtn" class="view-btn active" data-view="grid">
-                        <i class="fas fa-th"></i>
-                        <span>Grid</span>
-                    </button>
-                    <button id="masonryViewBtn" class="view-btn" data-view="masonry">
-                        <i class="fas fa-th-large"></i>
-                        <span>Masonry</span>
-                    </button>
-                </div>
-
                 <div class="action-buttons">
                     <button id="selectModeBtn" class="action-btn">
                         <i class="fas fa-check-square"></i>
-                        <span>Seleccionar</span>
+                        <span>Seleccionar fotos</span>
                     </button>
                     <a href="{{ route('gallery.downloadAll', ['category' => $category]) }}" class="action-btn download-all">
                         <i class="fas fa-download"></i>
-                        <span>Descargar Todo</span>
+                        <span>Descargar todas</span>
                     </a>
                 </div>
             </div>
         </div>
 
         @if($photos->count() > 0)
-            <!-- Galería principal -->
+            <!-- Galería principal - Solo Masonry -->
             <div class="gallery-container">
-                <!-- Vista Grid -->
-                <div id="gridView" class="gallery-grid active">
+                <div id="photoGallery" class="photo-gallery">
                     @foreach($photos as $index => $photo)
-                        <div class="photo-item"
+                        <div class="gallery-photo"
                              data-index="{{ $index }}"
                              data-category="{{ $photo->category }}"
                              data-photo-id="{{ $photo->id }}"
                              data-photo-url="{{ $photo->image_url }}"
                              data-download-url="{{ route('gallery.download', $photo->id) }}">
 
-                            <div class="photo-container">
-                                <img src="{{ $photo->thumbnail_url }}"
+                            <div class="photo-wrapper">
+                                <img src="{{ $photo->image_url }}"
                                      alt="{{ $photo->name }}"
                                      loading="lazy"
-                                     class="photo-image">
+                                     class="gallery-image">
 
                                 <div class="photo-overlay">
                                     <div class="photo-info">
                                         <span class="photo-category">{{ ucfirst($photo->category) }}</span>
-                                        @if($photo->dimensions)
-                                            <span class="photo-dimensions">{{ $photo->dimensions }}</span>
-                                        @endif
                                     </div>
 
                                     <div class="photo-actions">
-                                        <button class="action-btn-small view-btn-small" data-action="view">
+                                        <button class="action-btn-small view-btn-small" data-action="view" title="Ver imagen">
                                             <i class="fas fa-eye"></i>
                                         </button>
-                                        <a href="{{ route('gallery.download', $photo->id) }}" class="action-btn-small download-btn-small">
+                                        <a href="{{ route('gallery.download', $photo->id) }}" class="action-btn-small download-btn-small" title="Descargar">
                                             <i class="fas fa-download"></i>
                                         </a>
-                                        <button class="action-btn-small select-btn-small" data-action="select">
+                                        <button class="action-btn-small select-btn-small" data-action="select" title="Seleccionar">
                                             <i class="fas fa-check"></i>
                                         </button>
                                     </div>
@@ -115,61 +87,25 @@
                         </div>
                     @endforeach
                 </div>
-
-                <!-- Vista Masonry -->
-                <div id="masonryView" class="gallery-masonry">
-                    @foreach($photos as $index => $photo)
-                        <div class="masonry-item"
-                             data-index="{{ $index }}"
-                             data-category="{{ $photo->category }}"
-                             data-photo-id="{{ $photo->id }}"
-                             data-photo-url="{{ $photo->image_url }}"
-                             data-download-url="{{ route('gallery.download', $photo->id) }}">
-
-                            <div class="masonry-container">
-                                <img src="{{ $photo->image_url }}"
-                                     alt="{{ $photo->name }}"
-                                     loading="lazy"
-                                     class="masonry-image">
-
-                                <div class="masonry-overlay">
-                                    <div class="masonry-info">
-                                        <h4 class="photo-title">{{ $photo->name }}</h4>
-                                        <p class="photo-category">{{ ucfirst($photo->category) }}</p>
-                                    </div>
-
-                                    <div class="masonry-actions">
-                                        <button class="masonry-btn view-btn" data-action="view">
-                                            <i class="fas fa-search-plus"></i>
-                                        </button>
-                                        <a href="{{ route('gallery.download', $photo->id) }}" class="masonry-btn download-btn">
-                                            <i class="fas fa-download"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
             </div>
 
             <!-- Barra de selección múltiple -->
             <div id="selectionBar" class="selection-bar">
                 <div class="selection-info">
-                    <span id="selectedCount">0</span> fotos seleccionadas
+                    <span id="selectedCount">0</span> fotos elegidas
                 </div>
                 <div class="selection-actions">
                     <button id="selectAllBtn" class="selection-btn">
                         <i class="fas fa-check-double"></i>
-                        Seleccionar todas
+                        Elegir todas
                     </button>
                     <button id="deselectAllBtn" class="selection-btn">
                         <i class="fas fa-times"></i>
-                        Deseleccionar
+                        Quitar todas
                     </button>
                     <button id="downloadSelectedBtn" class="selection-btn primary">
                         <i class="fas fa-download"></i>
-                        Descargar seleccionadas
+                        Descargar elegidas
                     </button>
                     <button id="cancelSelectionBtn" class="selection-btn secondary">
                         Cancelar
@@ -184,7 +120,7 @@
                 </div>
                 <h3 class="empty-title">No hay fotos disponibles</h3>
                 <p class="empty-description">
-                    {{ $category != 'todo' ? 'No hay fotos en la categoría "' . ucfirst($category) . '"' : 'Aún no se han subido fotos a la galería.' }}
+                    {{ $category != 'todo' ? 'No hay fotos en esta categoría' : 'Aún no se han subido fotos.' }}
                 </p>
                 @if($category != 'todo')
                     <button class="button" data-category="todo">Ver todas las fotos</button>
