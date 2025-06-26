@@ -34,6 +34,50 @@
     gap: 1rem;
     margin: 2rem 0;
     flex-wrap: wrap;
+    position: relative;
+}
+
+/* Toggle para vista Grid - A LA DERECHA de los filtros */
+.view-toggle {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@media (max-width: 1200px) {
+    .view-toggle {
+        position: static;
+        transform: none;
+        margin-top: 1rem;
+        text-align: center;
+    }
+}
+
+.toggle-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--hillary);
+    color: var(--hillary);
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    backdrop-filter: blur(10px);
+}
+
+.toggle-btn:hover {
+    background: var(--hillary);
+    color: var(--olive);
+    transform: translateY(-2px);
+}
+
+.toggle-btn.active {
+    background: var(--hillary);
+    color: var(--olive);
 }
 
 .filter-btn {
@@ -129,18 +173,44 @@
 
 .main-viewer {
     position: relative;
-    aspect-ratio: 16/9;
-    background: #000;
+    width: 100%;
+    height: 500px; /* Altura fija como en el original */
     display: flex;
     align-items: center;
     justify-content: center;
+    background: #000;
+    overflow: hidden;
+}
+
+/* Fondo difuminado para imágenes */
+.main-viewer-background {
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
+    background-size: cover;
+    background-position: center;
+    filter: blur(15px) brightness(0.3);
+    transform: scale(1.1);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.main-viewer-background.visible {
+    opacity: 1;
 }
 
 .main-viewer-image {
-    width: 100%;
-    height: 100%;
+    position: relative;
+    z-index: 1;
+    max-width: 100%;
+    max-height: 100%;
     object-fit: contain;
-    transition: opacity 0.3s ease;
+    display: block;
+    border-radius: 4px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 /* Controles de navegación del visualizador */
@@ -1230,8 +1300,6 @@
     }
 
     /* OCULTAR elementos desktop */
-    .category-filters-web,
-    .gallery-top-controls,
     .main-viewer-section,
     .photos-row-section,
     .view-toggle,
@@ -1273,6 +1341,8 @@
         display: flex !important;
         gap: 0.5rem;
         margin: 1rem 0;
+        justify-content: center; /* Centrar en móviles */
+        position: static; /* No position relative en móviles */
     }
 
     .filter-btn {
@@ -1334,6 +1404,16 @@
     .mobile-carousel-section,
     .mobile-controls {
         display: none !important;
+    }
+
+    /* Asegurar que fullscreen modal esté disponible */
+    .fullscreen-modal {
+        display: flex;
+    }
+
+    .fullscreen-modal:not(.active) {
+        opacity: 0;
+        visibility: hidden;
     }
 }
 

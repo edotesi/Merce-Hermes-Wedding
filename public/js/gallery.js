@@ -62,6 +62,22 @@ document.addEventListener('DOMContentLoaded', function() {
      * Inicializar galería desktop
      */
     function initDesktopGallery() {
+        // ESTADO INICIAL: Vista normal (visualizador visible, grid oculta)
+        const mainViewerSection = document.querySelector('.main-viewer-section');
+        const photosRowSection = document.querySelector('.photos-row-section');
+
+        if (mainViewerSection) mainViewerSection.style.display = 'block';
+        if (photosRowSection) photosRowSection.style.display = 'block';
+        if (gridViewSection) gridViewSection.style.display = 'none';
+
+        // Asegurar que el botón esté en estado inicial
+        if (toggleGridBtn) {
+            toggleGridBtn.innerHTML = '<i class="fas fa-th"></i><span>Vista en cuadrícula</span>';
+            toggleGridBtn.classList.remove('active');
+        }
+
+        isGridView = false; // Estado inicial: vista normal
+
         createMainViewer();
         createPhotosRow();
         initViewToggle();
@@ -89,6 +105,14 @@ document.addEventListener('DOMContentLoaded', function() {
     function createMainViewer() {
         if (!mainViewerImage || filteredPhotos.length === 0) return;
 
+        // Crear el fondo difuminado si no existe
+        const mainViewer = document.querySelector('.main-viewer');
+        if (mainViewer && !mainViewer.querySelector('.main-viewer-background')) {
+            const background = document.createElement('div');
+            background.className = 'main-viewer-background';
+            mainViewer.insertBefore(background, mainViewer.firstChild);
+        }
+
         updateMainViewer();
 
         // Event listeners para navegación
@@ -112,6 +136,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
         mainViewerImage.src = photo.url;
         mainViewerImage.alt = photo.name;
+
+        // Actualizar fondo difuminado
+        const background = document.querySelector('.main-viewer-background');
+        if (background) {
+            background.style.backgroundImage = `url(${photo.url})`;
+            background.classList.add('visible');
+        }
 
         if (viewerCategory) {
             viewerCategory.textContent = window.getCategoryDisplayName(photo.category);
@@ -277,8 +308,13 @@ document.addEventListener('DOMContentLoaded', function() {
             // En móvil/tablet abrir modal
             openMobileModal(index);
         } else if (isSelectionMode) {
+            // En modo selección, alternar selección
             togglePhotoSelection(filteredPhotos[index]?.id);
+        } else if (isGridView) {
+            // En vista grid de desktop, abrir fullscreen
+            openFullscreen(index);
         } else {
+            // En vista normal de desktop, establecer foto activa
             setActivePhoto(index);
         }
     }
@@ -292,15 +328,43 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleGridBtn.addEventListener('click', () => {
             isGridView = !isGridView;
 
+            const mainViewerSection = document.querySelector('.main-viewer-section');
+            const photosRowSection = document.querySelector('.photos-row-section');
+
             if (isGridView) {
-                gridViewSection.style.display = 'block';
-                toggleGridBtn.innerHTML = '<i class="fas fa-list"></i><span>Vista en fila</span>';
+                // ACTIVAR VISTA GRID: Ocultar visualizador y fila completamente
+                if (mainViewerSection) {
+                    mainViewerSection.style.display = 'none';
+                }
+                if (photosRowSection) {
+                    photosRowSection.style.display = 'none';
+                }
+                if (gridViewSection) {
+                    gridViewSection.style.display = 'block';
+                }
+
+                toggleGridBtn.innerHTML = '<i class="fas fa-list"></i><span>Vista normal</span>';
                 toggleGridBtn.classList.add('active');
                 createPhotoGrid();
+
             } else {
-                gridViewSection.style.display = 'none';
+                // ACTIVAR VISTA NORMAL: Mostrar visualizador y fila, ocultar grid completamente
+                if (mainViewerSection) {
+                    mainViewerSection.style.display = 'block';
+                }
+                if (photosRowSection) {
+                    photosRowSection.style.display = 'block';
+                }
+                if (gridViewSection) {
+                    gridViewSection.style.display = 'none';
+                }
+
                 toggleGridBtn.innerHTML = '<i class="fas fa-th"></i><span>Vista en cuadrícula</span>';
                 toggleGridBtn.classList.remove('active');
+
+                // Actualizar visualizador al volver
+                updateMainViewer();
+                updatePhotosRow();
             }
         });
     }
@@ -367,8 +431,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     viewBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
                         if (isGridView) {
+                            // En vista grid, abrir fullscreen directamente
                             openFullscreen(index);
                         } else {
+                            // En vista normal, establecer foto activa
                             setActivePhoto(index);
                         }
                     });
@@ -441,9 +507,9 @@ document.addEventListener('DOMContentLoaded', function() {
         // Reiniciar índices
         currentIndex = 0;
 
-        // Actualizar todas las vistas
+        // Actualizar vistas manteniendo el estado actual
         setTimeout(() => {
-            updateAllViews();
+            updateAllViews(); // Esto ya maneja correctamente qué vista mostrar
             hideLoading();
         }, 300);
 
@@ -465,11 +531,28 @@ document.addEventListener('DOMContentLoaded', function() {
             // Móviles/tablets: solo grid
             createPhotoGrid();
         } else {
-            // Desktop: todas las vistas
-            updateMainViewer();
-            createPhotosRow();
+            // Desktop: depende del estado de vista (NUNCA ambas al mismo tiempo)
             if (isGridView) {
+                // Vista grid activa: SOLO mostrar grid
+                const mainViewerSection = document.querySelector('.main-viewer-section');
+                const photosRowSection = document.querySelector('.photos-row-section');
+
+                if (mainViewerSection) mainViewerSection.style.display = 'none';
+                if (photosRowSection) photosRowSection.style.display = 'none';
+                if (gridViewSection) gridViewSection.style.display = 'block';
+
                 createPhotoGrid();
+            } else {
+                // Vista normal activa: SOLO mostrar visualizador y fila
+                const mainViewerSection = document.querySelector('.main-viewer-section');
+                const photosRowSection = document.querySelector('.photos-row-section');
+
+                if (mainViewerSection) mainViewerSection.style.display = 'block';
+                if (photosRowSection) photosRowSection.style.display = 'block';
+                if (gridViewSection) gridViewSection.style.display = 'none';
+
+                updateMainViewer();
+                createPhotosRow();
             }
         }
         updateSelectionBar();
@@ -663,8 +746,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         updateFullscreenContent();
-        updateMainViewer();
-        updatePhotosRow();
+
+        // Actualizar también el visualizador principal si no estamos en móvil
+        if (!isMobile) {
+            updateMainViewer();
+            updatePhotosRow();
+        }
     }
 
     function updateFullscreenContent() {

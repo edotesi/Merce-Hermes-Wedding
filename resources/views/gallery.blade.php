@@ -47,7 +47,10 @@
                 <!-- CONTENEDOR WEB: Filtros + Toggle en la misma línea -->
                 <div class="gallery-web-header">
                     <!-- Filtros de categoría -->
+
+                    <!-- Contenedor de filtros con toggle a la derecha -->
                     <div class="category-filters-web">
+                        <!-- Filtros de categoría centrados -->
                         <button class="filter-btn {{ $category == 'todo' ? 'active' : '' }}" data-category="todo">
                             <i class="fas fa-images"></i>
                             <span>Todas</span>
@@ -62,114 +65,113 @@
                                 <span class="count">{{ $catCount }}</span>
                             </button>
                         @endforeach
+
+                        <!-- Toggle para vista Grid - POSICIONADO A LA DERECHA -->
+                        <div class="view-toggle">
+                            <button id="toggleGridView" class="toggle-btn">
+                                <i class="fas fa-th"></i>
+                                <span>Galeria</span>
+                            </button>
+                        </div>
                     </div>
 
-                    <!-- Toggle a la derecha -->
-                    <div class="view-toggle">
-                        <button id="toggleGridView" class="toggle-btn">
-                            <i class="fas fa-th"></i>
-                            <span>Galeria</span>
+                    <!-- Controles superiores WEB -->
+                    <div class="gallery-top-controls">
+                        <button id="selectModeBtn" class="control-btn">
+                            <i class="fas fa-check-square"></i>
+                            <span>Seleccionar fotos</span>
                         </button>
+                        <a href="{{ route('gallery.downloadAll', ['category' => $category]) }}" class="control-btn">
+                            <i class="fas fa-download"></i>
+                            <span>Descargar todas</span>
+                        </a>
                     </div>
-                </div>
 
-                <!-- Controles superiores WEB -->
-                <div class="gallery-top-controls">
-                    <button id="selectModeBtn" class="control-btn">
-                        <i class="fas fa-check-square"></i>
-                        <span>Seleccionar fotos</span>
-                    </button>
-                    <a href="{{ route('gallery.downloadAll', ['category' => $category]) }}" class="control-btn">
-                        <i class="fas fa-download"></i>
-                        <span>Descargar todas</span>
-                    </a>
-                </div>
+                    <!-- Visualizador principal WEB -->
+                    <section class="main-viewer-section">
+                        <div class="main-viewer-container">
+                            <div class="main-viewer">
+                                <!-- AÑADIR esta línea para el fondo borroso -->
+                                <div class="main-viewer-background" id="mainViewerBackground"></div>
 
-                <!-- Visualizador principal WEB -->
-                <section class="main-viewer-section">
-                    <div class="main-viewer-container">
-                        <div class="main-viewer">
-                            <!-- AÑADIR esta línea para el fondo borroso -->
-                            <div class="main-viewer-background" id="mainViewerBackground"></div>
+                                <img id="mainViewerImage" src="" alt="" class="main-viewer-image">
 
-                            <img id="mainViewerImage" src="" alt="" class="main-viewer-image">
+                                <!-- Controles del visualizador (sin cambios) -->
+                                <button class="viewer-nav viewer-prev">
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="viewer-nav viewer-next">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
 
-                            <!-- Controles del visualizador (sin cambios) -->
-                            <button class="viewer-nav viewer-prev">
+                                <!-- Botón pantalla completa (sin cambios) -->
+                                <button class="fullscreen-btn" title="Pantalla completa">
+                                    <i class="fas fa-expand"></i>
+                                </button>
+
+                                <!-- Info de la imagen (sin cambios) -->
+
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- Fila horizontal de fotos WEB -->
+                    <section class="photos-row-section">
+                        <div class="photos-row-container">
+                            <button class="row-scroll-btn row-scroll-left">
                                 <i class="fas fa-chevron-left"></i>
                             </button>
-                            <button class="viewer-nav viewer-next">
+
+                            <div class="photos-row" id="photosRow">
+                                <!-- Las fotos se insertan dinámicamente -->
+                            </div>
+
+                            <button class="row-scroll-btn row-scroll-right">
                                 <i class="fas fa-chevron-right"></i>
                             </button>
-
-                            <!-- Botón pantalla completa (sin cambios) -->
-                            <button class="fullscreen-btn" title="Pantalla completa">
-                                <i class="fas fa-expand"></i>
-                            </button>
-
-                            <!-- Info de la imagen (sin cambios) -->
-
                         </div>
-                    </div>
-                </section>
+                    </section>
 
-                <!-- Fila horizontal de fotos WEB -->
-                <section class="photos-row-section">
-                    <div class="photos-row-container">
-                        <button class="row-scroll-btn row-scroll-left">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-
-                        <div class="photos-row" id="photosRow">
+                    <!-- Vista Grid WEB -->
+                    <section class="grid-view-section" id="gridViewSection" style="display: none;">
+                        <div class="photo-grid" id="photoGrid">
                             <!-- Las fotos se insertan dinámicamente -->
                         </div>
+                    </section>
 
-                        <button class="row-scroll-btn row-scroll-right">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
+                    <!-- Barra de selección múltiple -->
+                    <div id="selectionBar" class="selection-bar">
+                        <div class="selection-info">
+                            <span id="selectedCount">0</span> fotos elegidas
+                        </div>
+                        <div class="selection-actions">
+                            <button id="selectAllBtn" class="selection-btn">
+                                <i class="fas fa-check-double"></i>
+                                Elegir todas
+                            </button>
+                            <button id="deselectAllBtn" class="selection-btn">
+                                <i class="fas fa-times"></i>
+                                Quitar todas
+                            </button>
+                            <button id="downloadSelectedBtn" class="selection-btn primary">
+                                <i class="fas fa-download"></i>
+                                Descargar elegidas
+                            </button>
+                            <button id="cancelSelectionBtn" class="selection-btn cancel">
+                                Cancelar
+                            </button>
+                        </div>
                     </div>
-                </section>
-
-                <!-- Vista Grid WEB -->
-                <section class="grid-view-section" id="gridViewSection" style="display: none;">
-                    <div class="photo-grid" id="photoGrid">
-                        <!-- Las fotos se insertan dinámicamente -->
+                @else
+                    <!-- Estado vacío -->
+                    <div class="empty-gallery">
+                        <i class="fas fa-images"></i>
+                        <h3>No hay fotos disponibles</h3>
+                        <p>{{ $category != 'todo' ? 'No hay fotos en esta categoría' : 'Aún no se han subido fotos.' }}</p>
+                        @if ($category != 'todo')
+                            <button class="filter-btn" data-category="todo">Ver todas las fotos</button>
+                        @endif
                     </div>
-                </section>
-
-                <!-- Barra de selección múltiple -->
-                <div id="selectionBar" class="selection-bar">
-                    <div class="selection-info">
-                        <span id="selectedCount">0</span> fotos elegidas
-                    </div>
-                    <div class="selection-actions">
-                        <button id="selectAllBtn" class="selection-btn">
-                            <i class="fas fa-check-double"></i>
-                            Elegir todas
-                        </button>
-                        <button id="deselectAllBtn" class="selection-btn">
-                            <i class="fas fa-times"></i>
-                            Quitar todas
-                        </button>
-                        <button id="downloadSelectedBtn" class="selection-btn primary">
-                            <i class="fas fa-download"></i>
-                            Descargar elegidas
-                        </button>
-                        <button id="cancelSelectionBtn" class="selection-btn cancel">
-                            Cancelar
-                        </button>
-                    </div>
-                </div>
-            @else
-                <!-- Estado vacío -->
-                <div class="empty-gallery">
-                    <i class="fas fa-images"></i>
-                    <h3>No hay fotos disponibles</h3>
-                    <p>{{ $category != 'todo' ? 'No hay fotos en esta categoría' : 'Aún no se han subido fotos.' }}</p>
-                    @if ($category != 'todo')
-                        <button class="filter-btn" data-category="todo">Ver todas las fotos</button>
-                    @endif
-                </div>
             @endif
         </div>
     </div>
