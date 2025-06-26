@@ -621,9 +621,11 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1.5rem 2rem;
+    padding: 1rem 2rem;
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
+    flex-shrink: 0;
+    min-height: 70px;
 }
 
 .fullscreen-title {
@@ -670,14 +672,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 2rem;
+    padding: 1rem;
+    min-height: 0; /* Importante para que flex funcione correctamente */
+    overflow: hidden;
 }
 
 .fullscreen-image {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     display: block;
+    border-radius: 4px;
 }
 
 .fullscreen-nav {
@@ -696,6 +701,7 @@
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
+    z-index: 10;
 }
 
 .fullscreen-nav:hover {
@@ -704,24 +710,25 @@
 }
 
 .fullscreen-prev {
-    left: 30px;
+    left: 20px;
 }
 
 .fullscreen-next {
-    right: 30px;
+    right: 20px;
 }
 
 .fullscreen-counter {
     position: absolute;
-    bottom: 30px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     background: rgba(0, 0, 0, 0.7);
     color: white;
-    padding: 10px 20px;
-    border-radius: 25px;
+    padding: 8px 16px;
+    border-radius: 20px;
     font-size: 1rem;
     backdrop-filter: blur(10px);
+    z-index: 10;
 }
 
 /* Modal móvil - Estilo imagen 3 */
@@ -748,6 +755,8 @@
     padding: 1rem;
     background: rgba(0, 0, 0, 0.8);
     color: white;
+    flex-shrink: 0;
+    min-height: 60px;
 }
 
 .mobile-modal-title {
@@ -791,13 +800,17 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    min-height: 0; /* Importante para que flex funcione correctamente */
+    overflow: hidden;
+    padding: 0.5rem;
 }
 
 .mobile-modal-image {
-    max-width: 100%;
-    max-height: 100%;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     display: block;
+    border-radius: 4px;
 }
 
 .mobile-nav {
@@ -815,6 +828,7 @@
     color: white;
     cursor: pointer;
     transition: all 0.3s ease;
+    z-index: 10;
 }
 
 .mobile-nav:hover {
@@ -839,11 +853,14 @@
     padding: 8px 16px;
     border-radius: 20px;
     font-size: 0.9rem;
+    z-index: 10;
 }
 
 .mobile-thumbnails {
-    padding: 1rem;
+    padding: 0.8rem;
     background: rgba(0, 0, 0, 0.9);
+    flex-shrink: 0;
+    max-height: 100px;
 }
 
 .mobile-thumbnails-track {
@@ -1111,6 +1128,99 @@
     margin-bottom: 1rem;
 }
 
+/* OPTIMIZACIONES PARA IMÁGENES VERTICALES EN MODALES */
+
+/* Detectar y optimizar imágenes verticales automáticamente */
+.fullscreen-image,
+.mobile-modal-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    border-radius: 4px;
+}
+
+/* Para pantallas muy altas (móviles en vertical), aprovechar más el ancho */
+@media (max-aspect-ratio: 3/4) {
+    .mobile-modal-content {
+        padding: 0.25rem;
+    }
+
+    .mobile-modal-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+/* Para pantallas muy anchas (tablets/desktop en horizontal), aprovechar más la altura */
+@media (min-aspect-ratio: 16/9) {
+    .fullscreen-content {
+        padding: 0.5rem;
+    }
+
+    .fullscreen-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+/* Mejoras adicionales para el aprovechamiento del espacio */
+@media (max-width: 1024px) {
+    .mobile-modal-header {
+        padding: 0.8rem;
+        min-height: 55px;
+    }
+
+    .mobile-thumbnails {
+        padding: 0.6rem;
+        max-height: 80px;
+    }
+
+    .mobile-counter {
+        bottom: 15px;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .mobile-nav {
+        width: 40px;
+        height: 40px;
+    }
+
+    .mobile-prev {
+        left: 10px;
+    }
+
+    .mobile-next {
+        right: 10px;
+    }
+}
+
+/* Optimizaciones para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .mobile-modal-header {
+        padding: 0.6rem;
+        min-height: 50px;
+    }
+
+    .mobile-modal-content {
+        padding: 0.2rem;
+    }
+
+    .mobile-thumbnails {
+        padding: 0.4rem;
+        max-height: 70px;
+    }
+
+    .mobile-counter {
+        bottom: 10px;
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+}
+
 /* ========== CAMBIOS PARA UNIFICACIÓN TABLETS/MÓVILES (BREAKPOINT 1024px) ========== */
 
 /* TABLETS Y MÓVILES: Solo grid, sin visualizador principal ni sub-opciones */
@@ -1287,4 +1397,97 @@
 .selection-mode .row-photo-item:hover,
 .selection-mode .grid-photo-item:hover {
     border-color: var(--hillary);
+}
+
+/* ========== OPTIMIZACIONES PARA IMÁGENES VERTICALES EN MODALES ========== */
+
+/* Detectar y optimizar imágenes verticales automáticamente */
+.fullscreen-image,
+.mobile-modal-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    border-radius: 4px;
+}
+
+/* Para pantallas muy altas (móviles en vertical), aprovechar más el ancho */
+@media (max-aspect-ratio: 3/4) {
+    .mobile-modal-content {
+        padding: 0.25rem;
+    }
+
+    .mobile-modal-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+/* Para pantallas muy anchas (tablets/desktop en horizontal), aprovechar más la altura */
+@media (min-aspect-ratio: 16/9) {
+    .fullscreen-content {
+        padding: 0.5rem;
+    }
+
+    .fullscreen-image {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+}
+
+/* Mejoras adicionales para el aprovechamiento del espacio */
+@media (max-width: 1024px) {
+    .mobile-modal-header {
+        padding: 0.8rem;
+        min-height: 55px;
+    }
+
+    .mobile-thumbnails {
+        padding: 0.6rem;
+        max-height: 80px;
+    }
+
+    .mobile-counter {
+        bottom: 15px;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+    }
+
+    .mobile-nav {
+        width: 40px;
+        height: 40px;
+    }
+
+    .mobile-prev {
+        left: 10px;
+    }
+
+    .mobile-next {
+        right: 10px;
+    }
+}
+
+/* Optimizaciones para pantallas muy pequeñas */
+@media (max-width: 480px) {
+    .mobile-modal-header {
+        padding: 0.6rem;
+        min-height: 50px;
+    }
+
+    .mobile-modal-content {
+        padding: 0.2rem;
+    }
+
+    .mobile-thumbnails {
+        padding: 0.4rem;
+        max-height: 70px;
+    }
+
+    .mobile-counter {
+        bottom: 10px;
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
 }
