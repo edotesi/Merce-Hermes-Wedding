@@ -25,9 +25,9 @@
         <div class="hero-center-content">
             <img src="{{ asset('images/logo.png') }}" alt="Logo MH">
             <div>
-                <h1>Web en construcción</h1>
-                <p>¡En muy poco podréis disfrutar de la web!</p>
-                <div class="countdown">
+                <h1>Web en mantenimiento</h1>
+                <p>¡En muy poco podréis disfrutar de la galeria!</p>
+                {{-- <div class="countdown">
                     <div class="countdown-item">
                         <span class="countdown-number" id="days">00</span>
                         <span class="countdown-label">DÍAS</span>
@@ -44,7 +44,7 @@
                         <span class="countdown-number" id="seconds">00</span>
                         <span class="countdown-label">SEGUNDOS</span>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
