@@ -177,6 +177,27 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden; /* Importante para que el fondo borroso no se salga */
+}
+
+.main-viewer-background {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    right: -20px;
+    bottom: -20px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(25px) brightness(0.3);
+    transform: scale(1.1);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.main-viewer.incomplete-fill .main-viewer-background {
+    opacity: 1;
 }
 
 .main-viewer-image {
@@ -184,6 +205,8 @@
     max-height: 100%;
     object-fit: contain;
     display: block;
+    position: relative; /* AÑADIR */
+    z-index: 1; /* AÑADIR para que esté encima del fondo */
 }
 
 /* Controles del visualizador */
@@ -1105,8 +1128,12 @@
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Estados vacíos */
