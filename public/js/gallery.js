@@ -120,9 +120,19 @@ document.addEventListener('DOMContentLoaded', function() {
         const nextBtn = document.querySelector('.viewer-next');
         const fullscreenBtn = document.querySelector('.fullscreen-btn');
 
-        if (prevBtn) prevBtn.addEventListener('click', () => navigateViewer(-1));
-        if (nextBtn) nextBtn.addEventListener('click', () => navigateViewer(1));
-        if (fullscreenBtn) fullscreenBtn.addEventListener('click', openFullscreen);
+        if (prevBtn) {
+            prevBtn.onclick = () => navigateViewer(-1);
+        }
+        if (nextBtn) {
+            nextBtn.onclick = () => navigateViewer(1);
+        }
+        if (fullscreenBtn) {
+            fullscreenBtn.onclick = (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                openFullscreen(currentIndex);
+            };
+        }
     }
 
     /**
@@ -136,6 +146,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         mainViewerImage.src = photo.url;
         mainViewerImage.alt = photo.name;
+
+        // Hacer la imagen clickeable para abrir fullscreen
+        mainViewerImage.onclick = () => {
+            openFullscreen(currentIndex);
+        };
+        mainViewerImage.style.cursor = 'zoom-in';
 
         // Actualizar fondo difuminado
         const background = document.querySelector('.main-viewer-background');
@@ -597,15 +613,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
         document.body.classList.toggle('selection-mode', isSelectionMode);
 
-        if (!isSelectionMode) {
-            selectedPhotos.clear();
-            updateSelectionBar();
+        if (isSelectionMode) {
+            // ACTIVAR modo selección: mostrar inmediatamente todos los indicadores
+            selectionBar?.classList.add('active');
+
+            // Forzar actualización visual inmediata
+            updatePhotoGrid();
             if (!isMobile) {
                 updatePhotosRow();
             }
-            updatePhotoGrid();
+            updateSelectionCount();
+
         } else {
-            updateSelectionBar();
+            // DESACTIVAR modo selección: limpiar y ocultar
+            selectedPhotos.clear();
+            selectionBar?.classList.remove('active');
+
+            updatePhotoGrid();
+            if (!isMobile) {
+                updatePhotosRow();
+            }
+            updateSelectionCount();
         }
     }
 
@@ -710,9 +738,25 @@ document.addEventListener('DOMContentLoaded', function() {
         if (prevBtn) prevBtn.addEventListener('click', () => navigateFullscreen(-1));
         if (nextBtn) nextBtn.addEventListener('click', () => navigateFullscreen(1));
 
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', () => {
+                const photo = filteredPhotos[currentIndex];
+                if (photo && photo.downloadUrl) {
+                    window.open(photo.downloadUrl, '_blank');
+                }
+            });
+        }
+
+        // Cerrar con ESC
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && fullscreenModal.classList.contains('active')) {
+                closeFullscreen();
+            }
+        });
+
         // Cerrar al hacer clic fuera
         fullscreenModal.addEventListener('click', (e) => {
-            if (e.target === fullscreenModal) {
+            if (e.target === fullscreenModal || e.target === fullscreenModal.querySelector('.fullscreen-content')) {
                 closeFullscreen();
             }
         });
@@ -721,7 +765,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function openFullscreen(index = currentIndex) {
         if (isMobile || !fullscreenModal) return;
 
-        currentIndex = index;
+        // Asegurar que tenemos un índice válido
+        if (index !== undefined && index >= 0 && index < filteredPhotos.length) {
+            currentIndex = index;
+        }
+
+        if (filteredPhotos.length === 0) return;
+
         updateFullscreenContent();
         fullscreenModal.classList.add('active');
         document.body.style.overflow = 'hidden';
@@ -747,8 +797,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         updateFullscreenContent();
 
-        // Actualizar también el visualizador principal si no estamos en móvil
-        if (!isMobile) {
+        // Actualizar también el visualizador principal si no estamos en móvil y no en vista grid
+        if (!isMobile && !isGridView) {
             updateMainViewer();
             updatePhotosRow();
         }
@@ -765,20 +815,36 @@ document.addEventListener('DOMContentLoaded', function() {
         const category = fullscreenModal.querySelector('.fullscreen-category');
         const position = fullscreenModal.querySelector('#fullscreenPosition');
         const total = fullscreenModal.querySelector('#fullscreenTotal');
-        const downloadBtn = fullscreenModal.querySelector('#fullscreenDownload');
 
         if (img) {
             img.src = photo.url;
-            img.alt = photo.name;
+            img.alt = photo.name || 'Imagen de la galería';
         }
 
-        if (title) title.textContent = photo.name;
-        if (category) category.textContent = window.getCategoryDisplayName(photo.category);
-        if (position) position.textContent = currentIndex + 1;
-        if (total) total.textContent = filteredPhotos.length;
+        if (title) {
+            title.textContent = photo.name || `Imagen ${currentIndex + 1}`;
+        }
 
+        if (category) {
+            category.textContent = window.getCategoryDisplayName(photo.category);
+        }
+
+        if (position) {
+            position.textContent = currentIndex + 1;
+        }
+
+        if (total) {
+            total.textContent = filteredPhotos.length;
+        }
+
+        // Actualizar botón de descarga
+        const downloadBtn = fullscreenModal.querySelector('#fullscreenDownload');
         if (downloadBtn) {
-            downloadBtn.onclick = () => window.open(photo.downloadUrl, '_blank');
+            downloadBtn.onclick = () => {
+                if (photo.downloadUrl) {
+                    window.open(photo.downloadUrl, '_blank');
+                }
+            };
         }
     }
 
@@ -916,12 +982,15 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleFullscreenKeys(e) {
         switch (e.key) {
             case 'Escape':
+                e.preventDefault();
                 closeFullscreen();
                 break;
             case 'ArrowLeft':
+                e.preventDefault();
                 navigateFullscreen(-1);
                 break;
             case 'ArrowRight':
+                e.preventDefault();
                 navigateFullscreen(1);
                 break;
         }
@@ -946,14 +1015,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         switch (e.key) {
             case 'ArrowLeft':
+                e.preventDefault();
                 navigateViewer(-1);
                 break;
             case 'ArrowRight':
+                e.preventDefault();
                 navigateViewer(1);
                 break;
             case ' ':
+            case 'Enter':
                 e.preventDefault();
-                openFullscreen();
+                openFullscreen(currentIndex);
                 break;
         }
     }

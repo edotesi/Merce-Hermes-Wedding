@@ -70,7 +70,7 @@
                         <div class="view-toggle">
                             <button id="toggleGridView" class="toggle-btn">
                                 <i class="fas fa-th"></i>
-                                <span>Galeria</span>
+                                <span>Vista en cuadrícula</span>
                             </button>
                         </div>
                     </div>
