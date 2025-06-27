@@ -666,14 +666,15 @@
 }
 
 /* Modal pantalla completa - Desktop */
+/* Modal pantalla completa - Desktop - Mejora para botones */
 .fullscreen-modal {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.95);
-    backdrop-filter: blur(20px);
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(10px);
     display: flex;
     flex-direction: column;
     z-index: 2000;
@@ -691,25 +692,26 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1.5rem 2rem;
     background: rgba(0, 0, 0, 0.3);
     backdrop-filter: blur(10px);
+    /* Asegurar que no haya problemas de flexbox */
     flex-shrink: 0;
-    min-height: 70px;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 80px; /* Altura mínima para centrado */
 }
 
 .fullscreen-info {
     flex: 1;
-    padding-right: 2rem; /* Espacio para evitar solapamiento */
+    min-width: 0; /* Permite que el contenido se ajuste */
 }
 
 .fullscreen-title {
     color: var(--gold-bright);
     font-size: 1.3rem;
     margin: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    line-height: 1.2;
 }
 
 .fullscreen-category {
@@ -718,18 +720,47 @@
     margin: 0;
     text-transform: uppercase;
     letter-spacing: 1px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    line-height: 1.2;
 }
 
+/* Contenedor de controles mejorado */
 .fullscreen-controls {
     display: flex;
-    gap: 15px;
-    flex-shrink: 0; /* No se comprime */
+    align-items: center;
+    justify-content: center; /* Centrar horizontalmente también */
+    gap: 20px; /* Aumentar el gap para mejor separación */
+    flex-shrink: 0; /* Evitar que se comprima */
+    margin-left: auto; /* Empujar hacia la derecha */
+    height: 100%; /* Ocupar toda la altura del header */
 }
 
-.fullscreen-btn {
+/* Botón fullscreen del visualizador principal (NO tocar) */
+.main-viewer .fullscreen-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+}
+
+.main-viewer .fullscreen-btn:hover {
+    background: rgba(0, 0, 0, 0.7);
+    transform: scale(1.1);
+}
+
+/* Botones del modal fullscreen (mejorados) */
+.fullscreen-controls .fullscreen-btn {
     background: transparent;
     border: 1px solid var(--hillary);
     color: var(--hillary);
@@ -741,12 +772,31 @@
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
-    flex-shrink: 0; /* Mantener tamaño fijo */
+    /* Propiedades adicionales para evitar solapamiento */
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
 }
 
-.fullscreen-btn:hover {
+.fullscreen-controls .fullscreen-btn:hover {
     background: var(--hillary);
     color: var(--olive);
+    transform: scale(1.1);
+}
+
+/* Estilo específico para cada botón en modal */
+.fullscreen-controls .fullscreen-btn#fullscreenDownload {
+    order: 1; /* Descargar primero */
+}
+
+.fullscreen-controls .fullscreen-btn.fullscreen-close {
+    order: 2; /* Cerrar segundo */
+}
+
+/* Asegurar que los iconos están centrados */
+.fullscreen-controls .fullscreen-btn i {
+    font-size: 1.1rem;
+    line-height: 1;
 }
 
 .fullscreen-content {
@@ -763,13 +813,10 @@
 }
 
 .fullscreen-image {
-    max-width: calc(100% - 2rem); /* Restar padding */
-    max-height: calc(100% - 2rem); /* Restar padding */
-    width: auto;
-    height: auto;
+    max-width: 85vw;
+    max-height: 80vh;
     object-fit: contain;
     display: block;
-    border-radius: 4px;
 }
 
 .fullscreen-nav {
